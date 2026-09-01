@@ -21,7 +21,42 @@ export const generateMetadata = async ({
 }: CorporateWorkPageProps): Promise<Metadata> => {
   const { slug } = await params;
   const commission = await getCommissionBySlug("corporate", slug);
-  return { title: commission?.title ?? "Corporate" };
+
+  if (!commission) {
+    return { title: "Corporate" };
+  }
+
+  const metaSummary = commission.metaItems
+    .map((item) => item.value)
+    .filter(Boolean)
+    .join(" / ");
+  const description = `${commission.title} — Corporate work by Takahashi Mei.${metaSummary ? ` (${metaSummary})` : ""}`;
+  const firstCut = commission.cuts[0];
+  const imageUrl = firstCut?.image.src;
+
+  return {
+    title: commission.title,
+    description,
+    openGraph: {
+      title: commission.title,
+      description,
+      type: "article",
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              alt: firstCut.alt || commission.title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: commission.title,
+      description,
+      images: imageUrl ? [imageUrl] : undefined,
+    },
+  };
 };
 
 const CorporateWorkPage = async ({ params }: CorporateWorkPageProps) => {

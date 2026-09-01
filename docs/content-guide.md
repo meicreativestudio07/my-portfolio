@@ -50,6 +50,9 @@ GitHub モードがセットアップされていれば(手順: `docs/keystatic-
 
 ```
 content/
+  intro/                     トップページ(ルート)のメイン写真
+    index.yaml               画像ファイル名とalt文
+    portrait.jpg             表示する写真
   portfolio/                 個人制作(トップのギャラリー)
     order.yaml               表示順。items: の上の行ほど先に表示
     quiet-bloom/             1作品 = 1フォルダ。フォルダ名がURLになる

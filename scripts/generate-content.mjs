@@ -375,6 +375,44 @@ ${sections.join("\n")}
   );
 };
 
+// --- intro ----------------------------------------------------------------
+
+const generateIntro = async () => {
+  const introDir = join(contentDir, "intro");
+  const dataDir = join(root, "src/features/intro/data");
+  const registry = createImportRegistry(dataDir);
+  const label = "content/intro/index.yaml";
+
+  const data = await readYaml(join(introDir, "index.yaml"));
+  if (data === null) return;
+
+  const imagePath = await requireImage(
+    introDir,
+    data.image,
+    `${label} の image`,
+    `${label} に image(トップページ写真のファイル名)が書かれていません`,
+  );
+  if (imagePath === null) return;
+
+  const alt = requireString(data.alt, `${label} の alt`);
+  const imageVar = registry.add(imagePath);
+
+  queueWrite(
+    join(dataDir, "intro.generated.ts"),
+    `// scripts/generate-content.mjs が content/intro/index.yaml から自動生成するファイル。
+// 直接編集しない。写真の変更は content/intro 側で行う。
+import type { IntroImage } from "@/features/intro/types/intro";
+
+${registry.imports.join("\n")}
+
+export const introPortrait = {
+  image: ${imageVar},
+  alt: ${s(alt)},
+} satisfies IntroImage;
+`,
+  );
+};
+
 // --- 画像ファイルの検証 -----------------------------------------------------
 
 // content/ に置けるのは YAML と JPEG だけ。JPEG 以外の画像や想定外のファイルは
@@ -411,6 +449,7 @@ const counts = {
   wedding: await generateCommissions("wedding", "weddingCommissions"),
 };
 await generateSections();
+await generateIntro();
 await validateImageFiles();
 
 if (warnings.length > 0) {

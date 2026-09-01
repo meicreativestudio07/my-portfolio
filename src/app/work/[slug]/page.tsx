@@ -21,7 +21,35 @@ export const generateMetadata = async ({
 }: WorkPageProps): Promise<Metadata> => {
   const { slug } = await params;
   const work = await getWorkBySlug(slug);
-  return { title: work?.title ?? "Work" };
+
+  if (!work) {
+    return { title: "Work" };
+  }
+
+  const description = `${work.title} — ${work.category} work for ${work.client} (${work.publishedAt}) by Takahashi Mei.`;
+  const imageUrl = work.thumbnail.image.src;
+
+  return {
+    title: work.title,
+    description,
+    openGraph: {
+      title: work.title,
+      description,
+      type: "article",
+      images: [
+        {
+          url: imageUrl,
+          alt: work.thumbnail.alt || work.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: work.title,
+      description,
+      images: [imageUrl],
+    },
+  };
 };
 
 const WorkPage = async ({ params }: WorkPageProps) => {

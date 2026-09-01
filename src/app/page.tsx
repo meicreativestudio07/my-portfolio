@@ -1,9 +1,8 @@
+import { getIntroPortrait } from "@/features/intro/api/get-intro-portrait";
 import { PortfolioIntro } from "@/features/intro/components/portfolio-intro";
-import { getWorks } from "@/features/work/api/get-works";
 
 const HomePage = async () => {
-  const works = await getWorks();
-  const portrait = works[0]?.thumbnail;
+  const portrait = await getIntroPortrait();
 
   if (!portrait) return null;
 

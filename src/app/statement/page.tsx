@@ -3,8 +3,22 @@ import type { Metadata } from "next";
 import { PageReady } from "@/components/layout/page-ready";
 import { InformationBotanical } from "@/features/information/components/information-botanical";
 
+const title = "Statement";
+const description =
+  "About Takahashi Mei — Photographer / Visual Artist based in Shiga, Japan. Working across photography, video production, creative direction, and visual planning.";
+
 export const metadata: Metadata = {
-  title: "Statement",
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+  },
 };
 
 const StatementPage = () => (

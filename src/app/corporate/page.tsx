@@ -9,7 +9,19 @@ import { CommissionBand } from "@/features/commission/components/commission-band
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const section = await getCommissionSection("corporate");
-  return { title: section.title, description: section.description };
+  return {
+    title: section.title,
+    description: section.description,
+    openGraph: {
+      title: section.title,
+      description: section.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: section.title,
+      description: section.description,
+    },
+  };
 };
 
 const CorporatePage = async () => {

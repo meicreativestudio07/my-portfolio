@@ -6,10 +6,10 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { BotanicalMark } from "@/features/intro/components/botanical-mark";
-import type { WorkImage } from "@/features/work/types/work";
+import type { IntroImage } from "@/features/intro/types/intro";
 
 type PortfolioIntroProps = Readonly<{
-  portrait: WorkImage;
+  portrait: IntroImage;
 }>;
 
 type IntroPhase = "loading" | "portrait" | "name" | "exit";

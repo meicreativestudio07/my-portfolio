@@ -215,6 +215,19 @@ export default config({
     }),
   },
   singletons: {
+    intro: singleton({
+      label: "Intro (トップページ写真)",
+      path: "content/intro/index",
+      format: { data: "yaml" },
+      schema: {
+        image: fields.image({
+          label: "メイン写真",
+          description: "トップページ(ルート)に大きく表示される写真",
+          validation: { isRequired: true },
+        }),
+        alt: altField("写真の内容の短い説明"),
+      },
+    }),
     corporateSection: singleton({
       label: "Corporate ページ文言",
       path: "content/corporate/section",

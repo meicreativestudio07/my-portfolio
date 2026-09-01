@@ -1,0 +1,1427 @@
+@import "tailwindcss";
+
+:root {
+  /* Color */
+  --color-canvas: #ffffff;
+  --color-text: #111111;
+  --color-text-muted: #aaaaaa;
+  --color-surface-hover: rgb(33 33 36 / 4%);
+  --color-focus: #111111;
+  --color-intro-text: #f7f7f5;
+  --color-intro-line: rgb(247 247 245 / 82%);
+  --color-botanical-muted: rgb(17 17 17 / 15%);
+
+  /* Typography */
+  --font-sans:
+    "Instrument Sans Variable", "Helvetica Neue", Helvetica, sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-size-caption: 0.625rem;
+  --font-size-social: 0.875rem;
+  --font-size-card-desktop: 0.875rem;
+  --font-size-body: 1rem;
+  --font-size-nav: 1.25rem;
+  --font-size-header-navigation-primary: 1.125rem;
+  --font-size-header-navigation-secondary: 1rem;
+  --font-size-header-navigation-tertiary: 0.875rem;
+  --font-size-mobile-menu-index: 0.625rem;
+  --font-size-mobile-menu-meta: 0.75rem;
+  --font-size-title: 2rem;
+  --font-size-detail-title: 2.125rem;
+  --font-size-detail-navigation: 1rem;
+  --font-size-intro-name: clamp(1.125rem, 1.6vw, 1.5rem);
+  --font-size-intro-role: 0.5625rem;
+  --line-height-caption: 1.5;
+  --line-height-card-desktop: 1.2857;
+  --line-height-body: 1.25;
+  --line-height-nav: 1;
+  --line-height-title: 1.25;
+  --font-weight-regular: 400;
+  --letter-spacing-intro-name: 0.08em;
+  --letter-spacing-intro-role: 0.24em;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.75rem;
+  --space-8: 3.5rem;
+  --space-9: 5rem;
+  --space-10: 7rem;
+  --space-11: 8.5rem;
+  --space-12: 10.75rem;
+
+  /* Layout */
+  --layout-max-width: 100rem;
+  --layout-gutter-mobile: 1rem;
+  --layout-gutter-desktop: 2.75rem;
+  --layout-header-desktop: 3.5rem;
+  --layout-header-height-desktop: calc(
+    (var(--layout-header-desktop) * 2) +
+    var(--font-size-nav)
+  );
+  --layout-gallery-top-mobile: 7rem;
+  --layout-gallery-top-desktop: var(--space-6);
+  --layout-gallery-bottom-mobile: 3rem;
+  --layout-gallery-bottom-desktop: 8.5rem;
+  /* Limits the vertical travel of each gallery column during page scroll. */
+  --layout-gallery-parallax-distance: 5rem;
+  /* Gallery thumbnails use an editorial portrait crop independent of source image orientation. */
+  --layout-card-media-ratio: 3 / 4;
+  /* Embedded players for moving-image commissions; external hosts deliver 16:9. */
+  --layout-video-ratio: 16 / 9;
+  --layout-detail-width: 42.75rem;
+  --layout-selection-scale: 1.05;
+  --layout-intro-mark-width: min(76vw, 32.5rem);
+  --layout-intro-identity-width: min(84vw, 37.5rem);
+  --layout-intro-identity-ratio: 10 / 7;
+  --layout-intro-name-top: 48%;
+  --layout-intro-name-left: 49%;
+  --layout-intro-role-top: 42%;
+  --layout-intro-role-left: 61%;
+  --layout-intro-plant-rotation: -7deg;
+  --layout-intro-name-rotation: -4deg;
+  --layout-intro-role-rotation: 90deg;
+  --layout-information-copy-width: 35rem;
+  --layout-information-plant-width-mobile: min(72vw, 22.5rem);
+  --layout-information-plant-width-desktop: min(34vw, 22.5rem);
+  --layout-information-height-mobile: calc(100svh - var(--space-8));
+  --layout-information-min-height: 100svh;
+  --layout-information-min-height-desktop: calc(
+    100svh -
+    var(--layout-header-height-desktop)
+  );
+  --layout-information-top-desktop: 12.25rem;
+  --layout-detail-gutter-desktop: 3.5rem;
+  --layout-touch-target: 2.75rem;
+  --icon-size-small: 1rem;
+  --icon-size-menu: 1.125rem;
+  --icon-size-navigation: 0.5rem;
+  --icon-navigation-offset: 0.5rem;
+  --z-site-header: 10;
+  --z-page-transition: 20;
+  --z-intro-content: 1;
+
+  /* Shape */
+  --radius-subtle: 0.25rem;
+  --stroke-intro-botanical: 1.15;
+  --stroke-intro-botanical-fine: 0.75;
+  --stroke-icon: 1.35;
+  --stroke-icon-filled: 0;
+
+  /* Motion */
+  --motion-duration-fast: 200ms;
+  --motion-duration-normal: 330ms;
+  --motion-duration-slow: 660ms;
+  --motion-ease-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --motion-ease-soft: cubic-bezier(0.25, 1, 0.5, 1);
+  --motion-ease-expressive: cubic-bezier(0.19, 1, 0.22, 1);
+  --motion-blur-subtle: 3px;
+  --motion-menu-icon-rotation: 90deg;
+  --motion-menu-stagger: 40ms;
+  --motion-press-scale: 0.97;
+}
+
+@theme inline {
+  --color-background: var(--color-canvas);
+  --color-foreground: var(--color-text);
+  --font-sans: var(--font-sans);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-size: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-caption);
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-focus);
+  outline-offset: var(--space-1);
+}
+
+.icon {
+  flex: none;
+  stroke-width: var(--stroke-icon);
+}
+
+.icon--small {
+  width: var(--icon-size-small);
+  height: var(--icon-size-small);
+}
+
+.icon--menu {
+  width: var(--icon-size-menu);
+  height: var(--icon-size-menu);
+}
+
+.icon--navigation {
+  width: var(--icon-size-navigation);
+  height: var(--icon-size-navigation);
+  margin-top: var(--icon-navigation-offset);
+  stroke-width: var(--stroke-icon-filled);
+}
+
+.icon--navigation-back {
+  transform: rotate(-90deg);
+}
+
+.icon--navigation-next {
+  transform: rotate(90deg);
+}
+
+.site-shell {
+  width: min(100%, var(--layout-max-width));
+  margin-inline: auto;
+}
+
+.site-header-frame {
+  position: relative;
+  z-index: var(--z-site-header);
+}
+
+.site-header-frame--reserved {
+  height: var(--reserved-header-height);
+}
+
+html[data-detail-transition="true"] .site-header-frame {
+  visibility: hidden;
+}
+
+.portfolio-intro {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  background: var(--color-canvas);
+  color: var(--color-intro-text);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.portfolio-intro__image,
+.portfolio-intro__veil {
+  position: absolute;
+  inset: 0;
+}
+
+.portfolio-intro__image {
+  object-fit: cover;
+}
+
+.portfolio-intro__veil {
+  z-index: var(--z-intro-content);
+  background: var(--color-canvas);
+  pointer-events: none;
+}
+
+.portfolio-intro__identity {
+  position: absolute;
+  z-index: var(--z-intro-content);
+  top: 50%;
+  left: 50%;
+  width: var(--layout-intro-identity-width);
+  aspect-ratio: var(--layout-intro-identity-ratio);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.portfolio-intro__botanical {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: var(--layout-intro-mark-width);
+  overflow: visible;
+  transform: translate(-50%, -50%) rotate(var(--layout-intro-plant-rotation));
+}
+
+.portfolio-intro__botanical-line {
+  stroke: var(--color-intro-line);
+  stroke-width: var(--stroke-intro-botanical);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.portfolio-intro__botanical-line--fine {
+  stroke-width: var(--stroke-intro-botanical-fine);
+}
+
+.portfolio-intro__name {
+  position: absolute;
+  top: var(--layout-intro-name-top);
+  left: var(--layout-intro-name-left);
+  margin: 0;
+  color: var(--color-intro-text);
+  font-size: var(--font-size-intro-name);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-nav);
+  letter-spacing: var(--letter-spacing-intro-name);
+  text-shadow: 0 1px 1rem rgb(0 0 0 / 12%);
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(var(--layout-intro-name-rotation));
+}
+
+.portfolio-intro__name span {
+  display: block;
+}
+
+.portfolio-intro__name span:last-child {
+  margin-left: var(--space-4);
+}
+
+.portfolio-intro__role {
+  position: absolute;
+  top: var(--layout-intro-role-top);
+  left: var(--layout-intro-role-left);
+  font-family: var(--font-serif);
+  font-size: var(--font-size-intro-role);
+  letter-spacing: var(--letter-spacing-intro-role);
+  line-height: var(--line-height-nav);
+  text-transform: uppercase;
+  transform: rotate(var(--layout-intro-role-rotation));
+  transform-origin: left top;
+}
+
+.site-header {
+  position: relative;
+  z-index: var(--z-site-header);
+}
+
+.site-header__mobile {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: var(--space-8);
+  padding-inline: var(--layout-gutter-mobile);
+}
+
+.site-header__mobile-brand,
+.site-header__menu-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  line-height: var(--line-height-nav);
+}
+
+.site-header__mobile-brand {
+  justify-content: center;
+  justify-self: start;
+  min-width: var(--layout-touch-target);
+  font-size: var(--font-size-social);
+}
+
+.site-header__home-icon {
+  width: var(--icon-size-menu);
+  height: var(--icon-size-menu);
+}
+
+.site-header__menu-button {
+  position: relative;
+  justify-self: end;
+  justify-content: center;
+  min-width: var(--layout-touch-target);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-soft);
+}
+
+.site-header__menu-icon {
+  position: absolute;
+  opacity: 0;
+  transform: rotate(var(--motion-menu-icon-rotation));
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-ease-soft),
+    transform var(--motion-duration-fast) var(--motion-ease-expressive);
+}
+
+.site-header__menu-icon[data-visible="true"] {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.site-header__current {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-nav);
+  text-transform: uppercase;
+}
+
+.site-header__social {
+  font-size: var(--font-size-header-navigation-tertiary);
+}
+
+.site-header__desktop {
+  display: none;
+}
+
+.mobile-menu {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  display: grid;
+  align-content: end;
+  padding: var(--space-10) var(--layout-gutter-mobile) var(--space-8);
+  background: var(--color-canvas);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--motion-duration-fast) var(--motion-ease-soft);
+}
+
+.mobile-menu[data-open="true"] {
+  z-index: -1;
+  pointer-events: auto;
+  opacity: 1;
+}
+
+.mobile-menu__list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-size-title);
+  line-height: var(--line-height-nav);
+}
+
+.mobile-menu__eyebrow {
+  margin: 0 0 var(--space-6);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-nav);
+  text-transform: uppercase;
+}
+
+.mobile-menu__list li {
+  opacity: 0;
+  transform: translateY(var(--space-3));
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-ease-soft),
+    transform var(--motion-duration-fast) var(--motion-ease-expressive);
+}
+
+.mobile-menu[data-open="true"] .mobile-menu__list li {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-menu[data-open="true"] .mobile-menu__list li:nth-child(2) {
+  transition-delay: var(--motion-menu-stagger);
+}
+
+.mobile-menu[data-open="true"] .mobile-menu__list li:nth-child(3) {
+  transition-delay: calc(var(--motion-menu-stagger) * 2);
+}
+
+.mobile-menu[data-open="true"] .mobile-menu__list li:nth-child(4) {
+  transition-delay: calc(var(--motion-menu-stagger) * 3);
+}
+
+.mobile-menu__link {
+  display: grid;
+  grid-template-columns: var(--space-6) auto 1fr;
+  align-items: baseline;
+  min-height: var(--layout-touch-target);
+}
+
+.mobile-menu__index {
+  align-self: start;
+  padding-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-mobile-menu-index);
+}
+
+.mobile-menu__meta {
+  justify-self: end;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-mobile-menu-meta);
+}
+
+.mobile-menu__link[aria-current="page"] {
+  color: var(--color-text-muted);
+}
+
+.site-header__menu-button:active {
+  transform: scale(var(--motion-press-scale));
+}
+
+.gallery {
+  width: 100%;
+  padding: var(--layout-gallery-top-mobile) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.gallery__grid,
+.gallery__column {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.work-card {
+  display: block;
+  color: var(--color-text);
+}
+
+.work-card[data-disabled="true"] {
+  pointer-events: none;
+}
+
+.work-card[data-hidden="true"] {
+  pointer-events: none;
+}
+
+.work-card__inner {
+  position: relative;
+}
+
+.work-card__surface {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-subtle);
+  background: var(--color-surface-hover);
+  pointer-events: none;
+}
+
+.work-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--layout-card-media-ratio);
+  background: transparent;
+}
+
+.work-card__reveal {
+  position: absolute;
+  inset: 0;
+}
+
+.work-card__image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.work-card__title {
+  margin: var(--space-3) 0 0;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+}
+
+.work-card__title span {
+  display: block;
+}
+
+.route-transition-veil {
+  position: fixed;
+  z-index: var(--z-page-transition);
+  inset: 0;
+  background: var(--color-canvas);
+  pointer-events: auto;
+}
+
+.route-transition-veil[data-visible="false"] {
+  pointer-events: none;
+}
+
+.route-transition[data-transitioning="true"] {
+  pointer-events: none;
+}
+
+.detail {
+  padding: var(--space-4) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.detail__back {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  font-size: var(--font-size-detail-navigation);
+}
+
+.detail__header {
+  max-width: var(--layout-detail-width);
+  margin: var(--space-5) auto var(--space-8);
+  text-align: center;
+}
+
+.detail__title {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-title);
+}
+
+.detail__title span {
+  display: block;
+}
+
+.detail__images {
+  display: grid;
+  gap: var(--space-8);
+  max-width: var(--layout-detail-width);
+  margin-inline: auto;
+}
+
+.detail__image-wrap {
+  position: relative;
+  aspect-ratio: var(--work-aspect-ratio);
+  opacity: 0;
+  transition: opacity var(--motion-duration-normal) var(--motion-ease-soft);
+}
+
+.detail__image-wrap[data-revealed="true"] {
+  opacity: 1;
+}
+
+.detail__image {
+  object-fit: cover;
+}
+
+.detail__project-info {
+  max-width: var(--layout-detail-width);
+  margin: var(--space-8) auto 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.detail__project-info p {
+  margin: 0;
+}
+
+.detail__project-info p + p {
+  margin-top: var(--space-4);
+}
+
+.detail__next {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: var(--layout-detail-width);
+  margin: var(--space-9) auto 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.information {
+  position: relative;
+  height: var(--layout-information-height-mobile);
+  overflow: hidden;
+  padding: var(--layout-gallery-top-mobile) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.information__body {
+  position: relative;
+  z-index: var(--z-intro-content);
+  max-width: var(--layout-information-copy-width);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+  animation: information-body-enter var(--motion-duration-normal)
+    var(--motion-ease-soft) both;
+}
+
+@keyframes information-body-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-2));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.information__intro h1,
+.information__intro p,
+.information__profile p,
+.information__section h2,
+.information__section p {
+  margin: 0;
+  font-size: inherit;
+  font-weight: var(--font-weight-regular);
+  line-height: inherit;
+}
+
+.information__intro {
+  margin-bottom: var(--space-5);
+}
+
+.information__profile {
+  margin-bottom: var(--space-6);
+}
+
+.information__profile p + p {
+  margin-top: var(--space-4);
+}
+
+.information__section + .information__section {
+  margin-top: var(--space-6);
+}
+
+.information__section h2 {
+  margin-bottom: var(--space-2);
+}
+
+.information__botanical {
+  position: absolute;
+  right: calc(var(--space-8) * -1);
+  bottom: calc(var(--space-10) * -1);
+  width: var(--layout-information-plant-width-mobile);
+  color: var(--color-botanical-muted);
+  pointer-events: none;
+}
+
+.information__botanical path {
+  stroke: currentColor;
+  stroke-width: var(--stroke-intro-botanical);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (min-width: 48rem) {
+  .site-header {
+    height: auto;
+    padding: var(--layout-header-desktop);
+  }
+
+  .site-header__mobile,
+  .mobile-menu {
+    display: none;
+  }
+
+  .site-header__desktop {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  .site-header__brand {
+    font-size: var(--font-size-nav);
+    line-height: var(--line-height-nav);
+    transition: color var(--motion-duration-fast) linear;
+  }
+
+  .site-header__nav-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--layout-touch-target);
+    min-height: var(--layout-touch-target);
+    line-height: var(--line-height-nav);
+    transition: color var(--motion-duration-fast) linear;
+  }
+
+  .site-header__nav-link[data-level="primary"] {
+    font-size: var(--font-size-header-navigation-primary);
+  }
+
+  .site-header__nav-link[data-level="secondary"] {
+    font-size: var(--font-size-header-navigation-secondary);
+  }
+
+  .site-header__nav {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-5);
+  }
+
+  .site-header__nav-link[aria-current="page"],
+  .site-header__brand:hover,
+  .site-header__nav-link:hover {
+    color: var(--color-text-muted);
+  }
+
+  .site-header__social {
+    font-size: var(--font-size-header-navigation-tertiary);
+  }
+
+  .gallery {
+    padding: var(--layout-gallery-top-desktop) var(--layout-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .gallery__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
+    column-gap: var(--space-6);
+  }
+
+  .gallery__column {
+    gap: var(--space-6);
+    transform: translateY(
+      calc(
+        var(--layout-gallery-parallax-distance) *
+        var(--gallery-parallax-progress)
+      )
+    );
+    will-change: transform;
+  }
+
+  .work-card {
+    padding-block: 0;
+  }
+
+  .work-card__inner {
+    padding-block: var(--space-5);
+  }
+
+  .work-card__media {
+    aspect-ratio: var(--layout-card-media-ratio);
+  }
+
+  .work-card__image {
+    object-fit: cover;
+  }
+
+  .work-card__title {
+    margin-top: var(--space-4);
+    font-size: var(--font-size-card-desktop);
+    line-height: var(--line-height-card-desktop);
+    text-align: center;
+    opacity: 0;
+    transition: opacity var(--motion-duration-normal) linear;
+  }
+
+  .work-card:hover .work-card__title,
+  .work-card:focus-visible .work-card__title {
+    opacity: 1;
+  }
+
+  .detail {
+    padding: var(--layout-header-desktop) var(--layout-detail-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .detail__header {
+    margin: var(--space-4) auto var(--space-9);
+  }
+
+  .detail__title {
+    font-size: var(--font-size-detail-title);
+  }
+
+  .detail__next .icon {
+    transition: transform var(--motion-duration-fast) var(--motion-ease-soft);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .detail__next:hover .icon,
+    .detail__next:focus-visible .icon {
+      transform: translateY(var(--space-1)) rotate(90deg);
+    }
+  }
+
+  .information {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    height: auto;
+    min-height: var(--layout-information-min-height-desktop);
+    padding: var(--layout-information-top-desktop) var(--layout-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .information__body {
+    grid-column: 2 / span 2;
+  }
+
+  .information__botanical {
+    right: var(--layout-gutter-desktop);
+    bottom: var(--space-6);
+    width: var(--layout-information-plant-width-desktop);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mobile-menu__link {
+    transition: color var(--motion-duration-fast) linear;
+  }
+
+  .mobile-menu__link:hover {
+    color: var(--color-text-muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu {
+    --motion-menu-stagger: 0ms;
+  }
+
+  .mobile-menu__list li {
+    transform: none;
+  }
+
+  .site-header__menu-icon {
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    animation-iteration-count: 1;
+  }
+
+  .gallery__column {
+    transform: none;
+  }
+
+  .information__body {
+    animation-name: information-body-enter-reduced;
+    animation-duration: var(--motion-duration-fast);
+  }
+
+  @keyframes information-body-enter-reduced {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+/* Commission index — Corporate and Wedding ---------------------------------
+   Both pages carry only a handful of works, so the unit is a commission
+   rather than a thumbnail: one lead cut and two supporting cuts, read as a
+   single composition. The two pages share this scaffolding and differ only
+   in how the cuts are arranged. */
+.commission {
+  padding: var(--space-8) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.commission__head {
+  margin-bottom: var(--space-8);
+}
+
+.commission__title {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-title);
+}
+
+.commission__lede {
+  max-width: var(--layout-information-copy-width);
+  margin: var(--space-4) 0 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+/* Every grid here declares its columns. An implicit track sizes to the widest
+   item and pushes the document past the viewport on narrow screens. */
+.commission__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-9);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The whole band is one link: caption and cuts answer to the same hover,
+   focus, and press, restating that the three cuts are a single work. */
+.commission-band__link {
+  display: block;
+  transition: transform var(--motion-duration-fast) var(--motion-ease-soft);
+}
+
+.commission-band__link:active {
+  transform: scale(var(--motion-press-scale));
+}
+
+.commission-band__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-4);
+}
+
+.commission-band__caption {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-1);
+}
+
+.commission-band__index {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-nav);
+}
+
+.commission-band__title {
+  margin: 0;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-body);
+}
+
+/* Meta stays near-black: hierarchy comes from size, not from a muted grey
+   that would drop below 4.5:1 against the white canvas. */
+.commission-band__meta {
+  margin: 0;
+  font-size: var(--font-size-mobile-menu-meta);
+  line-height: var(--line-height-caption);
+}
+
+.commission-band__cuts {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.commission-cut {
+  position: relative;
+  margin: 0;
+}
+
+/* The pale hover surface from the gallery: transparent at rest, never a
+   persistent background behind artwork. */
+.commission-cut__surface {
+  position: absolute;
+  inset: calc(var(--space-3) * -1);
+  border-radius: var(--radius-subtle);
+  background: var(--color-surface-hover);
+  opacity: 0;
+  /* Rest scale mirrors the selection scale so grow and settle share one
+     magnitude token instead of introducing a second ratio. */
+  transform: scale(calc(2 - var(--layout-selection-scale)));
+  pointer-events: none;
+  transition:
+    opacity var(--motion-duration-fast) var(--motion-ease-soft),
+    transform var(--motion-duration-fast) var(--motion-ease-soft);
+}
+
+.commission-cut__media {
+  position: relative;
+  /* Explicit block: aspect-ratio has no effect on an inline box. */
+  display: block;
+  overflow: hidden;
+  aspect-ratio: var(--layout-card-media-ratio);
+}
+
+.commission-cut__frame {
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Corporate — a lead cut with two supporting cuts stacked beside it. The set
+   alternates sides so five bands never read as five identical rows. */
+.commission--corporate .commission-band__cuts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.commission--corporate .commission-cut[data-role="lead"] {
+  grid-row: 1;
+  grid-column: 1 / span 2;
+}
+
+.commission--corporate .commission-cut[data-role="second"] {
+  grid-row: 2;
+  grid-column: 1;
+}
+
+.commission--corporate .commission-cut[data-role="third"] {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+/* Wedding — three cuts of descending size on a diagonal, the way prints get
+   laid out on a table. */
+.commission--wedding .commission-band__cuts {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.commission--wedding .commission-cut[data-role="lead"] {
+  grid-row: 1;
+  grid-column: 1 / span 6;
+}
+
+.commission--wedding .commission-cut[data-role="second"] {
+  grid-row: 2;
+  grid-column: 1 / span 4;
+}
+
+.commission--wedding .commission-cut[data-role="third"] {
+  grid-row: 3;
+  grid-column: 3 / span 4;
+}
+
+@media (min-width: 48rem) {
+  .commission {
+    padding: var(--layout-gallery-top-desktop) var(--layout-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .commission__head {
+    margin-bottom: var(--space-10);
+  }
+
+  .commission-band__title {
+    font-size: var(--font-size-card-desktop);
+    line-height: var(--line-height-card-desktop);
+  }
+
+  /* Corporate: twelve columns so the caption keeps a fixed narrow measure
+     while the cut set alternates sides. */
+  .commission--corporate .commission__list {
+    row-gap: var(--space-12);
+  }
+
+  .commission--corporate .commission-band__inner {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    align-items: start;
+    column-gap: var(--space-6);
+    row-gap: 0;
+  }
+
+  .commission--corporate .commission-band__caption {
+    grid-row: 1;
+    grid-column: 1 / span 3;
+    row-gap: var(--space-2);
+    padding-block: var(--space-5);
+  }
+
+  .commission--corporate .commission-band__cuts {
+    grid-row: 1;
+    grid-column: 5 / span 8;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--space-6);
+    padding-block: var(--space-5);
+  }
+
+  .commission--corporate
+    .commission-band:nth-child(even)
+    .commission-band__caption {
+    grid-column: 10 / span 3;
+  }
+
+  .commission--corporate
+    .commission-band:nth-child(even)
+    .commission-band__cuts {
+    grid-column: 1 / span 8;
+  }
+
+  /* One lead cut four tracks wide, two supporting cuts two tracks wide
+     stacked beside it. At a shared 3/4 crop the stacked pair finishes level
+     with the lead, so the set closes as a rectangle without a second
+     aspect-ratio value. */
+  .commission--corporate .commission-cut[data-role="lead"] {
+    grid-row: 1 / span 2;
+    grid-column: 1 / span 4;
+  }
+
+  .commission--corporate .commission-cut[data-role="second"] {
+    grid-row: 1;
+    grid-column: 5 / span 2;
+  }
+
+  .commission--corporate .commission-cut[data-role="third"] {
+    grid-row: 2;
+    grid-column: 5 / span 2;
+  }
+
+  .commission--corporate
+    .commission-band:nth-child(even)
+    .commission-cut[data-role="lead"] {
+    grid-column: 3 / span 4;
+  }
+
+  .commission--corporate
+    .commission-band:nth-child(even)
+    .commission-cut[data-role="second"],
+  .commission--corporate
+    .commission-band:nth-child(even)
+    .commission-cut[data-role="third"] {
+    grid-column: 1 / span 2;
+  }
+
+  /* Wedding: the set keeps the full measure and the note drops below it, so
+     the smallest print never has to survive a leftover column. Odd bands fall
+     left to right, even bands rise, and one track is always left empty on the
+     open side. The drops are static margins, never animated. */
+  .commission--wedding .commission__list {
+    row-gap: var(--space-11);
+  }
+
+  .commission--wedding .commission-band__inner {
+    row-gap: var(--space-5);
+  }
+
+  .commission--wedding .commission-band__caption {
+    grid-row: 2;
+    row-gap: var(--space-2);
+  }
+
+  .commission--wedding .commission-band__cuts {
+    grid-row: 1;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    align-items: start;
+    column-gap: var(--space-5);
+    padding-top: var(--space-5);
+  }
+
+  .commission--wedding .commission-cut[data-role="lead"] {
+    grid-row: 1;
+    grid-column: 1 / span 4;
+  }
+
+  .commission--wedding .commission-cut[data-role="second"] {
+    grid-row: 1;
+    grid-column: 5 / span 3;
+    margin-top: var(--space-9);
+  }
+
+  .commission--wedding .commission-cut[data-role="third"] {
+    grid-row: 1;
+    grid-column: 8 / span 2;
+    margin-top: var(--space-12);
+  }
+
+  .commission--wedding
+    .commission-band:nth-child(even)
+    .commission-cut[data-role="lead"] {
+    grid-column: 7 / span 4;
+    margin-top: var(--space-8);
+  }
+
+  .commission--wedding
+    .commission-band:nth-child(even)
+    .commission-cut[data-role="second"] {
+    grid-column: 4 / span 3;
+    margin-top: var(--space-4);
+  }
+
+  .commission--wedding
+    .commission-band:nth-child(even)
+    .commission-cut[data-role="third"] {
+    grid-column: 2 / span 2;
+    margin-top: 0;
+  }
+}
+
+/* Commission motion --------------------------------------------------------
+   A stagger tuned for twenty tiles would spend its whole budget on an empty
+   page, and one that runs the length of the list would make the last work
+   wait for four others. So the stagger belongs to a band, never to the list:
+   three and twelve commissions arrive at exactly the same tempo.
+
+   Nothing here is declared opacity 0 outside a @keyframes block, and every
+   entrance uses fill-mode `backwards`. An unsupported timeline, an
+   unscrollable page, a cut-short animation and prefers-reduced-motion all
+   resolve to the same thing: the artwork on screen at opacity 1. */
+.commission [data-step="0"] {
+  --reveal-step: 0;
+}
+
+.commission [data-step="1"] {
+  --reveal-step: 1;
+}
+
+.commission [data-step="2"] {
+  --reveal-step: 2;
+}
+
+.commission [data-step="3"] {
+  --reveal-step: 3;
+}
+
+.commission__head,
+.commission-band__caption,
+.commission-cut {
+  animation-name: commission-piece-enter;
+  animation-duration: var(--motion-duration-normal);
+  animation-timing-function: var(--motion-ease-standard);
+  animation-fill-mode: backwards;
+}
+
+.commission-band__caption,
+.commission-cut {
+  animation-delay: calc(var(--motion-menu-stagger) * 2 * var(--reveal-step));
+}
+
+@keyframes commission-piece-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-3));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.commission-cut__frame--next {
+  opacity: 0;
+  transition: opacity var(--motion-duration-normal) var(--motion-ease-soft);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* Bands after the first hand their entrance to their own scroll position,
+       so each commission assembles as the reader reaches it. Time delays carry
+       no meaning on a progress timeline, so the per-step offset moves into
+       animation-range: seven percent of the entry range per step. */
+    .commission-band:not(:first-child) .commission-band__caption,
+    .commission-band:not(:first-child) .commission-cut {
+      animation-delay: 0s;
+      animation-timeline: view();
+    }
+
+    .commission-band:not(:first-child) [data-step="0"] {
+      animation-range: entry 2% entry 34%;
+    }
+
+    .commission-band:not(:first-child) [data-step="1"] {
+      animation-range: entry 9% entry 41%;
+    }
+
+    .commission-band:not(:first-child) [data-step="2"] {
+      animation-range: entry 16% entry 48%;
+    }
+
+    .commission-band:not(:first-child) [data-step="3"] {
+      animation-range: entry 23% entry 55%;
+    }
+  }
+}
+
+/* All three surfaces rise together, never one at a time. That answers the
+   only question this layout can raise: is this three works, or one work in
+   three cuts? Keyboard focus gets the same response outside the hover query,
+   because focus-visible does not require a fine pointer. */
+.commission-band__link:focus-visible .commission-cut__surface {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.commission-band__link:focus-visible .commission-cut__frame--next {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .commission-band__link:hover .commission-cut__surface {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .commission-band__link:hover .commission-cut__frame--next {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Entrances resolve to the base state, which is already visible. */
+  .commission__head,
+  .commission-band__caption,
+  .commission-cut {
+    animation: none;
+  }
+
+  /* The frame cross-fade stays: it carries information rather than
+     decoration, and an opacity change is not vestibular. It is only
+     shortened. */
+  .commission-cut__frame--next {
+    transition-duration: var(--motion-duration-fast);
+  }
+
+  .commission-cut__surface {
+    transform: none;
+    transition-property: opacity;
+  }
+
+  .commission-band__link:hover .commission-cut__surface,
+  .commission-band__link:focus-visible .commission-cut__surface {
+    transform: none;
+  }
+
+  .commission-band__link:active {
+    transform: none;
+  }
+}
+
+/* Commission detail — /corporate/[slug] and /wedding/[slug] ----------------
+   Shares the /work detail scaffolding, but keeps the shared header, shows
+   each cut at its own aspect ratio without the client-side reveal, and
+   embeds the player for moving-image cuts. */
+.commission-detail__cut {
+  position: relative;
+  aspect-ratio: var(--commission-cut-ratio);
+}
+
+.commission-detail__player {
+  display: block;
+  width: 100%;
+  border: 0;
+  aspect-ratio: var(--layout-video-ratio);
+}
+
+.commission-detail__meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-1);
+  margin: var(--space-4) 0 0;
+}
+
+.commission-detail__meta-row {
+  display: grid;
+  grid-template-columns: var(--space-10) minmax(0, 1fr);
+  column-gap: var(--space-4);
+}
+
+.commission-detail__meta dt,
+.commission-detail__meta dd {
+  margin: 0;
+}

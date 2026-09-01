@@ -1,0 +1,19 @@
+title: 設計部門 密着
+meta:
+  - label: クライアント
+    value: 日永不動産
+  - label: 媒体
+    value: ムービー
+  - label: 年
+    value: "2025"
+cuts:
+  - file: 01.jpg
+    alt: 図面に定規を当てて描き込む設計担当者の手元
+    video: https://www.youtube.com/watch?v=eRsGyueVLvQ
+  - file: 02.jpg
+    alt: モノクロで捉えたデスクに向かう担当者の後ろ姿
+  - file: 03.jpg
+    alt: ノートパソコンと手描きのメモが並ぶ打ち合わせ卓の手元
+hover:
+  file: hover.jpg
+  alt: 上空から見下ろした造成中の現場と作業員の長い影

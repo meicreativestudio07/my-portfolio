@@ -1,0 +1,19 @@
+title: 本社移転の記録
+meta:
+  - label: クライアント
+    value: 三栄マテリアル
+  - label: 媒体
+    value: ムービー
+  - label: 年
+    value: "2026"
+cuts:
+  - file: 01.jpg
+    alt: ガラスの間仕切りが続く移転後のオフィス廊下
+    video: https://www.youtube.com/watch?v=aqz-KE-bpKQ
+  - file: 02.jpg
+    alt: 天井の配管があらわになった大きな執務フロアを見渡す
+  - file: 03.jpg
+    alt: 観葉植物の並ぶ窓際のカウンター席と街を望む大きな窓
+hover:
+  file: hover.jpg
+  alt: 照明を落とした廊下の先で明かりの点いた会議室

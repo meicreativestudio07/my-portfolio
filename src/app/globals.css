@@ -22,7 +22,6 @@
   --font-size-nav: 1.25rem;
   --font-size-header-navigation-primary: 1.125rem;
   --font-size-header-navigation-secondary: 1rem;
-  --font-size-header-navigation-tertiary: 0.875rem;
   --font-size-mobile-menu-index: 0.625rem;
   --font-size-mobile-menu-meta: 0.75rem;
   --font-size-title: 2rem;
@@ -408,10 +407,6 @@ html[data-detail-transition="true"] .site-header-frame {
   font-size: var(--font-size-caption);
   line-height: var(--line-height-nav);
   text-transform: uppercase;
-}
-
-.site-header__social {
-  font-size: var(--font-size-header-navigation-tertiary);
 }
 
 .site-header__desktop {
@@ -819,10 +814,6 @@ html[data-detail-transition="true"] .site-header-frame {
   .site-header__brand:hover,
   .site-header__nav-link:hover {
     color: var(--color-text-muted);
-  }
-
-  .site-header__social {
-    font-size: var(--font-size-header-navigation-tertiary);
   }
 
   .gallery {

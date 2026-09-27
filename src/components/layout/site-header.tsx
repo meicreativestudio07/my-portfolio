@@ -70,7 +70,8 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
             </TransitionLink>
           ))}
           <a
-            className="site-header__social"
+            className="site-header__nav-link site-header__social"
+            data-level="secondary"
             href="https://www.instagram.com/meimei.creativestudio/"
             rel="noreferrer"
             target="_blank"

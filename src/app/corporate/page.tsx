@@ -36,7 +36,11 @@ const CorporatePage = async () => {
 
       <div className="commission__head">
         <h1 className="commission__title">{section.title}</h1>
-        <p className="commission__lede">{section.lede}</p>
+        <p
+          className="commission__lede"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: Trusted content from YAML
+          dangerouslySetInnerHTML={{ __html: section.lede }}
+        />
       </div>
 
       <ol className="commission__list">

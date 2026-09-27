@@ -9,6 +9,7 @@ import { BotanicalMark } from "@/features/intro/components/botanical-mark";
 import type { IntroImage } from "@/features/intro/types/intro";
 
 type PortfolioIntroProps = Readonly<{
+  destination: string;
   portrait: IntroImage;
 }>;
 
@@ -18,7 +19,10 @@ const AUTO_NAME_DELAY = 700;
 const AUTO_EXIT_DELAY = 4000;
 const SKIP_EXIT_DELAY = 450;
 
-export const PortfolioIntro = ({ portrait }: PortfolioIntroProps) => {
+export const PortfolioIntro = ({
+  destination,
+  portrait,
+}: PortfolioIntroProps) => {
   const router = useRouter();
   const shouldReduceMotion = useReducedMotion();
   const timers = useRef<number[]>([]);
@@ -35,8 +39,8 @@ export const PortfolioIntro = ({ portrait }: PortfolioIntroProps) => {
   }, []);
 
   const enterWorks = useCallback(() => {
-    router.replace("/portfolio");
-  }, [router]);
+    router.replace(destination);
+  }, [destination, router]);
 
   const startAutomaticSequence = useCallback(() => {
     if (hasStarted.current) return;
@@ -72,7 +76,7 @@ export const PortfolioIntro = ({ portrait }: PortfolioIntroProps) => {
       className="portfolio-intro"
       data-phase={phase}
       type="button"
-      aria-label="Enter portfolio"
+      aria-label="Enter site"
       onClick={handleSkip}
     >
       <motion.div

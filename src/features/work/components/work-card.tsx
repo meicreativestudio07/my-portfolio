@@ -63,6 +63,7 @@ export const WorkCard = ({
   return (
     <motion.article
       initial={false}
+      style={{ order: index }}
       animate={{
         opacity: isHidden || !isRevealed ? 0 : 1,
         transform:

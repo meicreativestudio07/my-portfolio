@@ -38,11 +38,13 @@ type TransitionPhase = "idle" | "exiting" | "waiting" | "entering";
 // Routes that keep the shared header during their crossfade. The /work
 // detail route deliberately stays out of this list; the commission detail
 // routes keep the header so index and detail read as one continuous page.
+// Portfolio is temporarily unpublished, so "/portfolio" is deliberately not
+// mapped here — see the comment in app/portfolio/page.tsx to restore it.
 const headerPageFor = (path: string) =>
-  path === "/portfolio"
-    ? "Portfolio"
-    : path === "/statement"
-      ? "Statement"
+  path === "/statement"
+    ? "Statement"
+    : path === "/contact"
+      ? "Contact"
       : path === "/corporate" || path.startsWith("/corporate/")
         ? "Corporate"
         : path === "/wedding" || path.startsWith("/wedding/")

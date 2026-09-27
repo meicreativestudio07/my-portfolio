@@ -167,7 +167,7 @@ export default config({
         category: fields.text({
           label: "カテゴリー",
           description:
-            "Editorial / Campaign / Portrait / Photo Book / Look Book",
+            "Landscape / Still / Architecture / Botanical / Flower / Street",
           validation: { isRequired: true },
         }),
         client: fields.text({

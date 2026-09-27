@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
 
 import { getCommissions } from "@/features/commission/api/get-commissions";
-import { getWorks } from "@/features/work/api/get-works";
 import { getAbsoluteUrl } from "@/lib/site-metadata";
 
+// Portfolio (/portfolio and /work/*) is temporarily unpublished, so its
+// routes are deliberately left out of the sitemap. See the comment in
+// app/portfolio/page.tsx to restore them.
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
-  const [works, corporateCommissions, weddingCommissions] = await Promise.all([
-    getWorks(),
+  const [corporateCommissions, weddingCommissions] = await Promise.all([
     getCommissions("corporate"),
     getCommissions("wedding"),
   ]);
@@ -21,12 +22,6 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       priority: 1.0,
     },
     {
-      url: getAbsoluteUrl("/portfolio"),
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
       url: getAbsoluteUrl("/corporate"),
       lastModified,
       changeFrequency: "monthly",
@@ -39,19 +34,18 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       priority: 0.8,
     },
     {
+      url: getAbsoluteUrl("/contact"),
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.6,
+    },
+    {
       url: getAbsoluteUrl("/statement"),
       lastModified,
       changeFrequency: "monthly",
       priority: 0.7,
     },
   ];
-
-  const workRoutes: MetadataRoute.Sitemap = works.map((work) => ({
-    url: getAbsoluteUrl(`/work/${work.slug}`),
-    lastModified,
-    changeFrequency: "monthly",
-    priority: 0.8,
-  }));
 
   const corporateRoutes: MetadataRoute.Sitemap = corporateCommissions.map(
     (commission) => ({
@@ -71,7 +65,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
     }),
   );
 
-  return [...staticRoutes, ...workRoutes, ...corporateRoutes, ...weddingRoutes];
+  return [...staticRoutes, ...corporateRoutes, ...weddingRoutes];
 };
 
 export default sitemap;

@@ -40,14 +40,12 @@ const galleryColumnIds = [
 ] as const;
 
 const splitIntoColumns = (works: readonly Work[]) => {
-  const columnLength = Math.ceil(works.length / galleryColumnCount);
   const indexedWorks = works.map((work, index) => ({ index, work }));
 
   return galleryColumnIds.map((id, columnIndex) => ({
     id,
-    works: indexedWorks.slice(
-      columnIndex * columnLength,
-      (columnIndex + 1) * columnLength,
+    works: indexedWorks.filter(
+      (_, index) => index % galleryColumnCount === columnIndex,
     ),
   })) satisfies readonly Readonly<{
     id: string;

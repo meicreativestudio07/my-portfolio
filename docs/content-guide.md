@@ -96,7 +96,7 @@ content/
 
 ```yaml
 title: Morning Tide
-category: Editorial        # Editorial / Campaign / Portrait / Photo Book / Look Book
+category: Landscape        # Landscape / Still / Architecture / Botanical / Flower / Street
 client: Personal Work
 year: "2026"
 thumbnail: thumbnail.jpg   # 一覧に出る写真のファイル名

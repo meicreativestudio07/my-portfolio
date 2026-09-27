@@ -38,6 +38,11 @@
   --font-weight-regular: 400;
   --letter-spacing-intro-name: 0.08em;
   --letter-spacing-intro-role: 0.24em;
+  --font-size-information-heading: 0.8125rem;
+  --font-size-information-name: 1.25rem;
+  --line-height-information: 1.9;
+  --letter-spacing-information: 0.04em;
+  --letter-spacing-information-heading: 0.1em;
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -85,6 +90,7 @@
   --layout-intro-name-rotation: -4deg;
   --layout-intro-role-rotation: 90deg;
   --layout-information-copy-width: 35rem;
+  --layout-information-copy-width-wide: 52.5rem;
   --layout-information-plant-width-mobile: min(72vw, 22.5rem);
   --layout-information-plant-width-desktop: min(34vw, 22.5rem);
   --layout-information-height-mobile: calc(100svh - var(--space-8));
@@ -209,6 +215,20 @@ img {
 
 .icon--navigation-next {
   transform: rotate(90deg);
+}
+
+.u-nowrap {
+  white-space: nowrap;
+}
+
+.pc-only {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .pc-only {
+    display: inline;
+  }
 }
 
 .site-shell {
@@ -494,10 +514,13 @@ html[data-detail-transition="true"] .site-header-frame {
     var(--layout-gallery-bottom-mobile);
 }
 
-.gallery__grid,
-.gallery__column {
+.gallery__grid {
   display: grid;
   gap: var(--space-6);
+}
+
+.gallery__column {
+  display: contents;
 }
 
 .work-card {
@@ -657,10 +680,13 @@ html[data-detail-transition="true"] .site-header-frame {
 .information__body {
   position: relative;
   z-index: var(--z-intro-content);
-  max-width: var(--layout-information-copy-width);
+  width: 100%;
+  max-width: 100%;
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-body);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  word-break: auto-phrase;
   animation: information-body-enter var(--motion-duration-normal)
     var(--motion-ease-soft) both;
 }
@@ -689,15 +715,28 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 .information__intro {
-  margin-bottom: var(--space-5);
-}
-
-.information__profile {
   margin-bottom: var(--space-6);
 }
 
+.information__intro h1 {
+  margin-bottom: var(--space-1);
+  font-size: var(--font-size-information-name);
+  line-height: 1.4;
+  letter-spacing: var(--letter-spacing-information);
+}
+
+.information__intro p {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+
+.information__profile {
+  margin-bottom: var(--space-7);
+}
+
 .information__profile p + p {
-  margin-top: var(--space-4);
+  margin-top: var(--space-5);
 }
 
 .information__section + .information__section {
@@ -706,6 +745,10 @@ html[data-detail-transition="true"] .site-header-frame {
 
 .information__section h2 {
   margin-bottom: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-information-heading);
+  line-height: 1.5;
+  letter-spacing: var(--letter-spacing-information-heading);
 }
 
 .information__botanical {
@@ -794,6 +837,7 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 
   .gallery__column {
+    display: grid;
     gap: var(--space-6);
     transform: translateY(
       calc(
@@ -868,7 +912,10 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 
   .information__body {
-    grid-column: 2 / span 2;
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 100%;
+    max-width: var(--layout-information-copy-width-wide);
   }
 
   .information__botanical {
@@ -957,7 +1004,10 @@ html[data-detail-transition="true"] .site-header-frame {
   max-width: var(--layout-information-copy-width);
   margin: var(--space-4) 0 0;
   font-size: var(--font-size-body);
-  line-height: var(--line-height-body);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  white-space: pre-line;
+  word-break: auto-phrase;
 }
 
 /* Every grid here declares its columns. An implicit track sizes to the widest
@@ -1104,7 +1154,21 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 
   .commission__head {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    column-gap: var(--space-5);
     margin-bottom: var(--space-10);
+  }
+
+  .commission__title {
+    grid-column: 1 / -1;
+  }
+
+  .commission__lede {
+    grid-column: 1 / span 7;
+    width: 100%;
+    max-width: none;
+    margin-top: var(--space-4);
   }
 
   .commission-band__title {
@@ -1424,4 +1488,145 @@ html[data-detail-transition="true"] .site-header-frame {
 .commission-detail__meta dt,
 .commission-detail__meta dd {
   margin: 0;
+}
+
+/* Contact — /contact ---------------------------------------------------
+   Shares the Corporate/Wedding index header (title + lede), then a plain
+   underlined form in the same narrow measure as the /work detail copy. */
+.contact {
+  padding: var(--space-8) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.contact__head {
+  margin-bottom: var(--space-8);
+}
+
+.contact__title {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-title);
+}
+
+.contact__lede {
+  max-width: var(--layout-detail-width);
+  margin: var(--space-4) 0 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+}
+
+.contact__form {
+  display: grid;
+  max-width: var(--layout-detail-width);
+  row-gap: var(--space-6);
+}
+
+.contact__field {
+  display: grid;
+  row-gap: var(--space-2);
+}
+
+.contact__label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-information-heading);
+  line-height: 1.5;
+  letter-spacing: var(--letter-spacing-information-heading);
+}
+
+.contact__input,
+.contact__textarea {
+  padding: var(--space-2) 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-text-muted);
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  transition: border-color var(--motion-duration-fast) var(--motion-ease-soft);
+}
+
+.contact__input:hover,
+.contact__textarea:hover {
+  border-color: var(--color-text);
+}
+
+.contact__input:focus-visible,
+.contact__textarea:focus-visible {
+  border-color: var(--color-focus);
+  outline: 0;
+}
+
+.contact__textarea {
+  resize: vertical;
+}
+
+.contact__actions {
+  display: grid;
+  row-gap: var(--space-4);
+}
+
+.contact__submit {
+  justify-self: start;
+  min-width: var(--layout-touch-target);
+  min-height: var(--layout-touch-target);
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-text);
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-nav);
+  cursor: pointer;
+  transition:
+    color var(--motion-duration-fast) linear,
+    border-color var(--motion-duration-fast) linear;
+}
+
+.contact__submit:hover,
+.contact__submit:focus-visible {
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+}
+
+.contact__submit:disabled {
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.contact__status {
+  margin: 0;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.contact__status[data-tone="error"] {
+  color: var(--color-text);
+}
+
+@media (min-width: 48rem) {
+  .contact {
+    padding: var(--layout-gallery-top-desktop) var(--layout-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .contact__head {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    column-gap: var(--space-5);
+    margin-bottom: var(--space-10);
+  }
+
+  .contact__title {
+    grid-column: 1 / -1;
+  }
+
+  .contact__lede {
+    grid-column: 1 / span 7;
+    max-width: none;
+    margin-top: var(--space-4);
+  }
 }

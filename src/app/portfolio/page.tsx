@@ -1,36 +1,11 @@
-import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { getWorks } from "@/features/work/api/get-works";
-import { WorkGrid } from "@/features/work/components/work-grid";
-
-const title = "Portfolio";
-const description =
-  "Selected personal photography works and visual projects by Takahashi Mei.";
-
-export const metadata: Metadata = {
-  title,
-  description,
-  openGraph: {
-    title,
-    description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-  },
-};
-
+// Portfolio is temporarily unpublished (content/portfolio and the /work
+// routes are untouched). To restore it, remove this notFound() call and the
+// one in work/[slug]/page.tsx, then add the nav links back in site-header.tsx
+// and site-frame.tsx.
 const WorksPage = async () => {
-  const works = await getWorks();
-
-  return (
-    <div className="site-shell">
-      <main>
-        <WorkGrid works={works} />
-      </main>
-    </div>
-  );
+  notFound();
 };
 
 export default WorksPage;

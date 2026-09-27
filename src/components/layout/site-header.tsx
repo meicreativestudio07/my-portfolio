@@ -6,24 +6,24 @@ import { useCallback, useEffect, useState } from "react";
 import { TransitionLink } from "@/components/navigation/transition-link";
 
 type SiteHeaderProps = Readonly<{
-  currentPage: "Portfolio" | "Statement" | "Corporate" | "Wedding";
+  currentPage: "Statement" | "Corporate" | "Wedding" | "Contact";
 }>;
 
 const desktopNavItems = [
-  { href: "/portfolio", label: "Portfolio", level: "primary" },
   { href: "/corporate", label: "Corporate", level: "primary" },
   { href: "/wedding", label: "Wedding", level: "primary" },
+  { href: "/contact", label: "Contact", level: "primary" },
   { href: "/statement", label: "Statement", level: "secondary" },
 ] as const;
 
 const mobileNavItems = [
   { href: "/", label: "Home", external: false },
-  { href: "/portfolio", label: "Portfolio", external: false },
   { href: "/corporate", label: "Corporate", external: false },
   { href: "/wedding", label: "Wedding", external: false },
+  { href: "/contact", label: "Contact", external: false },
   { href: "/statement", label: "Statement", external: false },
   {
-    href: "https://www.instagram.com/",
+    href: "https://www.instagram.com/meimei.creativestudio/",
     label: "Instagram",
     external: true,
   },
@@ -71,7 +71,7 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
           ))}
           <a
             className="site-header__social"
-            href="https://www.instagram.com/"
+            href="https://www.instagram.com/meimei.creativestudio/"
             rel="noreferrer"
             target="_blank"
           >

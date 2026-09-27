@@ -6,6 +6,7 @@ import {
   getCommissions,
 } from "@/features/commission/api/get-commissions";
 import { CommissionDetail } from "@/features/commission/components/commission-detail";
+import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 type CorporateWorkPageProps = Readonly<{
   params: Promise<{ slug: string }>;
@@ -40,6 +41,7 @@ export const generateMetadata = async ({
     openGraph: {
       title: commission.title,
       description,
+      siteName: DEFAULT_SITE_TITLE,
       type: "article",
       images: imageUrl
         ? [

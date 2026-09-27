@@ -365,15 +365,19 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 .site-header__mobile-brand {
-  justify-content: center;
+  justify-content: flex-start;
   justify-self: start;
   min-width: var(--layout-touch-target);
   font-size: var(--font-size-social);
 }
 
-.site-header__home-icon {
-  width: var(--icon-size-menu);
-  height: var(--icon-size-menu);
+.site-header__logo {
+  display: block;
+  width: auto;
+}
+
+.site-header__logo--mobile {
+  height: 2.5rem;
 }
 
 .site-header__menu-button {
@@ -776,14 +780,23 @@ html[data-detail-transition="true"] .site-header-frame {
 
   .site-header__desktop {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
   }
 
   .site-header__brand {
-    font-size: var(--font-size-nav);
-    line-height: var(--line-height-nav);
-    transition: color var(--motion-duration-fast) linear;
+    /* .site-header's padding is --layout-header-desktop, wider than the
+       --layout-gutter-desktop every page body uses, so pull the logo back
+       in to line its left edge up with the heading below it. */
+    margin-left: calc(
+      var(--layout-gutter-desktop) -
+      var(--layout-header-desktop)
+    );
+    transition: opacity var(--motion-duration-fast) linear;
+  }
+
+  .site-header__brand .site-header__logo {
+    height: 3.5rem;
   }
 
   .site-header__nav-link {
@@ -811,9 +824,12 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 
   .site-header__nav-link[aria-current="page"],
-  .site-header__brand:hover,
   .site-header__nav-link:hover {
     color: var(--color-text-muted);
+  }
+
+  .site-header__brand:hover {
+    opacity: 0.6;
   }
 
   .gallery {

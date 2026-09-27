@@ -6,6 +6,7 @@ import {
   getCommissions,
 } from "@/features/commission/api/get-commissions";
 import { CommissionBand } from "@/features/commission/components/commission-band";
+import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const section = await getCommissionSection("corporate");
@@ -15,6 +16,7 @@ export const generateMetadata = async (): Promise<Metadata> => {
     openGraph: {
       title: section.title,
       description: section.description,
+      siteName: DEFAULT_SITE_TITLE,
     },
     twitter: {
       card: "summary_large_image",

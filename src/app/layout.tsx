@@ -16,16 +16,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
     default: DEFAULT_SITE_TITLE,
-    template: "%s — Mei",
+    template: "%s — Ètre",
   },
   description: DEFAULT_SITE_DESCRIPTION,
   openGraph: {
     title: {
       default: DEFAULT_SITE_TITLE,
-      template: "%s — Mei",
+      template: "%s — Ètre",
     },
     description: DEFAULT_SITE_DESCRIPTION,
-    siteName: "Mei — Portfolio",
+    siteName: "Ètre",
     locale: "ja_JP",
     type: "website",
     images: [
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: {
       default: DEFAULT_SITE_TITLE,
-      template: "%s — Mei",
+      template: "%s — Ètre",
     },
     description: DEFAULT_SITE_DESCRIPTION,
     images: ["/og-image.jpg"],

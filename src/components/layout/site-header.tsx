@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
 import { TransitionLink } from "@/components/navigation/transition-link";
@@ -55,7 +55,12 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
     <header className="site-header">
       <div className="site-header__desktop">
         <TransitionLink className="site-header__brand" href="/">
-          Takahashi Mei
+          {/* biome-ignore lint/performance/noImgElement: static SVG logo; next/image's optimizer doesn't apply to vectors and only adds risk (requires enabling dangerouslyAllowSVG) */}
+          <img
+            className="site-header__logo"
+            src="/brand/etre-logo.svg"
+            alt="Ètre"
+          />
         </TransitionLink>
         <nav className="site-header__nav" aria-label="Primary navigation">
           {desktopNavItems.map((item) => (
@@ -88,7 +93,12 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
           aria-label="Home"
           onClick={closeMenu}
         >
-          <Home className="icon site-header__home-icon" aria-hidden="true" />
+          {/* biome-ignore lint/performance/noImgElement: static SVG logo; see the desktop brand above */}
+          <img
+            className="site-header__logo site-header__logo--mobile"
+            src="/brand/etre-logo.svg"
+            alt="Ètre"
+          />
         </TransitionLink>
         <span className="site-header__current">{currentPage}</span>
         <button

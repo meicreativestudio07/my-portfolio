@@ -1,5 +1,5 @@
 export const SITE_NAME = "Takahashi Mei";
-export const DEFAULT_SITE_TITLE = "Mei — Portfolio";
+export const DEFAULT_SITE_TITLE = "Ètre";
 export const DEFAULT_SITE_DESCRIPTION =
   "Takahashi Mei — Photographer / Visual Artist based in Shiga, Japan. Selected work across photography, video production, creative direction, and visual planning.";
 

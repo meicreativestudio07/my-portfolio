@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { PageReady } from "@/components/layout/page-ready";
 import { InformationBotanical } from "@/features/information/components/information-botanical";
+import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 const title = "Statement";
 const description =
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title,
     description,
+    siteName: DEFAULT_SITE_TITLE,
   },
   twitter: {
     card: "summary_large_image",

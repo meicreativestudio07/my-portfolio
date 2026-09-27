@@ -4,6 +4,7 @@ import type { CSSProperties } from "react";
 
 import { PageReady } from "@/components/layout/page-ready";
 import { TransitionLink } from "@/components/navigation/transition-link";
+import { commissionRouteSlugs } from "@/features/commission/constants";
 import type {
   Commission,
   CommissionService,
@@ -16,7 +17,7 @@ type CommissionDetailProps = Readonly<{
 }>;
 
 const serviceLabels = {
-  corporate: "Corporate",
+  corporate: "Business",
   wedding: "Wedding",
 } as const;
 
@@ -67,7 +68,10 @@ export const CommissionDetail = ({
     <main className="detail site-shell">
       <PageReady />
 
-      <TransitionLink className="detail__back" href={`/${service}`}>
+      <TransitionLink
+        className="detail__back"
+        href={`/${commissionRouteSlugs[service]}`}
+      >
         <Triangle
           className="icon icon--navigation icon--navigation-back"
           aria-hidden="true"
@@ -131,7 +135,7 @@ export const CommissionDetail = ({
 
       <TransitionLink
         className="detail__next"
-        href={`/${service}/${nextCommission.slug}`}
+        href={`/${commissionRouteSlugs[service]}/${nextCommission.slug}`}
       >
         <span>
           {nextCommission.metaItems.at(0)?.value ?? serviceLabels[service]}

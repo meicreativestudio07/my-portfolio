@@ -8,25 +8,29 @@ import {
 import { CommissionBand } from "@/features/commission/components/commission-band";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
+// Public label is "Business"; the content folder and CMS field
+// (content/corporate/section.yaml, title: Corporate) stay as-is.
+const title = "Business";
+
 export const generateMetadata = async (): Promise<Metadata> => {
   const section = await getCommissionSection("corporate");
   return {
-    title: section.title,
+    title,
     description: section.description,
     openGraph: {
-      title: section.title,
+      title,
       description: section.description,
       siteName: DEFAULT_SITE_TITLE,
     },
     twitter: {
       card: "summary_large_image",
-      title: section.title,
+      title,
       description: section.description,
     },
   };
 };
 
-const CorporatePage = async () => {
+const BusinessPage = async () => {
   const [section, commissions] = await Promise.all([
     getCommissionSection("corporate"),
     getCommissions("corporate"),
@@ -37,7 +41,7 @@ const CorporatePage = async () => {
       <PageReady />
 
       <div className="commission__head">
-        <h1 className="commission__title">{section.title}</h1>
+        <h1 className="commission__title">{title}</h1>
         <p
           className="commission__lede"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: Trusted content from YAML
@@ -59,4 +63,4 @@ const CorporatePage = async () => {
   );
 };
 
-export default CorporatePage;
+export default BusinessPage;

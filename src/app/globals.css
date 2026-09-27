@@ -21,7 +21,6 @@
   --font-size-body: 1rem;
   --font-size-nav: 1.25rem;
   --font-size-header-navigation-primary: 1.125rem;
-  --font-size-header-navigation-secondary: 1rem;
   --font-size-mobile-menu-index: 0.625rem;
   --font-size-mobile-menu-meta: 0.75rem;
   --font-size-title: 2rem;
@@ -805,21 +804,14 @@ html[data-detail-transition="true"] .site-header-frame {
     justify-content: center;
     min-width: var(--layout-touch-target);
     min-height: var(--layout-touch-target);
+    font-size: var(--font-size-header-navigation-primary);
     line-height: var(--line-height-nav);
     transition: color var(--motion-duration-fast) linear;
   }
 
-  .site-header__nav-link[data-level="primary"] {
-    font-size: var(--font-size-header-navigation-primary);
-  }
-
-  .site-header__nav-link[data-level="secondary"] {
-    font-size: var(--font-size-header-navigation-secondary);
-  }
-
   .site-header__nav {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: var(--space-5);
   }
 

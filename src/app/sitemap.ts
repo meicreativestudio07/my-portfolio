@@ -22,7 +22,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       priority: 1.0,
     },
     {
-      url: getAbsoluteUrl("/corporate"),
+      url: getAbsoluteUrl("/business"),
       lastModified,
       changeFrequency: "monthly",
       priority: 0.8,
@@ -49,7 +49,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
 
   const corporateRoutes: MetadataRoute.Sitemap = corporateCommissions.map(
     (commission) => ({
-      url: getAbsoluteUrl(`/corporate/${commission.slug}`),
+      url: getAbsoluteUrl(`/business/${commission.slug}`),
       lastModified,
       changeFrequency: "monthly",
       priority: 0.7,

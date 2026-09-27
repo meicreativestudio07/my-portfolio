@@ -6,7 +6,7 @@ const HomePage = async () => {
 
   if (!portrait) return null;
 
-  return <PortfolioIntro destination="/corporate" portrait={portrait} />;
+  return <PortfolioIntro destination="/business" portrait={portrait} />;
 };
 
 export default HomePage;

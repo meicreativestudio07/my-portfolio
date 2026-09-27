@@ -8,7 +8,7 @@ import {
 import { CommissionDetail } from "@/features/commission/components/commission-detail";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
-type CorporateWorkPageProps = Readonly<{
+type BusinessWorkPageProps = Readonly<{
   params: Promise<{ slug: string }>;
 }>;
 
@@ -19,19 +19,19 @@ export const generateStaticParams = async () => {
 
 export const generateMetadata = async ({
   params,
-}: CorporateWorkPageProps): Promise<Metadata> => {
+}: BusinessWorkPageProps): Promise<Metadata> => {
   const { slug } = await params;
   const commission = await getCommissionBySlug("corporate", slug);
 
   if (!commission) {
-    return { title: "Corporate" };
+    return { title: "Business" };
   }
 
   const metaSummary = commission.metaItems
     .map((item) => item.value)
     .filter(Boolean)
     .join(" / ");
-  const description = `${commission.title} — Corporate work by Takahashi Mei.${metaSummary ? ` (${metaSummary})` : ""}`;
+  const description = `${commission.title} — Business work by Takahashi Mei.${metaSummary ? ` (${metaSummary})` : ""}`;
   const firstCut = commission.cuts[0];
   const imageUrl = firstCut?.image.src;
 
@@ -61,7 +61,7 @@ export const generateMetadata = async ({
   };
 };
 
-const CorporateWorkPage = async ({ params }: CorporateWorkPageProps) => {
+const BusinessWorkPage = async ({ params }: BusinessWorkPageProps) => {
   const { slug } = await params;
   const [commission, commissions] = await Promise.all([
     getCommissionBySlug("corporate", slug),
@@ -84,4 +84,4 @@ const CorporateWorkPage = async ({ params }: CorporateWorkPageProps) => {
   );
 };
 
-export default CorporateWorkPage;
+export default BusinessWorkPage;

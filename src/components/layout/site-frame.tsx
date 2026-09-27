@@ -45,8 +45,8 @@ const headerPageFor = (path: string) =>
     ? "Statement"
     : path === "/contact"
       ? "Contact"
-      : path === "/corporate" || path.startsWith("/corporate/")
-        ? "Corporate"
+      : path === "/business" || path.startsWith("/business/")
+        ? "Business"
         : path === "/wedding" || path.startsWith("/wedding/")
           ? "Wedding"
           : null;

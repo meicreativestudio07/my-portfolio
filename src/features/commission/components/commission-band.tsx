@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 import { TransitionLink } from "@/components/navigation/transition-link";
+import { commissionRouteSlugs } from "@/features/commission/constants";
 import type {
   Commission,
   CommissionService,
@@ -43,7 +44,7 @@ export const CommissionBand = ({
   <li className="commission-band">
     <TransitionLink
       className="commission-band__link"
-      href={`/${variant}/${commission.slug}`}
+      href={`/${commissionRouteSlugs[variant]}/${commission.slug}`}
     >
       <div className="commission-band__inner">
         <div className="commission-band__caption" data-step="3">

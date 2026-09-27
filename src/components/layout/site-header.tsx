@@ -6,27 +6,32 @@ import { useCallback, useEffect, useState } from "react";
 import { TransitionLink } from "@/components/navigation/transition-link";
 
 type SiteHeaderProps = Readonly<{
-  currentPage: "Statement" | "Corporate" | "Wedding" | "Contact";
+  currentPage: "Statement" | "Business" | "Wedding" | "Contact";
 }>;
 
 const desktopNavItems = [
-  { href: "/corporate", label: "Corporate", level: "primary" },
-  { href: "/wedding", label: "Wedding", level: "primary" },
-  { href: "/contact", label: "Contact", level: "primary" },
-  { href: "/statement", label: "Statement", level: "secondary" },
-] as const;
-
-const mobileNavItems = [
-  { href: "/", label: "Home", external: false },
-  { href: "/corporate", label: "Corporate", external: false },
+  { href: "/business", label: "Business", external: false },
   { href: "/wedding", label: "Wedding", external: false },
-  { href: "/contact", label: "Contact", external: false },
   { href: "/statement", label: "Statement", external: false },
   {
     href: "https://www.instagram.com/meimei.creativestudio/",
     label: "Instagram",
     external: true,
   },
+  { href: "/contact", label: "Contact", external: false },
+] as const;
+
+const mobileNavItems = [
+  { href: "/", label: "Home", external: false },
+  { href: "/business", label: "Business", external: false },
+  { href: "/wedding", label: "Wedding", external: false },
+  { href: "/statement", label: "Statement", external: false },
+  {
+    href: "https://www.instagram.com/meimei.creativestudio/",
+    label: "Instagram",
+    external: true,
+  },
+  { href: "/contact", label: "Contact", external: false },
 ] as const;
 
 export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
@@ -63,26 +68,28 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
           />
         </TransitionLink>
         <nav className="site-header__nav" aria-label="Primary navigation">
-          {desktopNavItems.map((item) => (
-            <TransitionLink
-              className="site-header__nav-link"
-              data-level={item.level}
-              href={item.href}
-              aria-current={currentPage === item.label ? "page" : undefined}
-              key={item.href}
-            >
-              {item.label}
-            </TransitionLink>
-          ))}
-          <a
-            className="site-header__nav-link site-header__social"
-            data-level="secondary"
-            href="https://www.instagram.com/meimei.creativestudio/"
-            rel="noreferrer"
-            target="_blank"
-          >
-            Instagram
-          </a>
+          {desktopNavItems.map((item) =>
+            item.external ? (
+              <a
+                className="site-header__nav-link site-header__social"
+                href={item.href}
+                key={item.href}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {item.label}
+              </a>
+            ) : (
+              <TransitionLink
+                className="site-header__nav-link"
+                href={item.href}
+                aria-current={currentPage === item.label ? "page" : undefined}
+                key={item.href}
+              >
+                {item.label}
+              </TransitionLink>
+            ),
+          )}
         </nav>
       </div>
 

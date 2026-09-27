@@ -10,7 +10,6 @@ import {
 } from "@/lib/site-metadata";
 
 import "@fontsource-variable/instrument-sans";
-import "@fontsource-variable/source-sans-3/wght-italic.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -67,21 +66,8 @@ type RootLayoutProps = Readonly<{
   children: ReactNode;
 }>;
 
-// Adobe Fonts(Gill Sans Nova)。Web Project の Kit ID が未設定のときは何も
-// 読み込まない — 見出しの英字は --font-heading の次の候補(端末の Gill Sans
-// → Source Sans 3)にそのまま自然にフォールバックする。
-const adobeFontsKitId = process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT_ID;
-
 const RootLayout = ({ children }: RootLayoutProps) => (
   <html lang="ja" data-scroll-behavior="smooth">
-    {adobeFontsKitId ? (
-      <head>
-        <link
-          rel="stylesheet"
-          href={`https://use.typekit.net/${adobeFontsKitId}.css`}
-        />
-      </head>
-    ) : null}
     <body>
       <SiteFrame>{children}</SiteFrame>
     </body>

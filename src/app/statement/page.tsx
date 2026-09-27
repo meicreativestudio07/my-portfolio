@@ -27,7 +27,10 @@ const StatementPage = () => (
       <PageReady />
       <div className="information__body">
         <header className="information__intro">
-          <h1>髙橋 萌衣 / Takahashi Mei</h1>
+          <h1>
+            髙橋 萌衣 /{" "}
+            <span className="information__intro-name-en">Takahashi Mei</span>
+          </h1>
           <p>フォトグラファー / ビデオグラファー</p>
         </header>
 

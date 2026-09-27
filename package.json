@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@fontsource-variable/instrument-sans": "^5.2.8",
+    "@fontsource-variable/source-sans-3": "^5.3.0",
     "@keystatic/core": "^0.6.8",
     "@keystatic/next": "^5.0.5",
     "lucide-react": "^1.25.0",

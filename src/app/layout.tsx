@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import { SiteFrame } from "@/components/layout/site-frame";
@@ -56,6 +56,10 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#faf6ed",
 };
 
 type RootLayoutProps = Readonly<{

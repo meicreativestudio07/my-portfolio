@@ -80,7 +80,7 @@
   --layout-intro-mark-width: min(76vw, 32.5rem);
   --layout-intro-identity-width: min(84vw, 37.5rem);
   --layout-intro-identity-ratio: 10 / 7;
-  /* The intro's Être mark; it scales onto the page's logo as the intro ends. */
+  /* The intro's Être mark, centred over the portrait. */
   --layout-intro-logo-height: clamp(2.75rem, 5vw, 4rem);
   --layout-intro-role-top: 42%;
   --layout-intro-role-left: 61%;
@@ -143,6 +143,10 @@
   --motion-reveal-text-delay: 320ms;
   --motion-reveal-distance: 1.25rem;
   --motion-reveal-zoom-scale: 1.06;
+  /* Intro → page crossfade: slow and symmetric, like a film dissolve. The
+     intro (portfolio-intro.tsx) uses the same duration and curve. */
+  --motion-duration-crossfade: 1400ms;
+  --motion-ease-crossfade: cubic-bezier(0.45, 0, 0.55, 1);
   /* Shows everything anyway if the reveal script never starts. */
   --motion-reveal-failsafe-delay: 3s;
 }
@@ -278,20 +282,13 @@ html[data-detail-transition="true"] .site-header-frame {
   touch-action: manipulation;
 }
 
-.portfolio-intro__image,
-.portfolio-intro__veil {
+.portfolio-intro__image {
   position: absolute;
   inset: 0;
 }
 
 .portfolio-intro__image {
   object-fit: cover;
-}
-
-.portfolio-intro__veil {
-  z-index: var(--z-intro-content);
-  background: var(--color-canvas);
-  pointer-events: none;
 }
 
 .portfolio-intro__identity {
@@ -325,7 +322,7 @@ html[data-detail-transition="true"] .site-header-frame {
   stroke-width: var(--stroke-intro-botanical-fine);
 }
 
-.portfolio-intro__mark-anchor {
+.portfolio-intro__mark {
   position: absolute;
   z-index: var(--z-intro-mark);
   top: 50%;
@@ -334,24 +331,14 @@ html[data-detail-transition="true"] .site-header-frame {
   pointer-events: none;
 }
 
-.portfolio-intro__mark {
-  position: relative;
-}
-
 .portfolio-intro__mark-image {
   height: var(--layout-intro-logo-height);
   width: auto;
 }
 
-/* White over the photo; the dark copy fades in as the mark lands on the
-   page's own (dark) logo. */
-.portfolio-intro__mark-image--light {
+/* The logo file is dark; over the photo it is shown in white. */
+.portfolio-intro__mark-image {
   filter: brightness(0) invert(1) drop-shadow(var(--shadow-intro-mark));
-}
-
-.portfolio-intro__mark-image--dark {
-  position: absolute;
-  inset: 0;
 }
 
 .portfolio-intro__role {
@@ -1827,22 +1814,33 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 /* While the intro covers the page beneath it, hold that page still: no
-   scrolling, and its arrivals wait so they play once the intro has gone. The
-   hand-off logo is exempt; it must already be in place when the intro's mark
-   lands on it. */
+   scrolling, and its arrivals wait. When the intro starts fading out
+   (data-phase="exit") the hold lifts, so the page fades in underneath at the
+   same moment on the crossfade curve — one dissolve, not two steps. */
 html:has(.portfolio-intro) {
   overflow: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  html:has(.portfolio-intro)[data-reveal-state]
-    [data-reveal]:not([data-intro-handoff]) {
+  html:has(.portfolio-intro:not([data-phase="exit"]))[data-reveal-state]
+    [data-reveal] {
     opacity: 0;
     transform: translateY(var(--motion-reveal-distance));
   }
 
-  html:has(.portfolio-intro)[data-reveal-state]
-    [data-reveal="zoom"]:not([data-intro-handoff]) {
+  html:has(.portfolio-intro:not([data-phase="exit"]))[data-reveal-state]
+    [data-reveal="zoom"] {
     transform: scale(var(--motion-reveal-zoom-scale));
+  }
+
+  html:has(.portfolio-intro[data-phase="exit"]) [data-reveal] {
+    transition-duration:
+      var(--motion-duration-crossfade), var(--motion-duration-reveal);
+    transition-timing-function: var(--motion-ease-crossfade);
+  }
+
+  html:has(.portfolio-intro[data-phase="exit"]) [data-reveal="zoom"] {
+    transition-duration:
+      var(--motion-duration-crossfade), var(--motion-duration-reveal-zoom);
   }
 }

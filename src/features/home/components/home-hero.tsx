@@ -33,7 +33,7 @@ export const HomeHero = ({ photo }: HomeHeroProps) => (
     </div>
 
     <div className="home-hero__body">
-      <h1 className="home-hero__brand" data-reveal="text" data-intro-handoff>
+      <h1 className="home-hero__brand" data-reveal="text">
         {/* biome-ignore lint/performance/noImgElement: static SVG logo; see site-header.tsx */}
         <img
           className="home-hero__logo"

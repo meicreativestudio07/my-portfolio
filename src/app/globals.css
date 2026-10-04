@@ -103,6 +103,11 @@
   --layout-intro-logo-height: clamp(2.75rem, 5vw, 4rem);
   --layout-intro-role-top: 42%;
   --layout-intro-role-left: 61%;
+  /* Focal point of content/intro/portrait.jpg (the couple sits just left of
+     centre, low in the frame): keeps them whole and centred on a phone's
+     narrow crop and on wide desktops, with the mark in the sky above them.
+     Re-tune when the intro photo changes. */
+  --layout-intro-image-position: 46% 60%;
   --layout-intro-plant-rotation: -7deg;
   --layout-intro-role-rotation: 90deg;
   --layout-information-copy-width: 35rem;
@@ -351,6 +356,7 @@ html[data-detail-transition="true"] .site-header-frame {
 
 .portfolio-intro__image {
   object-fit: cover;
+  object-position: var(--layout-intro-image-position);
 }
 
 .portfolio-intro__identity {

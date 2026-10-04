@@ -9,19 +9,8 @@ type SiteHeaderProps = Readonly<{
   currentPage: "About" | "Business" | "Wedding" | "Contact";
 }>;
 
-const desktopNavItems = [
-  { href: "/business", label: "Business", external: false },
-  { href: "/wedding", label: "Wedding", external: false },
-  { href: "/about", label: "About", external: false },
-  {
-    href: "https://www.instagram.com/meimei.creativestudio/",
-    label: "Instagram",
-    external: true,
-  },
-  { href: "/contact", label: "Contact", external: false },
-] as const;
-
-const mobileNavItems = [
+// Desktop and mobile share one list so both menus keep the same order.
+const navItems = [
   { href: "/home", label: "Home", external: false },
   { href: "/business", label: "Business", external: false },
   { href: "/wedding", label: "Wedding", external: false },
@@ -68,7 +57,7 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
           />
         </TransitionLink>
         <nav className="site-header__nav" aria-label="Primary navigation">
-          {desktopNavItems.map((item) =>
+          {navItems.map((item) =>
             item.external ? (
               <a
                 className="site-header__nav-link site-header__social"
@@ -138,7 +127,7 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
       >
         <p className="mobile-menu__eyebrow">Navigation</p>
         <ol className="mobile-menu__list">
-          {mobileNavItems.map((item, index) => (
+          {navItems.map((item, index) => (
             <li key={item.href}>
               {item.external ? (
                 <a

@@ -58,11 +58,7 @@ const WeddingPage = async () => {
         >
           <p>
             <span className="u-nowrap">前撮りモニター</span>{" "}
-            <span className="u-nowrap">3組限定</span>
-          </p>
-          <p>
-            <span className="u-nowrap">通常50,000円</span>{" "}
-            <span className="u-nowrap">→ 35,000円</span>
+            <span className="u-nowrap">毎月3組限定</span>
           </p>
           <TransitionLink
             className="commission__monitor-call-link"

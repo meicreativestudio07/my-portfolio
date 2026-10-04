@@ -51,10 +51,8 @@
   --font-size-information-name: 1.25rem;
   --line-height-information: 1.9;
   /* Work captions on the index pages: title, place/medium/year, number.
-     The title leads the caption (20px on phones, 24px from the desktop
-     breakpoint; see the 48rem :root override below); number and meta stay
-     small, large enough to read on a phone. */
-  --font-size-work-title: 1.25rem;
+     Smaller than body copy, large enough to read on a phone. */
+  --font-size-work-title: 0.9375rem;
   --font-size-work-meta: 0.875rem;
   --font-size-work-index: 0.8125rem;
   --line-height-work-title: 1.45;
@@ -214,7 +212,6 @@
     /* Desktop greeting: a step up so it holds its own beside the photo. */
     --font-size-home-greeting: 1.125rem;
     --font-size-home-entrance: 2.25rem;
-    --font-size-work-title: 1.5rem;
   }
 }
 

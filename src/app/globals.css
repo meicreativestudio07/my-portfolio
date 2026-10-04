@@ -1594,12 +1594,16 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 }
 
-/* Wedding index → monitor page. The call sits between the lede and the
-   works, the first thing read after the heading; the link under the works
-   is for people who have just finished looking. Both stand out by type size
-   and space only. */
-.commission__monitor-call {
+/* Wedding index → monitor page. The call follows the lede inside the head
+   (below it on phones, in the free columns beside it on desktop), the first
+   thing read after the heading; the link under the works is for people who
+   have just finished looking. Both stand out by type size and space only. */
+.commission--wedding .commission__head {
   margin-bottom: var(--space-9);
+}
+
+.commission__monitor-call {
+  margin-top: var(--space-8);
   font-size: var(--font-size-callout);
   line-height: var(--line-height-information);
   letter-spacing: var(--letter-spacing-information);
@@ -1635,8 +1639,14 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 @media (min-width: 48rem) {
-  .commission__monitor-call {
+  .commission--wedding .commission__head {
     margin-bottom: var(--space-11);
+  }
+
+  .commission__monitor-call {
+    grid-column: 8 / span 3;
+    grid-row: 2;
+    margin-top: var(--space-4);
   }
 
   .commission__monitor {

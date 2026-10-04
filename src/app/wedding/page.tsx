@@ -47,22 +47,28 @@ const WeddingPage = async () => {
           // biome-ignore lint/security/noDangerouslySetInnerHtml: Trusted content from YAML
           dangerouslySetInnerHTML={{ __html: section.lede }}
         />
-      </div>
 
-      <section
-        className="commission__monitor-call"
-        aria-label="前撮りモニター募集"
-        data-reveal="text"
-      >
-        <p>11月 前撮りモニター 3組限定</p>
-        <p>通常50,000円 → 35,000円</p>
-        <TransitionLink
-          className="commission__monitor-call-link"
-          href="/monitor"
+        <section
+          className="commission__monitor-call"
+          aria-label="前撮りモニター募集"
+          data-reveal="text"
         >
-          詳しく見る →
-        </TransitionLink>
-      </section>
+          <p>
+            <span className="u-nowrap">前撮りモニター</span>{" "}
+            <span className="u-nowrap">3組限定</span>
+          </p>
+          <p>
+            <span className="u-nowrap">通常50,000円</span>{" "}
+            <span className="u-nowrap">→ 35,000円</span>
+          </p>
+          <TransitionLink
+            className="commission__monitor-call-link"
+            href="/monitor"
+          >
+            詳しく見る →
+          </TransitionLink>
+        </section>
+      </div>
 
       <ol className="commission__list">
         {commissions.map((commission, index) => (

@@ -10,7 +10,7 @@ import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 const title = "Wedding Monitor";
 const description =
-  "11月 前撮りモニター 3組限定。通常50,000円のところ35,000円（税込）で、滋賀・京都・大阪の前撮りを撮影します。";
+  "前撮りモニター 3組限定。通常50,000円のところ35,000円（税込）で、滋賀・京都・大阪の前撮りを撮影します。";
 
 // Google Form for pre-wedding monitor sign-ups (the public answer link, not
 // the editor link).
@@ -31,6 +31,7 @@ const planItems = [
 const planNotes = [
   "撮影場所により、別途出張費が必要です",
   "ロケ地によっては、撮影料金（施設利用料）がかかる場合がございます",
+  "撮影日はご相談のうえ決めます",
   "雨天時は日程変更が可能です",
   "その他のご希望はお気軽にご相談ください",
 ] as const;
@@ -68,7 +69,7 @@ const MonitorPage = async () => {
           {title}
         </h1>
         <p className="monitor__kicker" data-reveal="text">
-          11月 前撮りモニター 3組限定
+          前撮りモニター 3組限定
         </p>
       </div>
 
@@ -138,15 +139,6 @@ const MonitorPage = async () => {
                 <li key={note}>{note}</li>
               ))}
             </ul>
-          </section>
-
-          <section
-            className="monitor__section"
-            aria-labelledby="monitor-period"
-            data-reveal="text"
-          >
-            <h2 id="monitor-period">撮影期間</h2>
-            <p>2026年11月中</p>
           </section>
 
           <section

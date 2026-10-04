@@ -87,16 +87,32 @@
   --layout-intro-plant-rotation: -7deg;
   --layout-intro-role-rotation: 90deg;
   --layout-information-copy-width: 35rem;
-  --layout-information-copy-width-wide: 52.5rem;
   --layout-information-plant-width-mobile: min(72vw, 22.5rem);
-  --layout-information-plant-width-desktop: min(34vw, 22.5rem);
+  --layout-information-plant-width-desktop: min(22vw, 15rem);
+  /* The drawing's viewBox is 3:4. Part of it bleeds below the page edge; the
+     rest gets reserved space under the copy so the two never overlap. */
+  --layout-information-plant-height-desktop: calc(
+    var(--layout-information-plant-width-desktop) *
+    4 / 3
+  );
+  --layout-information-plant-bleed-desktop: var(--space-9);
   --layout-information-height-mobile: calc(100svh - var(--space-8));
+  /* Statement portrait. Mobile: full copy width, trimmed from 2:3 to 4:5 so
+     it doesn't run too tall; the focal point keeps the face inside the crop.
+     Desktop: sized so its height roughly matches the name-to-practice block. */
+  --layout-information-portrait-ratio-mobile: 4 / 5;
+  --layout-information-portrait-position-mobile: 50% 30%;
+  --layout-information-portrait-width-desktop: min(28vw, 20rem);
+  /* Statement copy measure on desktop: about 38 full-width characters at body
+     size (1rem plus the 0.04em tracking per character). */
+  --layout-information-copy-measure: 39.5rem;
+  --layout-information-columns-gap: clamp(var(--space-6), 5vw, var(--space-9));
   --layout-information-min-height: 100svh;
   --layout-information-min-height-desktop: calc(
     100svh -
     var(--layout-header-height-desktop)
   );
-  --layout-information-top-desktop: 12.25rem;
+  --layout-information-top-desktop: 7rem;
   --layout-detail-gutter-desktop: 3.5rem;
   --layout-touch-target: 2.75rem;
   /* Home hero: the brand mark sized as the page's single headline. */
@@ -681,7 +697,9 @@ html[data-detail-transition="true"] .site-header-frame {
 
 .information {
   position: relative;
-  height: var(--layout-information-height-mobile);
+  /* Grows with the portrait and copy; overflow only clips the botanical
+     drawing, which bleeds past the bottom-right corner. */
+  min-height: var(--layout-information-height-mobile);
   overflow: hidden;
   padding: var(--layout-gallery-top-mobile) var(--layout-gutter-mobile)
     var(--layout-gallery-bottom-mobile);
@@ -722,6 +740,15 @@ html[data-detail-transition="true"] .site-header-frame {
   font-size: inherit;
   font-weight: var(--font-weight-regular);
   line-height: inherit;
+}
+
+.information__portrait {
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--layout-information-portrait-ratio-mobile);
+  margin-bottom: var(--space-6);
+  object-fit: cover;
+  object-position: var(--layout-information-portrait-position-mobile);
 }
 
 .information__intro {
@@ -914,24 +941,35 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 
   .information {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    height: auto;
     min-height: var(--layout-information-min-height-desktop);
     padding: var(--layout-information-top-desktop) var(--layout-gutter-desktop)
-      var(--layout-gallery-bottom-desktop);
+      calc(
+        var(--layout-information-plant-height-desktop) -
+        var(--layout-information-plant-bleed-desktop) +
+        var(--space-6)
+      );
   }
 
+  /* Photo left, copy right. */
   .information__body {
-    grid-column: 1 / -1;
-    justify-self: center;
-    width: 100%;
-    max-width: var(--layout-information-copy-width-wide);
+    display: grid;
+    grid-template-columns:
+      var(--layout-information-portrait-width-desktop)
+      minmax(0, var(--layout-information-copy-measure));
+    /* Top-aligned: the photo's top edge meets the name's. */
+    align-items: start;
+    justify-content: center;
+    column-gap: var(--layout-information-columns-gap);
+  }
+
+  .information__portrait {
+    aspect-ratio: auto;
+    margin-bottom: 0;
   }
 
   .information__botanical {
     right: var(--layout-gutter-desktop);
-    bottom: var(--space-6);
+    bottom: calc(var(--layout-information-plant-bleed-desktop) * -1);
     width: var(--layout-information-plant-width-desktop);
   }
 }

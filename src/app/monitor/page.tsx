@@ -8,7 +8,7 @@ import { getVoices } from "@/features/voice/api/get-voices";
 import { VoiceSection } from "@/features/voice/components/voice-section";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
-// The copy on this page is edited here directly, like the Statement page.
+// The copy on this page is edited here directly, like the About page.
 
 const title = "Wedding Monitor";
 const description =

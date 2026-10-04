@@ -52,7 +52,7 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       priority: 0.6,
     },
     {
-      url: getAbsoluteUrl("/statement"),
+      url: getAbsoluteUrl("/about"),
       lastModified,
       changeFrequency: "monthly",
       priority: 0.7,

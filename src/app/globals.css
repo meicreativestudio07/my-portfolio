@@ -51,8 +51,10 @@
   --font-size-information-name: 1.25rem;
   --line-height-information: 1.9;
   /* Work captions on the index pages: title, place/medium/year, number.
-     Smaller than body copy, large enough to read on a phone. */
-  --font-size-work-title: 0.9375rem;
+     The title leads the caption (20px on phones, 24px from the desktop
+     breakpoint; see the 48rem :root override below); number and meta stay
+     small, large enough to read on a phone. */
+  --font-size-work-title: 1.25rem;
   --font-size-work-meta: 0.875rem;
   --font-size-work-index: 0.8125rem;
   --line-height-work-title: 1.45;
@@ -114,13 +116,13 @@
   );
   --layout-information-plant-bleed-desktop: var(--space-9);
   --layout-information-height-mobile: calc(100svh - var(--space-8));
-  /* Statement portrait. Mobile: full copy width, trimmed from 2:3 to 4:5 so
+  /* About portrait. Mobile: full copy width, trimmed from 2:3 to 4:5 so
      it doesn't run too tall; the focal point keeps the face inside the crop.
      Desktop: sized so its height roughly matches the name-to-practice block. */
   --layout-information-portrait-ratio-mobile: 4 / 5;
   --layout-information-portrait-position-mobile: 50% 30%;
   --layout-information-portrait-width-desktop: min(28vw, 20rem);
-  /* Statement copy measure on desktop: about 38 full-width characters. Each
+  /* About copy measure on desktop: about 38 full-width characters. Each
      character is the body size plus its 0.04em tracking, so the measure
      follows the body size instead of being a fixed width. */
   --layout-information-copy-chars: 38;
@@ -207,6 +209,7 @@
     /* Desktop greeting: a step up so it holds its own beside the photo. */
     --font-size-home-greeting: 1.125rem;
     --font-size-home-entrance: 2.25rem;
+    --font-size-work-title: 1.5rem;
   }
 }
 
@@ -1118,6 +1121,10 @@ html[data-detail-transition="true"] .site-header-frame {
   font-size: var(--font-size-work-title);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-work-title);
+  /* Long Japanese titles wrap between phrases ("新緑の中で、/プロフィール撮影"),
+     never stranding a single character on the second line. */
+  text-wrap: balance;
+  word-break: auto-phrase;
 }
 
 /* Meta stays near-black: hierarchy comes from size, not from a muted grey
@@ -1666,7 +1673,7 @@ html[data-detail-transition="true"] .site-header-frame {
 
 /* Monitor ---------------------------------------------------------------
    The pre-wedding monitor call. Shares the Contact/commission header; below
-   it, one wedding photo and the details in the Statement's quiet type: small
+   it, one wedding photo and the details in the About page's quiet type: small
    muted headings, body copy, and the price as the one larger figure. On
    desktop the photo stays in view while the details scroll beside it. */
 

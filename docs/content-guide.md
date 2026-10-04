@@ -130,7 +130,7 @@ meta:                      # ラベルは自由。Corporate は クライアン�
   - label: クライアント      # Wedding は 会場/エリア/年 にしている
     value: ミドリ珈琲
   - label: 媒体
-    value: スチール          # ムービー or スチール
+    value: Photo             # Movie or Photo
   - label: 年
     value: "2026"
 cuts:
@@ -225,6 +225,6 @@ main に直接 push はしません。マージされると Vercel が自動で�
 ## AI アシスタントへの頼み方の例
 
 > docs/content-guide.md のルールに従って、デスクトップにある3枚の写真で
-> Wedding に「前撮り 江ノ島にて」(会場: 江ノ島 ／ エリア: 藤沢 ／ 年: 2026)を
+> Wedding に「江ノ島にて」(会場: 江ノ島 ／ エリア: 藤沢 ／ 年: 2026)を
 > 追加して。写真の書き出しサイズの調整もお願い。終わったら pnpm check と
 > pnpm build で確認して。

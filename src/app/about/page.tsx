@@ -6,7 +6,7 @@ import { InformationBotanical } from "@/features/information/components/informat
 import statementPortrait from "@/features/information/images/statement-portrait.jpg";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
-const title = "Statement";
+const title = "About";
 const description =
   "髙橋 萌衣 / Takahashi Mei — 滋賀県を拠点に写真・映像の撮影・制作を行うフォトグラファー / ビデオグラファー。";
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
 };
 
-const StatementPage = () => (
+const AboutPage = () => (
   <div className="site-shell">
     <main className="information">
       <PageReady />
@@ -111,4 +111,4 @@ const StatementPage = () => (
   </div>
 );
 
-export default StatementPage;
+export default AboutPage;

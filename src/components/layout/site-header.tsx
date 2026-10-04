@@ -6,13 +6,13 @@ import { useCallback, useEffect, useState } from "react";
 import { TransitionLink } from "@/components/navigation/transition-link";
 
 type SiteHeaderProps = Readonly<{
-  currentPage: "Statement" | "Business" | "Wedding" | "Contact";
+  currentPage: "About" | "Business" | "Wedding" | "Contact";
 }>;
 
 const desktopNavItems = [
   { href: "/business", label: "Business", external: false },
   { href: "/wedding", label: "Wedding", external: false },
-  { href: "/statement", label: "Statement", external: false },
+  { href: "/about", label: "About", external: false },
   {
     href: "https://www.instagram.com/meimei.creativestudio/",
     label: "Instagram",
@@ -25,7 +25,7 @@ const mobileNavItems = [
   { href: "/home", label: "Home", external: false },
   { href: "/business", label: "Business", external: false },
   { href: "/wedding", label: "Wedding", external: false },
-  { href: "/statement", label: "Statement", external: false },
+  { href: "/about", label: "About", external: false },
   {
     href: "https://www.instagram.com/meimei.creativestudio/",
     label: "Instagram",

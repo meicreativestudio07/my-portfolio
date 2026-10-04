@@ -42,8 +42,8 @@ type TransitionPhase = "idle" | "exiting" | "waiting" | "entering";
 // Portfolio is temporarily unpublished, so "/portfolio" is deliberately not
 // mapped here — see the comment in app/portfolio/page.tsx to restore it.
 const headerPageFor = (path: string) =>
-  path === "/statement"
-    ? "Statement"
+  path === "/about"
+    ? "About"
     : path === "/contact"
       ? "Contact"
       : path === "/business" || path.startsWith("/business/")

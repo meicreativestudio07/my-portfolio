@@ -73,7 +73,7 @@ export const CommissionBand = ({
                 />
                 {/* The second frame sits on top of the primary one and is
                     hidden at rest, so a failed load can never obscure the cut
-                    underneath. Its presence marks moving-image work; ムービー
+                    underneath. Its presence marks moving-image work; Movie
                     is also written in the caption so the fact does not depend
                     on hover. */}
                 {cutIndex === 0 && commission.motionFrame ? (

@@ -16,8 +16,10 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd(),
   },
-  // /corporate was renamed to /business; send old links/bookmarks along.
+  // /corporate was renamed to /business and /statement to /about; send old
+  // links/bookmarks along.
   redirects: async () => [
+    { source: "/statement", destination: "/about", permanent: true },
     { source: "/corporate", destination: "/business", permanent: true },
     {
       source: "/corporate/:slug",

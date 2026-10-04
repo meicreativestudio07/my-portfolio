@@ -2,6 +2,10 @@ import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
 import { SiteFrame } from "@/components/layout/site-frame";
+import {
+  REVEAL_BOOT_SCRIPT,
+  ScrollReveal,
+} from "@/components/motion/scroll-reveal";
 
 import {
   DEFAULT_SITE_DESCRIPTION,
@@ -16,16 +20,16 @@ export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
   title: {
     default: DEFAULT_SITE_TITLE,
-    template: "%s — Ètre",
+    template: "%s — Être",
   },
   description: DEFAULT_SITE_DESCRIPTION,
   openGraph: {
     title: {
       default: DEFAULT_SITE_TITLE,
-      template: "%s — Ètre",
+      template: "%s — Être",
     },
     description: DEFAULT_SITE_DESCRIPTION,
-    siteName: "Ètre",
+    siteName: "Être",
     locale: "ja_JP",
     type: "website",
     images: [
@@ -41,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: {
       default: DEFAULT_SITE_TITLE,
-      template: "%s — Ètre",
+      template: "%s — Être",
     },
     description: DEFAULT_SITE_DESCRIPTION,
     images: ["/og-image.jpg"],
@@ -67,9 +71,18 @@ type RootLayoutProps = Readonly<{
 }>;
 
 const RootLayout = ({ children }: RootLayoutProps) => (
-  <html lang="ja" data-scroll-behavior="smooth">
+  // suppressHydrationWarning: the boot script below sets data-reveal-state on
+  // <html> before React hydrates.
+  <html lang="ja" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <head>
+      <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: static boot script, no user input
+        dangerouslySetInnerHTML={{ __html: REVEAL_BOOT_SCRIPT }}
+      />
+    </head>
     <body>
       <SiteFrame>{children}</SiteFrame>
+      <ScrollReveal />
     </body>
   </html>
 );

@@ -22,7 +22,7 @@ const desktopNavItems = [
 ] as const;
 
 const mobileNavItems = [
-  { href: "/", label: "Home", external: false },
+  { href: "/home", label: "Home", external: false },
   { href: "/business", label: "Business", external: false },
   { href: "/wedding", label: "Wedding", external: false },
   { href: "/statement", label: "Statement", external: false },
@@ -59,12 +59,12 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
   return (
     <header className="site-header">
       <div className="site-header__desktop">
-        <TransitionLink className="site-header__brand" href="/">
+        <TransitionLink className="site-header__brand" href="/home">
           {/* biome-ignore lint/performance/noImgElement: static SVG logo; next/image's optimizer doesn't apply to vectors and only adds risk (requires enabling dangerouslyAllowSVG) */}
           <img
             className="site-header__logo"
             src="/brand/etre-logo.svg"
-            alt="Ètre"
+            alt="Être"
           />
         </TransitionLink>
         <nav className="site-header__nav" aria-label="Primary navigation">
@@ -96,7 +96,7 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
       <div className="site-header__mobile">
         <TransitionLink
           className="site-header__mobile-brand"
-          href="/"
+          href="/home"
           aria-label="Home"
           onClick={closeMenu}
         >
@@ -104,7 +104,7 @@ export const SiteHeader = ({ currentPage }: SiteHeaderProps) => {
           <img
             className="site-header__logo site-header__logo--mobile"
             src="/brand/etre-logo.svg"
-            alt="Ètre"
+            alt="Être"
           />
         </TransitionLink>
         <span className="site-header__current">{currentPage}</span>

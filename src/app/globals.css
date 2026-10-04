@@ -26,15 +26,15 @@
   --font-size-title: 2rem;
   --font-size-detail-title: 2.125rem;
   --font-size-detail-navigation: 1rem;
-  --font-size-intro-name: clamp(1.125rem, 1.6vw, 1.5rem);
   --font-size-intro-role: 0.5625rem;
+  /* Home greeting: quieter than body copy, still comfortable for Japanese. */
+  --font-size-home-greeting: 0.875rem;
   --line-height-caption: 1.5;
   --line-height-card-desktop: 1.2857;
   --line-height-body: 1.25;
   --line-height-nav: 1;
   --line-height-title: 1.25;
   --font-weight-regular: 400;
-  --letter-spacing-intro-name: 0.08em;
   --letter-spacing-intro-role: 0.24em;
   --font-size-information-heading: 0.8125rem;
   --font-size-information-name: 1.25rem;
@@ -80,12 +80,11 @@
   --layout-intro-mark-width: min(76vw, 32.5rem);
   --layout-intro-identity-width: min(84vw, 37.5rem);
   --layout-intro-identity-ratio: 10 / 7;
-  --layout-intro-name-top: 48%;
-  --layout-intro-name-left: 49%;
+  /* The intro's Être mark; it scales onto the page's logo as the intro ends. */
+  --layout-intro-logo-height: clamp(2.75rem, 5vw, 4rem);
   --layout-intro-role-top: 42%;
   --layout-intro-role-left: 61%;
   --layout-intro-plant-rotation: -7deg;
-  --layout-intro-name-rotation: -4deg;
   --layout-intro-role-rotation: 90deg;
   --layout-information-copy-width: 35rem;
   --layout-information-copy-width-wide: 52.5rem;
@@ -100,6 +99,13 @@
   --layout-information-top-desktop: 12.25rem;
   --layout-detail-gutter-desktop: 3.5rem;
   --layout-touch-target: 2.75rem;
+  /* Home hero: the brand mark sized as the page's single headline. */
+  --layout-home-logo-height-mobile: 3.25rem;
+  --layout-home-logo-height-desktop: 5.5rem;
+  /* Mobile shows the hero photo as a portrait band above the copy. */
+  --layout-home-media-ratio-mobile: 4 / 5;
+  /* Keeps the figures in the lower half of a sky-heavy frame inside the crop. */
+  --layout-home-media-position: 50% 62%;
   --icon-size-small: 1rem;
   --icon-size-menu: 1.125rem;
   --icon-size-navigation: 0.5rem;
@@ -107,6 +113,7 @@
   --z-site-header: 10;
   --z-page-transition: 20;
   --z-intro-content: 1;
+  --z-intro-mark: 2;
 
   /* Shape */
   --radius-subtle: 0.25rem;
@@ -114,6 +121,8 @@
   --stroke-intro-botanical-fine: 0.75;
   --stroke-icon: 1.35;
   --stroke-icon-filled: 0;
+  /* Lifts the white intro mark off bright photos, as the old name did. */
+  --shadow-intro-mark: 0 1px 1rem rgb(0 0 0 / 12%);
 
   /* Motion */
   --motion-duration-fast: 200ms;
@@ -126,6 +135,16 @@
   --motion-menu-icon-rotation: 90deg;
   --motion-menu-stagger: 40ms;
   --motion-press-scale: 0.97;
+  /* Scroll reveal (components/motion/scroll-reveal.tsx): slow, quiet arrivals. */
+  --motion-duration-reveal: 1500ms;
+  --motion-duration-reveal-zoom: 3200ms;
+  --motion-reveal-stagger: 160ms;
+  /* Copy follows the photo it belongs to rather than arriving with it. */
+  --motion-reveal-text-delay: 320ms;
+  --motion-reveal-distance: 1.25rem;
+  --motion-reveal-zoom-scale: 1.06;
+  /* Shows everything anyway if the reveal script never starts. */
+  --motion-reveal-failsafe-delay: 3s;
 }
 
 @theme inline {
@@ -306,27 +325,33 @@ html[data-detail-transition="true"] .site-header-frame {
   stroke-width: var(--stroke-intro-botanical-fine);
 }
 
-.portfolio-intro__name {
+.portfolio-intro__mark-anchor {
   position: absolute;
-  top: var(--layout-intro-name-top);
-  left: var(--layout-intro-name-left);
-  margin: 0;
-  color: var(--color-intro-text);
-  font-size: var(--font-size-intro-name);
-  font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-nav);
-  letter-spacing: var(--letter-spacing-intro-name);
-  text-shadow: 0 1px 1rem rgb(0 0 0 / 12%);
-  white-space: nowrap;
-  transform: translate(-50%, -50%) rotate(var(--layout-intro-name-rotation));
+  z-index: var(--z-intro-mark);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
-.portfolio-intro__name span {
-  display: block;
+.portfolio-intro__mark {
+  position: relative;
 }
 
-.portfolio-intro__name span:last-child {
-  margin-left: var(--space-4);
+.portfolio-intro__mark-image {
+  height: var(--layout-intro-logo-height);
+  width: auto;
+}
+
+/* White over the photo; the dark copy fades in as the mark lands on the
+   page's own (dark) logo. */
+.portfolio-intro__mark-image--light {
+  filter: brightness(0) invert(1) drop-shadow(var(--shadow-intro-mark));
+}
+
+.portfolio-intro__mark-image--dark {
+  position: absolute;
+  inset: 0;
 }
 
 .portfolio-intro__role {
@@ -1627,5 +1652,197 @@ html[data-detail-transition="true"] .site-header-frame {
     grid-column: 1 / span 7;
     max-width: none;
     margin-top: var(--space-4);
+  }
+}
+
+/* Home hero ------------------------------------------------------------ */
+
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 100svh;
+}
+
+.home-hero__media {
+  position: relative;
+  aspect-ratio: var(--layout-home-media-ratio-mobile);
+  overflow: hidden;
+}
+
+.home-hero__frame {
+  position: absolute;
+  inset: 0;
+}
+
+.home-hero__image {
+  object-fit: cover;
+  object-position: var(--layout-home-media-position);
+}
+
+.home-hero__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--space-7) var(--layout-gutter-mobile) var(--space-8);
+}
+
+.home-hero__brand {
+  margin: 0;
+}
+
+.home-hero__logo {
+  height: var(--layout-home-logo-height-mobile);
+  width: auto;
+}
+
+.home-hero__greeting {
+  margin: var(--space-5) 0 0;
+  font-size: var(--font-size-home-greeting);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+}
+
+/* One phrase per line, as written; never broken mid-phrase on phones. */
+.home-hero__greeting span {
+  display: block;
+}
+
+.home-hero__entrances {
+  display: flex;
+  gap: var(--space-6);
+  margin-top: var(--space-7);
+}
+
+.home-hero__entrance,
+.home-hero__notice {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+.home-hero__entrance {
+  font-size: var(--font-size-nav);
+  line-height: var(--line-height-nav);
+}
+
+.home-hero__notice {
+  margin-top: var(--space-6);
+  font-size: var(--font-size-social);
+  letter-spacing: var(--letter-spacing-information);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .home-hero__entrance:hover,
+  .home-hero__notice:hover {
+    color: var(--color-text-muted);
+  }
+}
+
+@media (min-width: 48rem) {
+  /* Copy on the left lines up with the gutter every other page uses; the
+     photo takes the right half at full height. */
+  .home-hero {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    height: 100svh;
+  }
+
+  .home-hero__media {
+    order: 2;
+    aspect-ratio: auto;
+  }
+
+  .home-hero__body {
+    justify-content: center;
+    padding: var(--space-9) var(--layout-gutter-desktop);
+  }
+
+  .home-hero__logo {
+    height: var(--layout-home-logo-height-desktop);
+  }
+
+  .home-hero__greeting {
+    margin-top: var(--space-6);
+  }
+
+  .home-hero__entrances {
+    gap: var(--space-7);
+    margin-top: var(--space-9);
+  }
+
+  .home-hero__notice {
+    margin-top: var(--space-7);
+  }
+}
+
+/* Scroll reveal ---------------------------------------------------------
+   Shared by every page: mark an element data-reveal="rise" (photos),
+   "text" (copy, arrives a beat later) or "zoom" (a lead photo settling from
+   a slight zoom). Only opacity and transform move. Nothing is hidden unless
+   the boot script ran, and reduced motion never hides anything. */
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-reveal-state] [data-reveal] {
+    transition-property: opacity, transform;
+    transition-duration: var(--motion-duration-reveal);
+    transition-timing-function: var(--motion-ease-expressive);
+    transition-delay: calc(
+      var(--reveal-step, 0) *
+      var(--motion-reveal-stagger)
+    );
+  }
+
+  html[data-reveal-state] [data-reveal="text"] {
+    transition-delay: calc(
+      var(--motion-reveal-text-delay) +
+      var(--reveal-step, 0) *
+      var(--motion-reveal-stagger)
+    );
+  }
+
+  html[data-reveal-state] [data-reveal="zoom"] {
+    transition-duration:
+      var(--motion-duration-reveal), var(--motion-duration-reveal-zoom);
+  }
+
+  html[data-reveal-state] [data-reveal]:not([data-revealed]) {
+    opacity: 0;
+    transform: translateY(var(--motion-reveal-distance));
+  }
+
+  html[data-reveal-state] [data-reveal="zoom"]:not([data-revealed]) {
+    transform: scale(var(--motion-reveal-zoom-scale));
+  }
+
+  html[data-reveal-state="pending"] [data-reveal]:not([data-revealed]) {
+    animation: reveal-failsafe 1ms var(--motion-reveal-failsafe-delay) forwards;
+  }
+}
+
+@keyframes reveal-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* While the intro covers the page beneath it, hold that page still: no
+   scrolling, and its arrivals wait so they play once the intro has gone. The
+   hand-off logo is exempt; it must already be in place when the intro's mark
+   lands on it. */
+html:has(.portfolio-intro) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.portfolio-intro)[data-reveal-state]
+    [data-reveal]:not([data-intro-handoff]) {
+    opacity: 0;
+    transform: translateY(var(--motion-reveal-distance));
+  }
+
+  html:has(.portfolio-intro)[data-reveal-state]
+    [data-reveal="zoom"]:not([data-intro-handoff]) {
+    transform: scale(var(--motion-reveal-zoom-scale));
   }
 }

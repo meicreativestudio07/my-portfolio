@@ -1,0 +1,77 @@
+import Image from "next/image";
+import Link from "next/link";
+
+import type { CommissionCut } from "@/features/commission/types/commission";
+
+type HomeHeroProps = Readonly<{
+  photo: CommissionCut;
+}>;
+
+// Google Form for pre-wedding monitor sign-ups (the public answer link, not
+// the editor link).
+const MONITOR_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSf2bZ-UkUQmZAbyBoyaYGl21lM_xYxKa3ZSOPkdZea_-dl-rw/viewform";
+
+const entrances = [
+  { href: "/wedding", label: "Wedding" },
+  { href: "/business", label: "Business" },
+] as const;
+
+export const HomeHero = ({ photo }: HomeHeroProps) => (
+  <main className="home-hero">
+    <div className="home-hero__media">
+      <div className="home-hero__frame" data-reveal="zoom">
+        <Image
+          className="home-hero__image"
+          src={photo.image}
+          alt={photo.alt}
+          fill
+          priority
+          sizes="(min-width: 48rem) 50vw, 100vw"
+        />
+      </div>
+    </div>
+
+    <div className="home-hero__body">
+      <h1 className="home-hero__brand" data-reveal="text" data-intro-handoff>
+        {/* biome-ignore lint/performance/noImgElement: static SVG logo; see site-header.tsx */}
+        <img
+          className="home-hero__logo"
+          src="/brand/etre-logo.svg"
+          alt="Être"
+        />
+      </h1>
+
+      <p className="home-hero__greeting" data-reveal="text">
+        <span>特別な日も、何気ない日も。</span>
+        <span>背伸びしない、あなたらしい表情を残します。</span>
+      </p>
+
+      <nav
+        className="home-hero__entrances"
+        aria-label="Services"
+        data-reveal="text"
+      >
+        {entrances.map((entrance) => (
+          <Link
+            className="home-hero__entrance"
+            href={entrance.href}
+            key={entrance.href}
+          >
+            {entrance.label}
+          </Link>
+        ))}
+      </nav>
+
+      <a
+        className="home-hero__notice"
+        href={MONITOR_FORM_URL}
+        rel="noreferrer"
+        target="_blank"
+        data-reveal="text"
+      >
+        前撮りモニター募集中 →
+      </a>
+    </div>
+  </main>
+);

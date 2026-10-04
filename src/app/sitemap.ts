@@ -22,6 +22,12 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       priority: 1.0,
     },
     {
+      url: getAbsoluteUrl("/home"),
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
       url: getAbsoluteUrl("/business"),
       lastModified,
       changeFrequency: "monthly",

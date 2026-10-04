@@ -213,6 +213,60 @@ export default config({
       format: { data: "yaml" },
       schema: commissionSchema,
     }),
+    voices: collection({
+      label: "お客様の声",
+      slugField: "name",
+      path: "content/voices/*/",
+      format: { data: "yaml" },
+      // 並び順は撮影した月の新しい順(scripts/generate-content.mjs)
+      columns: ["kind", "month", "place"],
+      schema: {
+        name: fields.slug({
+          name: {
+            label: "お名前(イニシャル可)",
+            description: "例: M.K さま / 山田さま",
+            validation: { isRequired: true },
+          },
+          slug: {
+            label: "フォルダ名",
+            description:
+              "半角英小文字・数字・ハイフンのみ。例: 2026-11-mk(サイトには出ません)",
+            validation: slugPattern,
+          },
+        }),
+        kind: fields.select({
+          label: "種類",
+          description: "Wedding は Wedding ページと /monitor に表示されます",
+          options: [
+            { label: "Wedding", value: "wedding" },
+            { label: "Business", value: "business" },
+          ],
+          defaultValue: "wedding",
+        }),
+        place: fields.text({
+          label: "撮影場所",
+          description: "例: 滋賀・琵琶湖",
+          validation: { isRequired: true },
+        }),
+        month: fields.text({
+          label: "撮影した月",
+          description: "「2026年11月」の形で書いてください",
+          validation: {
+            isRequired: true,
+            pattern: {
+              regex: /^\d{4}年(1[0-2]|[1-9])月$/,
+              message: "「2026年11月」の形で書いてください",
+            },
+          },
+        }),
+        comment: fields.text({
+          label: "感想文",
+          description: "改行はそのまま表示されます",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+      },
+    }),
   },
   singletons: {
     intro: singleton({

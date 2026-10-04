@@ -7,6 +7,8 @@ import {
   getCommissions,
 } from "@/features/commission/api/get-commissions";
 import { CommissionBand } from "@/features/commission/components/commission-band";
+import { getVoices } from "@/features/voice/api/get-voices";
+import { VoiceSection } from "@/features/voice/components/voice-section";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 export const generateMetadata = async (): Promise<Metadata> => {
@@ -28,9 +30,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
 };
 
 const WeddingPage = async () => {
-  const [section, commissions] = await Promise.all([
+  const [section, commissions, voices] = await Promise.all([
     getCommissionSection("wedding"),
     getCommissions("wedding"),
+    getVoices("wedding"),
   ]);
 
   return (
@@ -80,6 +83,13 @@ const WeddingPage = async () => {
           />
         ))}
       </ol>
+
+      <VoiceSection
+        voices={voices}
+        id="wedding-voice"
+        title="Voice"
+        variant="page"
+      />
 
       <p className="commission__monitor" data-reveal="text">
         <TransitionLink className="commission__monitor-link" href="/monitor">

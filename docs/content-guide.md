@@ -66,6 +66,9 @@ content/
       01.jpg 02.jpg 03.jpg   必ず3枚。01がメイン
       hover.jpg              (任意)一覧のホバーで切り替わる写真
   wedding/                   結婚写真。corporate と同じ構造
+  voices/                    お客様の声。1件 = 1フォルダ(写真なし)
+    2026-11-mk/
+      index.yaml
 ```
 
 フォルダ名(= URL)は半角英小文字とハイフンだけ。例: `enoshima-pre-wedding`。
@@ -165,6 +168,26 @@ title: Corporate           # ページの見出し
 description: …             # 検索結果などに出る説明文
 lede: …                    # 見出しの下のリード文
 ```
+
+## お客様の声を足す
+
+Admin の「お客様の声」から追加・編集・削除できます。ファイルで足すときは
+`content/voices/<フォルダ名>/index.yaml` を作ります(フォルダ名はサイトに出ません):
+
+```yaml
+name: M.K さま             # お名前(イニシャル可)
+kind: wedding              # 種類。wedding か business
+place: 滋賀・琵琶湖         # 撮影場所
+month: 2026年11月          # 撮影した月。必ず「2026年11月」の形
+comment: |-                # 感想文。改行はそのまま表示されます
+  1行目
+  2行目
+```
+
+- Wedding の声は、Wedding ページの作品の下(Voice)と /monitor の応募方法の上に出ます。
+  Business の声は、Business ページの作品の下(Voice)に出ます。
+- 並び順は撮影した月の新しい順です
+- 1件もないときは、セクションごと表示されません
 
 ## 並び順を変える
 

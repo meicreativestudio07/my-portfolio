@@ -6,6 +6,7 @@
  *   portfolio/order.yaml + <slug>/index.yaml + thumbnail.jpg (+ 連番画像)
  *   corporate/section.yaml + order.yaml + <slug>/index.yaml + 01..03.jpg (+ hover.jpg)
  *   wedding/   同上
+ *   voices/<slug>/index.yaml(お客様の声。並び順は撮影した月の新しい順)
  *
  * 非エンジニアが編集する前提なので、エラーは日本語で・全部まとめて報告する。
  */
@@ -413,6 +414,73 @@ export const introPortrait = {
   );
 };
 
+// --- voices ---------------------------------------------------------------
+
+// お客様の声。order.yaml は持たず、撮影した月の新しい順に並べる。
+// フォルダが無い・0件でもエラーにしない(0件ならページ側でセクションごと隠す)。
+const VOICE_KINDS = ["wedding", "business"];
+const VOICE_MONTH = /^(\d{4})年(1[0-2]|[1-9])月$/;
+
+const generateVoices = async () => {
+  const voicesDir = join(contentDir, "voices");
+  const folders = (await exists(voicesDir))
+    ? (await readdir(voicesDir, { withFileTypes: true }))
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => entry.name)
+    : [];
+
+  const voices = [];
+  for (const slug of folders) {
+    const label = `content/voices/${slug}/index.yaml`;
+    const data = await readYaml(join(voicesDir, slug, "index.yaml"));
+    if (data === null) continue;
+
+    const name = requireString(data.name, `${label} の name(お名前)`);
+    const place = requireString(data.place, `${label} の place(撮影場所)`);
+    const comment = requireString(data.comment, `${label} の comment(感想文)`);
+    const month = requireString(data.month, `${label} の month(撮影した月)`);
+    const monthMatch = VOICE_MONTH.exec(month.trim());
+    if (month !== "" && monthMatch === null)
+      report(
+        `${label} の month(撮影した月)は「2026年11月」の形で書いてください(いまは「${month}」)`,
+      );
+    if (!VOICE_KINDS.includes(data.kind))
+      report(
+        `${label} の kind(種類)は wedding か business にしてください(いまは「${data.kind ?? ""}」)`,
+      );
+    if (monthMatch === null || !VOICE_KINDS.includes(data.kind)) continue;
+
+    voices.push({
+      sortKey: Number(monthMatch[1]) * 100 + Number(monthMatch[2]),
+      slug,
+      code: `  {
+    slug: ${s(slug)},
+    kind: ${s(data.kind)},
+    name: ${s(name.trim())},
+    place: ${s(place.trim())},
+    month: ${s(month.trim())},
+    comment: ${s(comment.trim())},
+  },`,
+    });
+  }
+
+  voices.sort((a, b) => b.sortKey - a.sortKey || a.slug.localeCompare(b.slug));
+
+  queueWrite(
+    join(root, "src/features/voice/data/voices.generated.ts"),
+    `// scripts/generate-content.mjs が content/voices から自動生成するファイル。
+// 直接編集しない。お客様の声の追加・変更は content/ 側で行う。
+import type { Voice } from "@/features/voice/types/voice";
+
+// 0件でも型が付くよう、satisfies ではなく型注釈にしている
+export const voices: readonly Voice[] = [
+${voices.map((voice) => voice.code).join("\n")}
+];
+`,
+  );
+  return voices.length;
+};
+
 // --- 画像ファイルの検証 -----------------------------------------------------
 
 // content/ に置けるのは YAML と JPEG だけ。JPEG 以外の画像や想定外のファイルは
@@ -447,6 +515,7 @@ const counts = {
   portfolio: await generatePortfolio(),
   corporate: await generateCommissions("corporate", "corporateCommissions"),
   wedding: await generateCommissions("wedding", "weddingCommissions"),
+  voices: await generateVoices(),
 };
 await generateSections();
 await generateIntro();
@@ -473,5 +542,5 @@ for (const [path, content] of pendingWrites) {
 }
 
 console.log(
-  `✓ コンテンツを生成しました — portfolio ${counts.portfolio}件 / corporate ${counts.corporate}件 / wedding ${counts.wedding}件`,
+  `✓ コンテンツを生成しました — portfolio ${counts.portfolio}件 / corporate ${counts.corporate}件 / wedding ${counts.wedding}件 / お客様の声 ${counts.voices}件`,
 );

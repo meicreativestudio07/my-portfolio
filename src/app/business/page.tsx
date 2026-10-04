@@ -6,6 +6,8 @@ import {
   getCommissions,
 } from "@/features/commission/api/get-commissions";
 import { CommissionBand } from "@/features/commission/components/commission-band";
+import { getVoices } from "@/features/voice/api/get-voices";
+import { VoiceSection } from "@/features/voice/components/voice-section";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 // Public label is "Business"; the content folder and CMS field
@@ -31,9 +33,10 @@ export const generateMetadata = async (): Promise<Metadata> => {
 };
 
 const BusinessPage = async () => {
-  const [section, commissions] = await Promise.all([
+  const [section, commissions, voices] = await Promise.all([
     getCommissionSection("corporate"),
     getCommissions("corporate"),
+    getVoices("business"),
   ]);
 
   return (
@@ -62,6 +65,13 @@ const BusinessPage = async () => {
           />
         ))}
       </ol>
+
+      <VoiceSection
+        voices={voices}
+        id="business-voice"
+        title="Voice"
+        variant="page"
+      />
     </main>
   );
 };

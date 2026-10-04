@@ -4,6 +4,8 @@ import Image from "next/image";
 import { PageReady } from "@/components/layout/page-ready";
 import statementPortrait from "@/features/information/images/statement-portrait.jpg";
 import { getMonitorPhoto } from "@/features/monitor/api/get-monitor-photo";
+import { getVoices } from "@/features/voice/api/get-voices";
+import { VoiceSection } from "@/features/voice/components/voice-section";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 // The copy on this page is edited here directly, like the Statement page.
@@ -16,9 +18,6 @@ const description =
 // the editor link).
 const MONITOR_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSf2bZ-UkUQmZAbyBoyaYGl21lM_xYxKa3ZSOPkdZea_-dl-rw/viewform";
-
-// Same account as the Instagram link in components/layout/site-header.tsx.
-const INSTAGRAM_URL = "https://www.instagram.com/meimei.creativestudio/";
 
 const planItems = [
   { label: "撮影時間", value: "2時間" },
@@ -58,7 +57,10 @@ export const metadata: Metadata = {
 };
 
 const MonitorPage = async () => {
-  const photo = await getMonitorPhoto();
+  const [photo, voices] = await Promise.all([
+    getMonitorPhoto(),
+    getVoices("wedding"),
+  ]);
 
   return (
     <main className="monitor site-shell">
@@ -154,35 +156,28 @@ const MonitorPage = async () => {
             </ul>
           </section>
 
+          <VoiceSection
+            voices={voices}
+            id="monitor-voice"
+            title="お客様の声"
+            variant="inline"
+          />
+
           <section
             className="monitor__section"
             aria-labelledby="monitor-apply"
             data-reveal="text"
           >
             <h2 id="monitor-apply">応募方法</h2>
-            <p>
-              {"応募フォーム、またはInstagramのDMから"}
-              <span className="u-nowrap">「モニター希望」</span>
-              {"とご連絡ください。"}
-            </p>
-            <div className="monitor__actions">
-              <a
-                className="monitor__action"
-                href={MONITOR_FORM_URL}
-                rel="noreferrer"
-                target="_blank"
-              >
-                応募フォームを開く
-              </a>
-              <a
-                className="monitor__action monitor__action--quiet"
-                href={INSTAGRAM_URL}
-                rel="noreferrer"
-                target="_blank"
-              >
-                InstagramでDMする
-              </a>
-            </div>
+            <p>下の応募フォームからお申し込みください。</p>
+            <a
+              className="monitor__action"
+              href={MONITOR_FORM_URL}
+              rel="noreferrer"
+              target="_blank"
+            >
+              応募フォームを開く
+            </a>
           </section>
 
           <section

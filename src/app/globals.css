@@ -31,6 +31,11 @@
   --font-size-intro-role: 0.5625rem;
   /* Home greeting: quieter than body copy, still comfortable for Japanese. */
   --font-size-home-greeting: 0.9375rem;
+  /* Home Wedding/Business entrances: the second tier under the logo, above
+     the greeting and the monitor link, so they read as doors at a glance.
+     30px on phones (1.5× the old nav size), 36px from the desktop breakpoint
+     (see the 48rem :root override below). */
+  --font-size-home-entrance: 1.875rem;
   /* The monitor call on /wedding: a step above body copy, so it stands out
      by size and space alone (no boxes or colour). 24px from the desktop
      breakpoint (see the 48rem :root override below). */
@@ -157,6 +162,8 @@
   --stroke-intro-botanical-fine: 0.75;
   --stroke-icon: 1.35;
   --stroke-icon-filled: 0;
+  /* Thin rule drawn under a link on hover (home entrances). */
+  --stroke-hairline: 1px;
   /* Lifts the white intro mark off bright photos, as the old name did. */
   --shadow-intro-mark: 0 1px 1rem rgb(0 0 0 / 12%);
 
@@ -197,6 +204,9 @@
   :root {
     --font-size-body: 1.0625rem;
     --font-size-callout: 1.5rem;
+    /* Desktop greeting: a step up so it holds its own beside the photo. */
+    --font-size-home-greeting: 1.125rem;
+    --font-size-home-entrance: 2.25rem;
   }
 }
 
@@ -1784,28 +1794,20 @@ html[data-detail-transition="true"] .site-header-frame {
   content: "・";
 }
 
-.monitor__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  margin-top: var(--space-5);
-}
-
+/* The one way to apply, so it reads a step larger with room around it. */
 .monitor__action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: var(--layout-touch-target);
-  padding: 0 var(--space-5);
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-7);
   border: 1px solid var(--color-text);
+  font-size: var(--font-size-information-name);
   line-height: var(--line-height-nav);
   transition:
     color var(--motion-duration-fast) linear,
     border-color var(--motion-duration-fast) linear;
-}
-
-.monitor__action--quiet {
-  border-color: var(--color-text-muted);
 }
 
 .monitor__photographer {
@@ -1864,6 +1866,73 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 }
 
+/* Voice ----------------------------------------------------------------
+   Customer voices (features/voice), set quietly like quotations: the words
+   a step above body copy, who/where/when beneath in muted type. No marks,
+   rules or boxes. "page" closes the Wedding index; "inline" sits among the
+   /monitor details and takes their small muted heading. */
+
+.voice__list {
+  display: grid;
+  row-gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.voice__figure,
+.voice__quote,
+.voice__quote p {
+  margin: 0;
+}
+
+.voice__quote {
+  font-size: var(--font-size-information-name);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  white-space: pre-line;
+  word-break: auto-phrase;
+}
+
+.voice__meta {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-social);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-information);
+}
+
+.voice--page {
+  margin-top: var(--space-10);
+}
+
+.voice--page .voice__title {
+  margin: 0 0 var(--space-7);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-title);
+}
+
+.voice--page .voice__list {
+  max-width: var(--layout-information-copy-measure);
+}
+
+.voice--inline {
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 48rem) {
+  .voice--page {
+    margin-top: var(--space-11);
+  }
+
+  .voice--page .voice__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-9);
+    max-width: none;
+  }
+}
+
 /* Home hero ------------------------------------------------------------ */
 
 .home-hero {
@@ -1918,7 +1987,7 @@ html[data-detail-transition="true"] .site-header-frame {
 
 .home-hero__entrances {
   display: flex;
-  gap: var(--space-6);
+  gap: var(--space-8);
   margin-top: var(--space-7);
 }
 
@@ -1931,8 +2000,33 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 .home-hero__entrance {
-  font-size: var(--font-size-nav);
+  position: relative;
+  font-size: var(--font-size-home-entrance);
   line-height: var(--line-height-nav);
+}
+
+/* A hairline that draws in from the left on hover/focus: quiet proof that
+   the word is a door. Transform only; at rest it is scaled to nothing. */
+.home-hero__entrance::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: var(--space-1);
+  left: 0;
+  height: var(--stroke-hairline);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.home-hero__entrance:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero__entrance::after {
+    transition: transform var(--motion-duration-normal) var(--motion-ease-soft);
+  }
 }
 
 .home-hero__notice {
@@ -1942,15 +2036,19 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .home-hero__entrance:hover,
   .home-hero__notice:hover {
     color: var(--color-text-muted);
+  }
+
+  .home-hero__entrance:hover::after {
+    transform: scaleX(1);
   }
 }
 
 @media (min-width: 48rem) {
-  /* Copy on the left lines up with the gutter every other page uses; the
-     photo takes the right half at full height. */
+  /* The photo takes the right half at full height. The copy block sits
+     centred in the left half, its lines still sharing one left edge: the
+     grid's single column is as wide as the widest line and is centred. */
   .home-hero {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     height: 100svh;
@@ -1962,7 +2060,10 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 
   .home-hero__body {
+    display: grid;
+    align-content: center;
     justify-content: center;
+    justify-items: start;
     padding: var(--space-9) var(--layout-gutter-desktop);
   }
 
@@ -1975,12 +2076,14 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 
   .home-hero__entrances {
-    gap: var(--space-7);
+    gap: var(--space-9);
     margin-top: var(--space-9);
   }
 
+  /* Same tier as the greeting, below the Wedding/Business entrances. */
   .home-hero__notice {
     margin-top: var(--space-7);
+    font-size: var(--font-size-home-greeting);
   }
 }
 

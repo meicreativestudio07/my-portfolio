@@ -38,6 +38,7 @@ type TransitionPhase = "idle" | "exiting" | "waiting" | "entering";
 // Routes that keep the shared header during their crossfade. The /work
 // detail route deliberately stays out of this list; the commission detail
 // routes keep the header so index and detail read as one continuous page.
+// /monitor belongs to the wedding service, so it highlights Wedding.
 // Portfolio is temporarily unpublished, so "/portfolio" is deliberately not
 // mapped here — see the comment in app/portfolio/page.tsx to restore it.
 const headerPageFor = (path: string) =>
@@ -47,7 +48,9 @@ const headerPageFor = (path: string) =>
       ? "Contact"
       : path === "/business" || path.startsWith("/business/")
         ? "Business"
-        : path === "/wedding" || path.startsWith("/wedding/")
+        : path === "/wedding" ||
+            path.startsWith("/wedding/") ||
+            path === "/monitor"
           ? "Wedding"
           : null;
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageReady } from "@/components/layout/page-ready";
+import { TransitionLink } from "@/components/navigation/transition-link";
 import {
   getCommissionSection,
   getCommissions,
@@ -48,6 +49,21 @@ const WeddingPage = async () => {
         />
       </div>
 
+      <section
+        className="commission__monitor-call"
+        aria-label="前撮りモニター募集"
+        data-reveal="text"
+      >
+        <p>11月 前撮りモニター 3組限定</p>
+        <p>通常50,000円 → 35,000円</p>
+        <TransitionLink
+          className="commission__monitor-call-link"
+          href="/monitor"
+        >
+          詳しく見る →
+        </TransitionLink>
+      </section>
+
       <ol className="commission__list">
         {commissions.map((commission, index) => (
           <CommissionBand
@@ -58,6 +74,12 @@ const WeddingPage = async () => {
           />
         ))}
       </ol>
+
+      <p className="commission__monitor" data-reveal="text">
+        <TransitionLink className="commission__monitor-link" href="/monitor">
+          前撮りモニター募集中 →
+        </TransitionLink>
+      </p>
     </main>
   );
 };

@@ -7,11 +7,6 @@ type HomeHeroProps = Readonly<{
   photo: CommissionCut;
 }>;
 
-// Google Form for pre-wedding monitor sign-ups (the public answer link, not
-// the editor link).
-const MONITOR_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLSf2bZ-UkUQmZAbyBoyaYGl21lM_xYxKa3ZSOPkdZea_-dl-rw/viewform";
-
 const entrances = [
   { href: "/wedding", label: "Wedding" },
   { href: "/business", label: "Business" },
@@ -63,15 +58,9 @@ export const HomeHero = ({ photo }: HomeHeroProps) => (
         ))}
       </nav>
 
-      <a
-        className="home-hero__notice"
-        href={MONITOR_FORM_URL}
-        rel="noreferrer"
-        target="_blank"
-        data-reveal="text"
-      >
+      <Link className="home-hero__notice" href="/monitor" data-reveal="text">
         前撮りモニター募集中 →
-      </a>
+      </Link>
     </div>
   </main>
 );

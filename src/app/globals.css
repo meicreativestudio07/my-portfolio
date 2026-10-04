@@ -31,6 +31,10 @@
   --font-size-intro-role: 0.5625rem;
   /* Home greeting: quieter than body copy, still comfortable for Japanese. */
   --font-size-home-greeting: 0.9375rem;
+  /* The monitor call on /wedding: a step above body copy, so it stands out
+     by size and space alone (no boxes or colour). 24px from the desktop
+     breakpoint (see the 48rem :root override below). */
+  --font-size-callout: 1.25rem;
   --line-height-caption: 1.5;
   --line-height-card-desktop: 1.2857;
   --line-height-body: 1.25;
@@ -136,6 +140,8 @@
   --layout-home-media-ratio-mobile: 4 / 5;
   /* Keeps the figures in the lower half of a sky-heavy frame inside the crop. */
   --layout-home-media-position: 50% 62%;
+  /* Monitor page: the photographer's small portrait beside "撮影するのはわたしです". */
+  --layout-monitor-portrait-width: 7rem;
   --icon-size-small: 1rem;
   --icon-size-menu: 1.125rem;
   --icon-size-navigation: 0.5rem;
@@ -190,6 +196,7 @@
 @media (min-width: 48rem) {
   :root {
     --font-size-body: 1.0625rem;
+    --font-size-callout: 1.5rem;
   }
 }
 
@@ -1584,6 +1591,266 @@ html[data-detail-transition="true"] .site-header-frame {
     grid-column: 1 / span 7;
     max-width: none;
     margin-top: var(--space-4);
+  }
+}
+
+/* Wedding index → monitor page. The call sits between the lede and the
+   works, the first thing read after the heading; the link under the works
+   is for people who have just finished looking. Both stand out by type size
+   and space only. */
+.commission__monitor-call {
+  margin-bottom: var(--space-9);
+  font-size: var(--font-size-callout);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+}
+
+.commission__monitor-call p {
+  margin: 0;
+}
+
+.commission__monitor {
+  margin: var(--space-9) 0 0;
+}
+
+.commission__monitor-call-link,
+.commission__monitor-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  font-size: var(--font-size-callout);
+  letter-spacing: var(--letter-spacing-information);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+.commission__monitor-call-link {
+  margin-top: var(--space-3);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .commission__monitor-call-link:hover,
+  .commission__monitor-link:hover {
+    color: var(--color-text-muted);
+  }
+}
+
+@media (min-width: 48rem) {
+  .commission__monitor-call {
+    margin-bottom: var(--space-11);
+  }
+
+  .commission__monitor {
+    margin-top: var(--space-10);
+  }
+}
+
+/* Monitor ---------------------------------------------------------------
+   The pre-wedding monitor call. Shares the Contact/commission header; below
+   it, one wedding photo and the details in the Statement's quiet type: small
+   muted headings, body copy, and the price as the one larger figure. On
+   desktop the photo stays in view while the details scroll beside it. */
+
+.monitor {
+  padding: var(--space-8) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.monitor__head {
+  margin-bottom: var(--space-7);
+}
+
+.monitor__title {
+  margin: 0;
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-title);
+}
+
+.monitor__kicker {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+}
+
+.monitor__media {
+  margin-bottom: var(--space-8);
+}
+
+.monitor__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--layout-card-media-ratio);
+  object-fit: cover;
+}
+
+.monitor__copy {
+  max-width: var(--layout-information-copy-measure);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  word-break: auto-phrase;
+}
+
+/* Zero specificity, so each element's own margin below still applies. */
+:where(.monitor__copy) :where(p, h2, ul, dl, dd) {
+  margin: 0;
+}
+
+.monitor__catch {
+  display: grid;
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-information-name);
+  line-height: var(--line-height-title);
+}
+
+.monitor__lede,
+.monitor__section {
+  margin-bottom: var(--space-8);
+}
+
+.monitor__copy h2 {
+  margin-bottom: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-information-heading);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-information-heading);
+}
+
+.monitor__price {
+  display: grid;
+  row-gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+
+.monitor__price-regular {
+  color: var(--color-text-muted);
+}
+
+.monitor__price-offer {
+  font-size: var(--font-size-title);
+  line-height: var(--line-height-title);
+}
+
+.monitor__price-offer small {
+  font-size: var(--font-size-body);
+}
+
+/* Labels size to the longest one so every value lines up in one column. */
+.monitor__plan {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2) var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+.monitor__plan-row {
+  display: contents;
+}
+
+.monitor__plan-row dt {
+  color: var(--color-text-muted);
+}
+
+.monitor__notes,
+.monitor__list {
+  padding: 0;
+  list-style: none;
+}
+
+.monitor__notes {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-social);
+}
+
+.monitor__notes li::before {
+  content: "※ ";
+}
+
+.monitor__list li::before {
+  content: "・";
+}
+
+.monitor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.monitor__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--layout-touch-target);
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-text);
+  line-height: var(--line-height-nav);
+  transition:
+    color var(--motion-duration-fast) linear,
+    border-color var(--motion-duration-fast) linear;
+}
+
+.monitor__action--quiet {
+  border-color: var(--color-text-muted);
+}
+
+.monitor__photographer {
+  display: grid;
+  grid-template-columns: var(--layout-monitor-portrait-width) minmax(0, 1fr);
+  column-gap: var(--space-5);
+  align-items: start;
+  padding-top: var(--space-6);
+}
+
+.monitor__portrait {
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--layout-card-media-ratio);
+  object-fit: cover;
+  object-position: var(--layout-information-portrait-position-mobile);
+}
+
+.monitor__name {
+  margin-bottom: var(--space-2);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .monitor__action:hover {
+    border-color: var(--color-text-muted);
+    color: var(--color-text-muted);
+  }
+}
+
+@media (min-width: 48rem) {
+  .monitor {
+    padding: var(--layout-gallery-top-desktop) var(--layout-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .monitor__head {
+    margin-bottom: var(--space-10);
+  }
+
+  .monitor__body {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    column-gap: var(--space-5);
+    align-items: start;
+  }
+
+  .monitor__media {
+    position: sticky;
+    top: var(--space-6);
+    grid-column: 1 / span 4;
+    margin-bottom: 0;
+  }
+
+  .monitor__copy {
+    grid-column: 6 / span 5;
   }
 }
 

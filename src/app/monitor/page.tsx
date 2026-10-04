@@ -12,7 +12,7 @@ import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 const title = "Wedding Monitor";
 const description =
-  "前撮りモニター 3組限定。通常50,000円のところ35,000円（税込）で、滋賀・京都・大阪の前撮りを撮影します。";
+  "前撮りモニター 毎月3組限定。通常50,000円のところ35,000円（税込）で、滋賀・京都・大阪の前撮りを撮影します。";
 
 // Google Form for pre-wedding monitor sign-ups (the public answer link, not
 // the editor link).
@@ -33,6 +33,7 @@ const planNotes = [
   "撮影日はご相談のうえ決めます",
   "雨天時は日程変更が可能です",
   "その他のご希望はお気軽にご相談ください",
+  "募集は予告なく終了する場合があります",
 ] as const;
 
 const conditions = [
@@ -71,7 +72,7 @@ const MonitorPage = async () => {
           {title}
         </h1>
         <p className="monitor__kicker" data-reveal="text">
-          前撮りモニター 3組限定
+          前撮りモニター 毎月3組限定
         </p>
       </div>
 

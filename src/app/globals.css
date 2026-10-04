@@ -1619,14 +1619,18 @@ html[data-detail-transition="true"] .site-header-frame {
 
 /* Wedding index → monitor page. The call follows the lede inside the head,
    directly below it on every width, the first thing read after the heading;
-   the link under the works is for people who have just finished looking. Both stand out by type size and space only. */
+   the link under the works is for people who have just finished looking.
+   The call reads at the lede's own size, a pause below it a little wider
+   than the lede's paragraph breaks, so it joins the copy without merging
+   into it; its link is set apart by the muted color alone, the quietest cue
+   that it leads somewhere. */
 .commission--wedding .commission__head {
   margin-bottom: var(--space-9);
 }
 
 .commission__monitor-call {
-  margin-top: var(--space-8);
-  font-size: var(--font-size-callout);
+  margin-top: var(--space-7);
+  font-size: var(--font-size-body);
   line-height: var(--line-height-information);
   letter-spacing: var(--letter-spacing-information);
 }
@@ -1644,32 +1648,33 @@ html[data-detail-transition="true"] .site-header-frame {
   display: inline-flex;
   align-items: center;
   min-height: var(--layout-touch-target);
-  font-size: var(--font-size-callout);
   letter-spacing: var(--letter-spacing-information);
   transition: color var(--motion-duration-fast) linear;
 }
 
+.commission__monitor-link {
+  font-size: var(--font-size-callout);
+}
+
 .commission__monitor-call-link {
-  margin-top: var(--space-3);
+  color: var(--color-text-muted);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .commission__monitor-call-link:hover,
   .commission__monitor-link:hover {
     color: var(--color-text-muted);
+  }
+
+  .commission__monitor-call-link:hover {
+    color: var(--color-text);
   }
 }
 
 @media (min-width: 48rem) {
   /* Desktop keeps the phone order: the call sits under the lede, on the
-     same left edge, with room to stand apart but not drift away. */
-  .commission--wedding .commission__head {
-    margin-bottom: var(--space-9);
-  }
-
+     same left edge, with the same short pause between them. */
   .commission__monitor-call {
     grid-column: 1 / -1;
-    margin-top: var(--space-7);
   }
 
   .commission__monitor {

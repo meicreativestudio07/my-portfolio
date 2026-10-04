@@ -37,9 +37,12 @@ const WeddingPage = async () => {
       <PageReady />
 
       <div className="commission__head">
-        <h1 className="commission__title">{section.title}</h1>
+        <h1 className="commission__title" data-reveal="text">
+          {section.title}
+        </h1>
         <p
           className="commission__lede"
+          data-reveal="text"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: Trusted content from YAML
           dangerouslySetInnerHTML={{ __html: section.lede }}
         />

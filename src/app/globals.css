@@ -18,6 +18,8 @@
   --font-size-caption: 0.625rem;
   --font-size-social: 0.875rem;
   --font-size-card-desktop: 0.875rem;
+  /* Body copy: 16px on phones, 17px from the desktop breakpoint (see the
+     48rem :root override below). Headings > body > work captions. */
   --font-size-body: 1rem;
   --font-size-nav: 1.25rem;
   --font-size-header-navigation-primary: 1.125rem;
@@ -28,7 +30,7 @@
   --font-size-detail-navigation: 1rem;
   --font-size-intro-role: 0.5625rem;
   /* Home greeting: quieter than body copy, still comfortable for Japanese. */
-  --font-size-home-greeting: 0.875rem;
+  --font-size-home-greeting: 0.9375rem;
   --line-height-caption: 1.5;
   --line-height-card-desktop: 1.2857;
   --line-height-body: 1.25;
@@ -36,9 +38,15 @@
   --line-height-title: 1.25;
   --font-weight-regular: 400;
   --letter-spacing-intro-role: 0.24em;
-  --font-size-information-heading: 0.8125rem;
+  --font-size-information-heading: 0.875rem;
   --font-size-information-name: 1.25rem;
   --line-height-information: 1.9;
+  /* Work captions on the index pages: title, place/medium/year, number.
+     Smaller than body copy, large enough to read on a phone. */
+  --font-size-work-title: 0.9375rem;
+  --font-size-work-meta: 0.875rem;
+  --font-size-work-index: 0.8125rem;
+  --line-height-work-title: 1.45;
   --letter-spacing-information: 0.04em;
   --letter-spacing-information-heading: 0.1em;
 
@@ -103,9 +111,15 @@
   --layout-information-portrait-ratio-mobile: 4 / 5;
   --layout-information-portrait-position-mobile: 50% 30%;
   --layout-information-portrait-width-desktop: min(28vw, 20rem);
-  /* Statement copy measure on desktop: about 38 full-width characters at body
-     size (1rem plus the 0.04em tracking per character). */
-  --layout-information-copy-measure: 39.5rem;
+  /* Statement copy measure on desktop: about 38 full-width characters. Each
+     character is the body size plus its 0.04em tracking, so the measure
+     follows the body size instead of being a fixed width. */
+  --layout-information-copy-chars: 38;
+  --layout-information-copy-measure: calc(
+    var(--layout-information-copy-chars) *
+    var(--font-size-body) *
+    1.04
+  );
   --layout-information-columns-gap: clamp(var(--space-6), 5vw, var(--space-9));
   --layout-information-min-height: 100svh;
   --layout-information-min-height-desktop: calc(
@@ -154,9 +168,15 @@
   /* Scroll reveal (components/motion/scroll-reveal.tsx): slow, quiet arrivals. */
   --motion-duration-reveal: 1500ms;
   --motion-duration-reveal-zoom: 3200ms;
+  /* Work photos (data-reveal="rise") settle 1.5× slower than copy, on a
+     curve that eases out and comes to rest quietly. */
+  --motion-duration-reveal-photo: 2250ms;
   --motion-reveal-stagger: 160ms;
-  /* Copy follows the photo it belongs to rather than arriving with it. */
+  /* Arrival order (components/motion/scroll-reveal.tsx): copy that follows a
+     photo waits this much longer than the stagger, so copy trails its image;
+     a photo that follows copy waits photo-after-text, so headings lead. */
   --motion-reveal-text-delay: 320ms;
+  --motion-reveal-photo-after-text: 240ms;
   --motion-reveal-distance: 1.25rem;
   --motion-reveal-zoom-scale: 1.06;
   /* Intro → page crossfade: slow and symmetric, like a film dissolve. The
@@ -165,6 +185,12 @@
   --motion-ease-crossfade: cubic-bezier(0.45, 0, 0.55, 1);
   /* Shows everything anyway if the reveal script never starts. */
   --motion-reveal-failsafe-delay: 3s;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --font-size-body: 1.0625rem;
+  }
 }
 
 @theme inline {
@@ -715,20 +741,6 @@ html[data-detail-transition="true"] .site-header-frame {
   line-height: var(--line-height-information);
   letter-spacing: var(--letter-spacing-information);
   word-break: auto-phrase;
-  animation: information-body-enter var(--motion-duration-normal)
-    var(--motion-ease-soft) both;
-}
-
-@keyframes information-body-enter {
-  from {
-    opacity: 0;
-    transform: translateY(var(--space-2));
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .information__intro h1,
@@ -1011,21 +1023,6 @@ html[data-detail-transition="true"] .site-header-frame {
   .gallery__column {
     transform: none;
   }
-
-  .information__body {
-    animation-name: information-body-enter-reduced;
-    animation-duration: var(--motion-duration-fast);
-  }
-
-  @keyframes information-body-enter-reduced {
-    from {
-      opacity: 0;
-    }
-
-    to {
-      opacity: 1;
-    }
-  }
 }
 
 /* Commission index — Corporate and Wedding ---------------------------------
@@ -1095,22 +1092,22 @@ html[data-detail-transition="true"] .site-header-frame {
 
 .commission-band__index {
   margin: 0;
-  font-size: var(--font-size-caption);
+  font-size: var(--font-size-work-index);
   line-height: var(--line-height-nav);
 }
 
 .commission-band__title {
   margin: 0;
-  font-size: var(--font-size-body);
+  font-size: var(--font-size-work-title);
   font-weight: var(--font-weight-regular);
-  line-height: var(--line-height-body);
+  line-height: var(--line-height-work-title);
 }
 
 /* Meta stays near-black: hierarchy comes from size, not from a muted grey
    that would drop below 4.5:1 against the white canvas. */
 .commission-band__meta {
   margin: 0;
-  font-size: var(--font-size-mobile-menu-meta);
+  font-size: var(--font-size-work-meta);
   line-height: var(--line-height-caption);
 }
 
@@ -1218,11 +1215,6 @@ html[data-detail-transition="true"] .site-header-frame {
     width: 100%;
     max-width: none;
     margin-top: var(--space-4);
-  }
-
-  .commission-band__title {
-    font-size: var(--font-size-card-desktop);
-    line-height: var(--line-height-card-desktop);
   }
 
   /* Corporate: twelve columns so the caption keeps a fixed narrow measure
@@ -1365,90 +1357,12 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 /* Commission motion --------------------------------------------------------
-   A stagger tuned for twenty tiles would spend its whole budget on an empty
-   page, and one that runs the length of the list would make the last work
-   wait for four others. So the stagger belongs to a band, never to the list:
-   three and twelve commissions arrive at exactly the same tempo.
-
-   Nothing here is declared opacity 0 outside a @keyframes block, and every
-   entrance uses fill-mode `backwards`. An unsupported timeline, an
-   unscrollable page, a cut-short animation and prefers-reduced-motion all
-   resolve to the same thing: the artwork on screen at opacity 1. */
-.commission [data-step="0"] {
-  --reveal-step: 0;
-}
-
-.commission [data-step="1"] {
-  --reveal-step: 1;
-}
-
-.commission [data-step="2"] {
-  --reveal-step: 2;
-}
-
-.commission [data-step="3"] {
-  --reveal-step: 3;
-}
-
-.commission__head,
-.commission-band__caption,
-.commission-cut {
-  animation-name: commission-piece-enter;
-  animation-duration: var(--motion-duration-normal);
-  animation-timing-function: var(--motion-ease-standard);
-  animation-fill-mode: backwards;
-}
-
-.commission-band__caption,
-.commission-cut {
-  animation-delay: calc(var(--motion-menu-stagger) * 2 * var(--reveal-step));
-}
-
-@keyframes commission-piece-enter {
-  from {
-    opacity: 0;
-    transform: translateY(var(--space-3));
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
+   Headings, captions and cuts arrive through the shared scroll reveal
+   (data-reveal; components/motion/scroll-reveal.tsx): top to bottom, cuts one
+   after another, each band as the reader reaches it. */
 .commission-cut__frame--next {
   opacity: 0;
   transition: opacity var(--motion-duration-normal) var(--motion-ease-soft);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    /* Bands after the first hand their entrance to their own scroll position,
-       so each commission assembles as the reader reaches it. Time delays carry
-       no meaning on a progress timeline, so the per-step offset moves into
-       animation-range: seven percent of the entry range per step. */
-    .commission-band:not(:first-child) .commission-band__caption,
-    .commission-band:not(:first-child) .commission-cut {
-      animation-delay: 0s;
-      animation-timeline: view();
-    }
-
-    .commission-band:not(:first-child) [data-step="0"] {
-      animation-range: entry 2% entry 34%;
-    }
-
-    .commission-band:not(:first-child) [data-step="1"] {
-      animation-range: entry 9% entry 41%;
-    }
-
-    .commission-band:not(:first-child) [data-step="2"] {
-      animation-range: entry 16% entry 48%;
-    }
-
-    .commission-band:not(:first-child) [data-step="3"] {
-      animation-range: entry 23% entry 55%;
-    }
-  }
 }
 
 /* All three surfaces rise together, never one at a time. That answers the
@@ -1476,13 +1390,6 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Entrances resolve to the base state, which is already visible. */
-  .commission__head,
-  .commission-band__caption,
-  .commission-cut {
-    animation: none;
-  }
-
   /* The frame cross-fade stays: it carries information rather than
      decoration, and an opacity change is not vestibular. It is only
      shortened. */
@@ -1802,7 +1709,7 @@ html[data-detail-transition="true"] .site-header-frame {
 
 /* Scroll reveal ---------------------------------------------------------
    Shared by every page: mark an element data-reveal="rise" (photos),
-   "text" (copy, arrives a beat later) or "zoom" (a lead photo settling from
+   "text" (copy) or "zoom" (a lead photo settling from
    a slight zoom). Only opacity and transform move. Nothing is hidden unless
    the boot script ran, and reduced motion never hides anything. */
 
@@ -1811,23 +1718,18 @@ html[data-detail-transition="true"] .site-header-frame {
     transition-property: opacity, transform;
     transition-duration: var(--motion-duration-reveal);
     transition-timing-function: var(--motion-ease-expressive);
-    transition-delay: calc(
-      var(--reveal-step, 0) *
-      var(--motion-reveal-stagger)
-    );
-  }
-
-  html[data-reveal-state] [data-reveal="text"] {
-    transition-delay: calc(
-      var(--motion-reveal-text-delay) +
-      var(--reveal-step, 0) *
-      var(--motion-reveal-stagger)
-    );
+    /* Set per element by scroll-reveal.tsx: top to bottom, overlapping. */
+    transition-delay: var(--reveal-delay, 0ms);
   }
 
   html[data-reveal-state] [data-reveal="zoom"] {
     transition-duration:
       var(--motion-duration-reveal), var(--motion-duration-reveal-zoom);
+  }
+
+  html[data-reveal-state] [data-reveal="rise"] {
+    transition-duration: var(--motion-duration-reveal-photo);
+    transition-timing-function: var(--motion-ease-soft);
   }
 
   html[data-reveal-state] [data-reveal]:not([data-revealed]) {

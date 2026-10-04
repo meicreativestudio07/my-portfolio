@@ -80,7 +80,7 @@ export const CommissionDetail = ({
         <span>Index</span>
       </TransitionLink>
 
-      <header className="detail__header">
+      <header className="detail__header" data-reveal="text">
         <h1 className="detail__title">
           <span>{serviceLabels[service]}</span>
           <span>{commission.title}</span>
@@ -96,11 +96,13 @@ export const CommissionDetail = ({
               title={cut.alt}
               loading="lazy"
               allow="fullscreen; picture-in-picture"
+              data-reveal="rise"
               key={cut.image.src}
             />
           ) : (
             <div
               className="commission-detail__cut"
+              data-reveal="rise"
               style={
                 {
                   "--commission-cut-ratio": `${cut.image.width} / ${cut.image.height}`,
@@ -121,7 +123,7 @@ export const CommissionDetail = ({
         )}
       </div>
 
-      <div className="detail__project-info">
+      <div className="detail__project-info" data-reveal="text">
         <p>{commission.title}</p>
         <dl className="commission-detail__meta">
           {commission.metaItems.map((item) => (

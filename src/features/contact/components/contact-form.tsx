@@ -32,7 +32,7 @@ export const ContactForm = () => {
   };
 
   return (
-    <form className="contact__form" onSubmit={handleSubmit}>
+    <form className="contact__form" data-reveal="text" onSubmit={handleSubmit}>
       <div className="contact__field">
         <label className="contact__label" htmlFor="contact-name">
           お名前

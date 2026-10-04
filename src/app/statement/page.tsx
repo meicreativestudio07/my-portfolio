@@ -32,6 +32,7 @@ const StatementPage = () => (
       <div className="information__body">
         <Image
           className="information__portrait"
+          data-reveal="rise"
           src={statementPortrait}
           alt="髙橋 萌衣のポートレート"
           priority
@@ -40,16 +41,18 @@ const StatementPage = () => (
         />
 
         <div className="information__copy">
-          <header className="information__intro">
+          <header className="information__intro" data-reveal="text">
             <h1>髙橋 萌衣 / Takahashi Mei</h1>
             <p>フォトグラファー / ビデオグラファー</p>
           </header>
 
           <div className="information__profile">
-            <p>滋賀県を拠点に、写真と映像の撮影・制作を行っています。</p>
+            <p data-reveal="text">
+              滋賀県を拠点に、写真と映像の撮影・制作を行っています。
+            </p>
             {/* Each sentence is its own {"…"} so the lines join without a
                 space; the copy wraps on its own at the column width. */}
-            <p>
+            <p data-reveal="text">
               {
                 "企業のPR動画やプロモーション映像、ウェディングの写真・映像まで、"
               }
@@ -60,7 +63,7 @@ const StatementPage = () => (
                 "にしかない空気感を大切に、見る人の心に届くビジュアルづくりを心がけています。"
               }
             </p>
-            <p>
+            <p data-reveal="text">
               {"また、現役の薬剤師としても働いており、"}
               <span className="u-nowrap">医療・ヘルスケア分野のPR</span>
               {"制作を得意としています。"}
@@ -70,7 +73,11 @@ const StatementPage = () => (
             </p>
           </div>
 
-          <section className="information__section" aria-labelledby="practice">
+          <section
+            className="information__section"
+            aria-labelledby="practice"
+            data-reveal="text"
+          >
             <h2 id="practice">活動領域</h2>
             <p>
               <span className="u-nowrap">写真撮影</span> /{" "}
@@ -81,7 +88,11 @@ const StatementPage = () => (
             </p>
           </section>
 
-          <section className="information__section" aria-labelledby="tools">
+          <section
+            className="information__section"
+            aria-labelledby="tools"
+            data-reveal="text"
+          >
             <h2 id="tools">使用ツール</h2>
             <p>
               <span className="u-nowrap">Photoshop</span> /{" "}

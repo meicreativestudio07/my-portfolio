@@ -47,7 +47,7 @@ export const CommissionBand = ({
       href={`/${commissionRouteSlugs[variant]}/${commission.slug}`}
     >
       <div className="commission-band__inner">
-        <div className="commission-band__caption" data-step="3">
+        <div className="commission-band__caption" data-reveal="text">
           <p className="commission-band__index">{formatIndex(index)}</p>
           <h2 className="commission-band__title">{commission.title}</h2>
           <p className="commission-band__meta">{formatMeta(commission)}</p>
@@ -58,7 +58,7 @@ export const CommissionBand = ({
             <div
               className="commission-cut"
               data-role={cutRoles[cutIndex]}
-              data-step={cutIndex}
+              data-reveal="rise"
               key={cut.image.src}
             >
               <span className="commission-cut__surface" aria-hidden="true" />

@@ -1594,10 +1594,9 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 }
 
-/* Wedding index → monitor page. The call follows the lede inside the head
-   (below it on phones, in the free columns beside it on desktop), the first
-   thing read after the heading; the link under the works is for people who
-   have just finished looking. Both stand out by type size and space only. */
+/* Wedding index → monitor page. The call follows the lede inside the head,
+   directly below it on every width, the first thing read after the heading;
+   the link under the works is for people who have just finished looking. Both stand out by type size and space only. */
 .commission--wedding .commission__head {
   margin-bottom: var(--space-9);
 }
@@ -1639,14 +1638,15 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 @media (min-width: 48rem) {
+  /* Desktop keeps the phone order: the call sits under the lede, on the
+     same left edge, with room to stand apart but not drift away. */
   .commission--wedding .commission__head {
-    margin-bottom: var(--space-11);
+    margin-bottom: var(--space-9);
   }
 
   .commission__monitor-call {
-    grid-column: 8 / span 3;
-    grid-row: 2;
-    margin-top: var(--space-4);
+    grid-column: 1 / -1;
+    margin-top: var(--space-7);
   }
 
   .commission__monitor {

@@ -34,13 +34,7 @@ export const VoiceSection = ({
               <blockquote className="voice__quote">
                 <p>{voice.comment}</p>
               </blockquote>
-              <figcaption className="voice__meta">
-                {voice.name}
-                <span aria-hidden="true"> ／ </span>
-                <span className="u-nowrap">{voice.place}</span>
-                <span aria-hidden="true"> ／ </span>
-                <span className="u-nowrap">{voice.month}</span>
-              </figcaption>
+              <figcaption className="voice__meta">{voice.name}</figcaption>
             </figure>
           </li>
         ))}

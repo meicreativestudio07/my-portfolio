@@ -218,8 +218,8 @@ export default config({
       slugField: "name",
       path: "content/voices/*/",
       format: { data: "yaml" },
-      // 並び順は撮影した月の新しい順(scripts/generate-content.mjs)
-      columns: ["kind", "month", "place"],
+      // 並び順はフォルダ名の降順(scripts/generate-content.mjs)
+      columns: ["kind"],
       schema: {
         name: fields.slug({
           name: {
@@ -242,22 +242,6 @@ export default config({
             { label: "Business", value: "business" },
           ],
           defaultValue: "wedding",
-        }),
-        place: fields.text({
-          label: "撮影場所",
-          description: "例: 滋賀・琵琶湖",
-          validation: { isRequired: true },
-        }),
-        month: fields.text({
-          label: "撮影した月",
-          description: "「2026年11月」の形で書いてください",
-          validation: {
-            isRequired: true,
-            pattern: {
-              regex: /^\d{4}年(1[0-2]|[1-9])月$/,
-              message: "「2026年11月」の形で書いてください",
-            },
-          },
         }),
         comment: fields.text({
           label: "感想文",

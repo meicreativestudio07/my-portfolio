@@ -1883,7 +1883,7 @@ html[data-detail-transition="true"] .site-header-frame {
 
 /* Voice ----------------------------------------------------------------
    Customer voices (features/voice), set quietly like quotations: the words
-   a step above body copy, who/where/when beneath in muted type. No marks,
+   at body size, who/where/when beneath in muted type. No marks,
    rules or boxes. "page" closes the Wedding index; "inline" sits among the
    /monitor details and takes their small muted heading. */
 
@@ -1902,7 +1902,7 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 .voice__quote {
-  font-size: var(--font-size-information-name);
+  font-size: var(--font-size-body);
   line-height: var(--line-height-information);
   letter-spacing: var(--letter-spacing-information);
   white-space: pre-line;

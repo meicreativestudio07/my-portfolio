@@ -6,7 +6,7 @@
  *   portfolio/order.yaml + <slug>/index.yaml + thumbnail.jpg (+ 連番画像)
  *   corporate/section.yaml + order.yaml + <slug>/index.yaml + 01..03.jpg (+ hover.jpg)
  *   wedding/   同上
- *   voices/<slug>/index.yaml(お客様の声。並び順は撮影した月の新しい順)
+ *   voices/<slug>/index.yaml(お客様の声。並び順はフォルダ名の降順)
  *
  * 非エンジニアが編集する前提なので、エラーは日本語で・全部まとめて報告する。
  */
@@ -416,10 +416,9 @@ export const introPortrait = {
 
 // --- voices ---------------------------------------------------------------
 
-// お客様の声。order.yaml は持たず、撮影した月の新しい順に並べる。
+// お客様の声。order.yaml は持たず、フォルダ名の降順(2026-11-mk のように月から始めると新しい順)に並べる。
 // フォルダが無い・0件でもエラーにしない(0件ならページ側でセクションごと隠す)。
 const VOICE_KINDS = ["wedding", "business"];
-const VOICE_MONTH = /^(\d{4})年(1[0-2]|[1-9])月$/;
 
 const generateVoices = async () => {
   const voicesDir = join(contentDir, "voices");
@@ -436,35 +435,25 @@ const generateVoices = async () => {
     if (data === null) continue;
 
     const name = requireString(data.name, `${label} の name(お名前)`);
-    const place = requireString(data.place, `${label} の place(撮影場所)`);
     const comment = requireString(data.comment, `${label} の comment(感想文)`);
-    const month = requireString(data.month, `${label} の month(撮影した月)`);
-    const monthMatch = VOICE_MONTH.exec(month.trim());
-    if (month !== "" && monthMatch === null)
-      report(
-        `${label} の month(撮影した月)は「2026年11月」の形で書いてください(いまは「${month}」)`,
-      );
     if (!VOICE_KINDS.includes(data.kind))
       report(
         `${label} の kind(種類)は wedding か business にしてください(いまは「${data.kind ?? ""}」)`,
       );
-    if (monthMatch === null || !VOICE_KINDS.includes(data.kind)) continue;
+    if (!VOICE_KINDS.includes(data.kind)) continue;
 
     voices.push({
-      sortKey: Number(monthMatch[1]) * 100 + Number(monthMatch[2]),
       slug,
       code: `  {
     slug: ${s(slug)},
     kind: ${s(data.kind)},
     name: ${s(name.trim())},
-    place: ${s(place.trim())},
-    month: ${s(month.trim())},
     comment: ${s(comment.trim())},
   },`,
     });
   }
 
-  voices.sort((a, b) => b.sortKey - a.sortKey || a.slug.localeCompare(b.slug));
+  voices.sort((a, b) => b.slug.localeCompare(a.slug));
 
   queueWrite(
     join(root, "src/features/voice/data/voices.generated.ts"),

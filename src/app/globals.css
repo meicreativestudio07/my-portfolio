@@ -1809,13 +1809,81 @@ html[data-detail-transition="true"] .site-header-frame {
   content: "・";
 }
 
+/* Example cuts: two across on phones, three beside the sticky photo on
+   desktop, at the card ratio so the set reads as one even grid. */
+.monitor__gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.monitor__gallery-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--layout-card-media-ratio);
+  object-fit: cover;
+}
+
+/* The steps carry a quiet muted 01–04 instead of list markers. */
+.monitor__steps {
+  display: grid;
+  row-gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+  counter-reset: monitor-step;
+}
+
+.monitor__steps li {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: var(--space-4);
+  counter-increment: monitor-step;
+}
+
+.monitor__steps li::before {
+  color: var(--color-text-muted);
+  content: counter(monitor-step, decimal-leading-zero);
+}
+
+/* Questions in muted type like the plan labels, answers in body copy. */
+.monitor__faq {
+  display: grid;
+  row-gap: var(--space-5);
+}
+
+.monitor__faq-item dt {
+  margin-bottom: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+/* The form is the main way in; the DM sits under it as the quieter one,
+   set apart by the muted color alone like the call on /wedding. */
+.monitor__actions {
+  display: grid;
+  justify-items: start;
+  row-gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.monitor__secondary-action,
+.monitor__more {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  transition: color var(--motion-duration-fast) linear;
+}
+
 /* The one way to apply, so it reads a step larger with room around it. */
 .monitor__action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: var(--layout-touch-target);
-  margin-top: var(--space-6);
   padding: var(--space-4) var(--space-7);
   border: 1px solid var(--color-text);
   font-size: var(--font-size-information-name);
@@ -1850,6 +1918,11 @@ html[data-detail-transition="true"] .site-header-frame {
     border-color: var(--color-text-muted);
     color: var(--color-text-muted);
   }
+
+  .monitor__secondary-action:hover,
+  .monitor__more:hover {
+    color: var(--color-text);
+  }
 }
 
 @media (min-width: 48rem) {
@@ -1878,6 +1951,10 @@ html[data-detail-transition="true"] .site-header-frame {
 
   .monitor__copy {
     grid-column: 6 / span 5;
+  }
+
+  .monitor__gallery {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

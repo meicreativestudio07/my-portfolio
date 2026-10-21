@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 import { PageReady } from "@/components/layout/page-ready";
 import statementPortrait from "@/features/information/images/statement-portrait.jpg";
-import { getMonitorPhoto } from "@/features/monitor/api/get-monitor-photo";
+import {
+  getMonitorGallery,
+  getMonitorPhoto,
+} from "@/features/monitor/api/get-monitor-photo";
 import { getVoices } from "@/features/voice/api/get-voices";
 import { VoiceSection } from "@/features/voice/components/voice-section";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
@@ -19,21 +23,61 @@ const description =
 const MONITOR_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSf2bZ-UkUQmZAbyBoyaYGl21lM_xYxKa3ZSOPkdZea_-dl-rw/viewform";
 
+// Instagram DM for people who want to ask before applying. ig.me opens a
+// direct message to the account in the Instagram app.
+const MONITOR_DM_URL = "https://ig.me/m/meimei.creativestudio";
+
 const planItems = [
   { label: "撮影時間", value: "2時間" },
   { label: "納品枚数", value: "100枚（データ納品）" },
+  { label: "納品時期", value: "撮影後1週間以内" },
   { label: "ロケーション", value: "1か所" },
-  { label: "衣装・ヘアメイク", value: "お持ち込み" },
+  {
+    label: "衣装・ヘアメイク",
+    value: "お持ち込み（ドレスでも私服でも撮影できます）",
+  },
   { label: "対応エリア", value: "滋賀・京都・大阪" },
+  { label: "出張費", value: "滋賀・京都は無料／その他の地域はお見積り" },
 ] as const;
 
 const planNotes = [
-  "撮影場所により、別途出張費が必要です",
   "ロケ地によっては、撮影料金（施設利用料）がかかる場合がございます",
   "撮影日はご相談のうえ決めます",
   "雨天時は日程変更が可能です",
   "その他のご希望はお気軽にご相談ください",
   "募集は予告なく終了する場合があります",
+] as const;
+
+const steps = [
+  "応募フォーム、またはInstagramのDMからご連絡ください",
+  "日程・場所・衣装のイメージをご相談して、撮影日を決めます",
+  "当日は2時間、お話ししながらゆっくり撮影します",
+  "撮影後1週間以内に、100枚のデータをお届けします",
+] as const;
+
+const faqs = [
+  {
+    question: "撮影に慣れていなくても大丈夫ですか？",
+    answer:
+      "大丈夫です。立ち位置やポーズはその都度お伝えするので、おふたりは会話を楽しむだけで構いません。",
+  },
+  {
+    question: "ドレスやタキシードがなくても撮影できますか？",
+    answer:
+      "できます。普段の私服やカジュアルな服装での前撮りも歓迎です。衣装・ヘアメイクはお持ち込みでお願いしています。",
+  },
+  {
+    question: "日程がまだ決まっていなくても応募できますか？",
+    answer: "できます。応募後に、ご都合を伺いながら撮影日を決めます。",
+  },
+  {
+    question: "雨の日はどうなりますか？",
+    answer: "日程を変更できます。",
+  },
+  {
+    question: "応募の前に質問だけしてもいいですか？",
+    answer: "もちろんです。InstagramのDMから、お気軽にご連絡ください。",
+  },
 ] as const;
 
 const conditions = [
@@ -57,9 +101,33 @@ export const metadata: Metadata = {
   },
 };
 
+// The two ways in: the form to apply, and a DM for anyone not ready to.
+// Shown under the price and again at the end, so nobody has to scroll back.
+const MonitorActions = () => (
+  <div className="monitor__actions">
+    <a
+      className="monitor__action"
+      href={MONITOR_FORM_URL}
+      rel="noreferrer"
+      target="_blank"
+    >
+      応募フォームを開く
+    </a>
+    <a
+      className="monitor__secondary-action"
+      href={MONITOR_DM_URL}
+      rel="noreferrer"
+      target="_blank"
+    >
+      まずはInstagramのDMで相談する
+    </a>
+  </div>
+);
+
 const MonitorPage = async () => {
-  const [photo, voices] = await Promise.all([
+  const [photo, gallery, voices] = await Promise.all([
     getMonitorPhoto(),
+    getMonitorGallery(),
     getVoices("wedding"),
   ]);
 
@@ -121,7 +189,35 @@ const MonitorPage = async () => {
               {"ひとりで撮影から編集まで行うため、"}
               {"余分な費用をかけずにお届けしています。"}
             </p>
+            <MonitorActions />
           </section>
+
+          {gallery.length > 0 ? (
+            <section
+              className="monitor__section"
+              aria-labelledby="monitor-gallery"
+            >
+              <h2 id="monitor-gallery" data-reveal="text">
+                撮影例
+              </h2>
+              <ul className="monitor__gallery">
+                {gallery.map((cut) => (
+                  <li key={cut.image.src}>
+                    <Image
+                      className="monitor__gallery-image"
+                      data-reveal="rise"
+                      src={cut.image}
+                      alt={cut.alt}
+                      sizes="(min-width: 48rem) 20vw, 50vw"
+                    />
+                  </li>
+                ))}
+              </ul>
+              <Link className="monitor__more" href="/wedding">
+                ほかの作品を見る
+              </Link>
+            </section>
+          ) : null}
 
           <section
             className="monitor__section"
@@ -146,6 +242,19 @@ const MonitorPage = async () => {
 
           <section
             className="monitor__section"
+            aria-labelledby="monitor-steps"
+            data-reveal="text"
+          >
+            <h2 id="monitor-steps">撮影までの流れ</h2>
+            <ol className="monitor__steps">
+              {steps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </section>
+
+          <section
+            className="monitor__section"
             aria-labelledby="monitor-conditions"
             data-reveal="text"
           >
@@ -166,19 +275,32 @@ const MonitorPage = async () => {
 
           <section
             className="monitor__section"
+            aria-labelledby="monitor-faq"
+            data-reveal="text"
+          >
+            <h2 id="monitor-faq">よくあるご質問</h2>
+            <dl className="monitor__faq">
+              {faqs.map((faq) => (
+                <div className="monitor__faq-item" key={faq.question}>
+                  <dt>{faq.question}</dt>
+                  <dd>{faq.answer}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section
+            className="monitor__section"
             aria-labelledby="monitor-apply"
             data-reveal="text"
           >
-            <h2 id="monitor-apply">応募方法</h2>
-            <p>下の応募フォームからお申し込みください。</p>
-            <a
-              className="monitor__action"
-              href={MONITOR_FORM_URL}
-              rel="noreferrer"
-              target="_blank"
-            >
-              応募フォームを開く
-            </a>
+            <h2 id="monitor-apply">応募・ご相談</h2>
+            <p>
+              {"応募フォームからお申し込みください。"}
+              {"日程が決まっていなくても大丈夫です。"}
+              {"応募の前に聞きたいことがあれば、DMでお気軽にどうぞ。"}
+            </p>
+            <MonitorActions />
           </section>
 
           <section

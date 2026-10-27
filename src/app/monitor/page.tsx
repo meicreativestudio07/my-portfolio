@@ -6,6 +6,7 @@ import statementPortrait from "@/features/information/images/statement-portrait.
 import { getMonitorPhoto } from "@/features/monitor/api/get-monitor-photo";
 import { getVoices } from "@/features/voice/api/get-voices";
 import { VoiceSection } from "@/features/voice/components/voice-section";
+import { APPLY_CLICK_EVENT } from "@/lib/analytics";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 // The copy on this page is edited here directly, like the About page.
@@ -173,6 +174,8 @@ const MonitorPage = async () => {
             <p>下の応募フォームからお申し込みください。</p>
             <a
               className="monitor__action"
+              data-track={APPLY_CLICK_EVENT}
+              data-track-position="bottom"
               href={MONITOR_FORM_URL}
               rel="noreferrer"
               target="_blank"

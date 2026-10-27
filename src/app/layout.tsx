@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { TrackClicks } from "@/components/analytics/track-clicks";
 import { SiteFrame } from "@/components/layout/site-frame";
 import {
   REVEAL_BOOT_SCRIPT,
@@ -83,6 +85,8 @@ const RootLayout = ({ children }: RootLayoutProps) => (
     <body>
       <SiteFrame>{children}</SiteFrame>
       <ScrollReveal />
+      <TrackClicks />
+      <GoogleAnalytics />
     </body>
   </html>
 );

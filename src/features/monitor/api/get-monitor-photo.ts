@@ -12,3 +12,29 @@ export const getMonitorPhoto = async (): Promise<CommissionCut | undefined> => {
     commissions[0];
   return commission?.cuts[0];
 };
+
+// 「撮影例」に出す写真と、その順番。work は content/wedding のフォルダ名、
+// cut は写真の番号(01.jpg なら 1)。並べ替え・差し替えはここだけを直す。
+const MONITOR_GALLERY = [
+  { work: "green-garden-pre-wedding", cut: 2 },
+  { work: "white-sand-beach-pre-wedding", cut: 3 },
+  { work: "blue-sky-trees-pre-wedding", cut: 2 },
+  { work: "dusk-waterside-pre-wedding", cut: 2 },
+  { work: "green-garden-pre-wedding", cut: 3 },
+  { work: "blue-sky-trees-pre-wedding", cut: 3 },
+] as const;
+
+/**
+ * Example cuts for the monitor page, picked by hand from the wedding works.
+ * An entry whose folder or number no longer exists is skipped, so renaming a
+ * work never breaks the page.
+ */
+export const getMonitorGallery = async (): Promise<
+  readonly CommissionCut[]
+> => {
+  const commissions = await getCommissions("wedding");
+  return MONITOR_GALLERY.flatMap(({ work, cut }) => {
+    const found = commissions.find(({ slug }) => slug === work)?.cuts[cut - 1];
+    return found ? [found] : [];
+  });
+};

@@ -3,7 +3,10 @@ import Image from "next/image";
 
 import { PageReady } from "@/components/layout/page-ready";
 import statementPortrait from "@/features/information/images/statement-portrait.jpg";
-import { getMonitorPhoto } from "@/features/monitor/api/get-monitor-photo";
+import {
+  getMonitorGallery,
+  getMonitorPhoto,
+} from "@/features/monitor/api/get-monitor-photo";
 import { getVoices } from "@/features/voice/api/get-voices";
 import { VoiceSection } from "@/features/voice/components/voice-section";
 import { APPLY_CLICK_EVENT, DM_CLICK_EVENT } from "@/lib/analytics";
@@ -91,8 +94,9 @@ export const metadata: Metadata = {
 };
 
 const MonitorPage = async () => {
-  const [photo, voices] = await Promise.all([
+  const [photo, gallery, voices] = await Promise.all([
     getMonitorPhoto(),
+    getMonitorGallery(),
     getVoices("wedding"),
   ]);
 
@@ -157,6 +161,30 @@ const MonitorPage = async () => {
             </p>
             <MonitorActions position="top" />
           </section>
+
+          {gallery.length > 0 ? (
+            <section
+              className="monitor__section"
+              aria-labelledby="monitor-gallery"
+            >
+              <h2 id="monitor-gallery" data-reveal="text">
+                撮影例
+              </h2>
+              <ul className="monitor__gallery">
+                {gallery.map((cut) => (
+                  <li key={cut.image.src}>
+                    <Image
+                      className="monitor__gallery-image"
+                      data-reveal="rise"
+                      src={cut.image}
+                      alt={cut.alt}
+                      sizes="(min-width: 48rem) 15vw, 50vw"
+                    />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
           <section
             className="monitor__section"

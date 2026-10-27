@@ -43,6 +43,21 @@ const conditions = [
   "アンケート内容を「お客様の声」としてHPに掲載させていただけること",
 ] as const;
 
+// The form link appears under the price and again at the end, so nobody has
+// to scroll to the bottom to apply. `position` tells the two apart in GA4.
+const MonitorApplyLink = ({ position }: Readonly<{ position: string }>) => (
+  <a
+    className="monitor__action"
+    data-track={APPLY_CLICK_EVENT}
+    data-track-position={position}
+    href={MONITOR_FORM_URL}
+    rel="noreferrer"
+    target="_blank"
+  >
+    応募フォームを開く
+  </a>
+);
+
 export const metadata: Metadata = {
   title,
   description,
@@ -73,7 +88,8 @@ const MonitorPage = async () => {
           {title}
         </h1>
         <p className="monitor__kicker" data-reveal="text">
-          前撮りモニター 毎月3組限定
+          前撮りモニター 毎月3組限定・
+          <span className="monitor__kicker-price">35,000円（税込）</span>
         </p>
       </div>
 
@@ -122,6 +138,7 @@ const MonitorPage = async () => {
               {"ひとりで撮影から編集まで行うため、"}
               {"余分な費用をかけずにお届けしています。"}
             </p>
+            <MonitorApplyLink position="top" />
           </section>
 
           <section
@@ -172,16 +189,7 @@ const MonitorPage = async () => {
           >
             <h2 id="monitor-apply">応募方法</h2>
             <p>下の応募フォームからお申し込みください。</p>
-            <a
-              className="monitor__action"
-              data-track={APPLY_CLICK_EVENT}
-              data-track-position="bottom"
-              href={MONITOR_FORM_URL}
-              rel="noreferrer"
-              target="_blank"
-            >
-              応募フォームを開く
-            </a>
+            <MonitorApplyLink position="bottom" />
           </section>
 
           <section

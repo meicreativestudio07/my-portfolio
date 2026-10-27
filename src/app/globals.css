@@ -1709,6 +1709,11 @@ html[data-detail-transition="true"] .site-header-frame {
   letter-spacing: var(--letter-spacing-information);
 }
 
+/* The price wraps as one piece, never between 円 and （税込）. */
+.monitor__kicker-price {
+  white-space: nowrap;
+}
+
 .monitor__media {
   margin-bottom: var(--space-8);
 }

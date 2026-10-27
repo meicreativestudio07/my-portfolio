@@ -1810,6 +1810,30 @@ html[data-detail-transition="true"] .site-header-frame {
   content: "※ ";
 }
 
+.monitor__details summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-social);
+  list-style: none;
+  cursor: pointer;
+  transition: color var(--motion-duration-fast) linear;
+}
+
+.monitor__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.monitor__details summary::before {
+  content: "＋";
+  margin-right: var(--space-2);
+}
+
+.monitor__details[open] summary::before {
+  content: "−";
+}
+
 .monitor__list li::before {
   content: "・";
 }
@@ -1854,6 +1878,10 @@ html[data-detail-transition="true"] .site-header-frame {
   .monitor__action:hover {
     border-color: var(--color-text-muted);
     color: var(--color-text-muted);
+  }
+
+  .monitor__details summary:hover {
+    color: var(--color-text);
   }
 }
 

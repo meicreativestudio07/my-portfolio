@@ -155,11 +155,16 @@ const MonitorPage = async () => {
                 </div>
               ))}
             </dl>
-            <ul className="monitor__notes">
-              {planNotes.map((note) => (
-                <li key={note}>{note}</li>
-              ))}
-            </ul>
+            {/* Folded so the costs read as details, not as the last thing
+                before applying; the summary names what is inside. */}
+            <details className="monitor__details">
+              <summary>注意事項（出張費・撮影日・雨天時など）</summary>
+              <ul className="monitor__notes">
+                {planNotes.map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            </details>
           </section>
 
           <section

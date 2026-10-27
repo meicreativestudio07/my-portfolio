@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { TransitionLink } from "@/components/navigation/transition-link";
 
 type SiteHeaderProps = Readonly<{
-  currentPage: "About" | "Business" | "Wedding" | "Contact";
+  currentPage: "About" | "Business" | "Wedding" | "Contact" | "Privacy";
 }>;
 
 // Desktop and mobile share one list so both menus keep the same order.

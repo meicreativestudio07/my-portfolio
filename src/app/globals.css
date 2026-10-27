@@ -1881,6 +1881,93 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 }
 
+/* Privacy ----------------------------------------------------------------
+   The privacy notice, set in the monitor page's quiet type: small muted
+   headings over body copy, in one readable column. */
+
+.privacy {
+  padding: var(--space-8) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.privacy__title {
+  margin: 0 0 var(--space-7);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-title);
+}
+
+.privacy__copy {
+  display: grid;
+  row-gap: var(--space-8);
+  max-width: var(--layout-information-copy-measure);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  word-break: auto-phrase;
+}
+
+.privacy__copy h2 {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-information-heading);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-information-heading);
+}
+
+.privacy__copy p {
+  margin: 0 0 var(--space-4);
+}
+
+.privacy__copy a {
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.privacy__signature {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 48rem) {
+  .privacy {
+    padding: var(--layout-gallery-top-desktop) var(--layout-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .privacy__title {
+    margin-bottom: var(--space-10);
+  }
+}
+
+/* Footer -----------------------------------------------------------------
+   One muted link closing every page; it never competes with the work. */
+
+.site-footer {
+  padding: 0 var(--layout-gutter-mobile) var(--space-6);
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-work-index);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__link:hover {
+    color: var(--color-text);
+  }
+}
+
+@media (min-width: 48rem) {
+  .site-footer {
+    padding-inline: var(--layout-gutter-desktop);
+  }
+}
+
 /* Voice ----------------------------------------------------------------
    Customer voices (features/voice), set quietly like quotations: the words
    at body size, who/where/when beneath in muted type. No marks,

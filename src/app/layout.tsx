@@ -81,12 +81,12 @@ const RootLayout = ({ children }: RootLayoutProps) => (
         // biome-ignore lint/security/noDangerouslySetInnerHtml: static boot script, no user input
         dangerouslySetInnerHTML={{ __html: REVEAL_BOOT_SCRIPT }}
       />
+      <GoogleAnalytics />
     </head>
     <body>
       <SiteFrame>{children}</SiteFrame>
       <ScrollReveal />
       <TrackClicks />
-      <GoogleAnalytics />
     </body>
   </html>
 );

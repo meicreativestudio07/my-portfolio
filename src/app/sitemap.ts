@@ -57,6 +57,12 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      url: getAbsoluteUrl("/privacy"),
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 
   const corporateRoutes: MetadataRoute.Sitemap = corporateCommissions.map(

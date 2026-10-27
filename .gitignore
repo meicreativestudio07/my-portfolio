@@ -44,3 +44,6 @@ next-env.d.ts
 
 # generated from content/ by scripts/generate-content.mjs
 *.generated.ts
+
+# Playwright MCP screenshots and snapshots
+/.playwright-mcp

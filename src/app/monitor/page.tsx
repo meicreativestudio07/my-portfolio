@@ -122,7 +122,7 @@ const MonitorPage = async () => {
         </p>
       </div>
 
-      <div className="monitor__body" data-gallery-scope>
+      <div className="monitor__body">
         {galleryPhotos.length > 0 ? (
           <div className="monitor__media">
             <MonitorGallery photos={galleryPhotos} />

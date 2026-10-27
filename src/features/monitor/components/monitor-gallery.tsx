@@ -25,27 +25,21 @@ const SWIPE_DISTANCE_PX = 40;
 // A trackpad flick fires many wheel events; one turn per this pause.
 const WHEEL_DISTANCE_PX = 50;
 const WHEEL_COOLDOWN_MS = 600;
-// Desktop reading: one cut per this much scroll, so the pace stays the same
-// however many cuts there are; the last ones are a thumbnail away.
-const SCROLL_STEP_PX = 240;
-// Matches the desktop breakpoint, where the photo column is sticky.
-const STICKY_MEDIA_QUERY =
-  "(min-width: 48rem) and (prefers-reduced-motion: no-preference)";
 
 /**
  * The monitor page's lead photo with the example cuts as thumbnails under
  * it. The large frame cross-fades to another cut when a thumbnail is
- * hovered, focused or tapped, when the frame is swiped sideways (or
- * scrolled sideways on a trackpad), and on desktop as the reader scrolls
- * through the details beside it. Every large image stays mounted and only
+ * hovered, focused or tapped, and when the frame is swiped sideways (or
+ * scrolled sideways on a trackpad). Scrolling the page never turns it:
+ * an earlier page-scroll trigger fired while reading the details beside
+ * the photo, which read as a bug. Every large image stays mounted and only
  * its opacity changes, so a switch never waits on a network request.
  */
 export const MonitorGallery = ({ photos }: MonitorGalleryProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const rootRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const thumbsRef = useRef<HTMLUListElement>(null);
-  const swipeStartX = useRef<number | null>(null);
+  const swipeStart = useRef<Readonly<{ x: number; y: number }> | null>(null);
   // A hovered thumbnail is already under the pointer; scrolling the row to
   // it would slide another one under the pointer instead.
   const isHoverChange = useRef(false);
@@ -56,41 +50,6 @@ export const MonitorGallery = ({ photos }: MonitorGalleryProps) => {
       setActiveIndex((current) => (current + direction + count) % count),
     [count],
   );
-
-  // Desktop: the photo column is sticky, so reading down the details beside
-  // it walks through the cuts. Only a change of step moves the photo, so a
-  // thumbnail chosen by hand stays until the reader scrolls on.
-  useEffect(() => {
-    const media = window.matchMedia(STICKY_MEDIA_QUERY);
-    const scope = rootRef.current?.closest<HTMLElement>("[data-gallery-scope]");
-    if (!scope || count < 2) return;
-
-    let lastStep = -1;
-    let frame = 0;
-
-    const update = () => {
-      frame = 0;
-      if (!media.matches) return;
-      const scrolled = Math.max(-scope.getBoundingClientRect().top, 0);
-      const nextStep = Math.min(
-        count - 1,
-        Math.floor(scrolled / SCROLL_STEP_PX),
-      );
-      if (nextStep === lastStep) return;
-      lastStep = nextStep;
-      setActiveIndex(nextStep);
-    };
-
-    const handleScroll = () => {
-      if (!frame) frame = window.requestAnimationFrame(update);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      if (frame) window.cancelAnimationFrame(frame);
-    };
-  }, [count]);
 
   // Trackpad: a sideways scroll over the photo turns it. A native listener,
   // because only a non-passive one may stop the browser's swipe-back
@@ -157,25 +116,29 @@ export const MonitorGallery = ({ photos }: MonitorGalleryProps) => {
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType === "mouse") return;
-    swipeStartX.current = event.clientX;
+    swipeStart.current = { x: event.clientX, y: event.clientY };
   };
 
+  // Only a mostly sideways movement turns the photo; a vertical scroll that
+  // starts on the photo and drifts a little sideways leaves it alone.
   const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
-    const startX = swipeStartX.current;
-    swipeStartX.current = null;
-    if (startX === null) return;
-    const distance = event.clientX - startX;
-    if (Math.abs(distance) < SWIPE_DISTANCE_PX) return;
-    step(distance < 0 ? 1 : -1);
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start) return;
+    const distanceX = event.clientX - start.x;
+    const distanceY = event.clientY - start.y;
+    if (Math.abs(distanceX) < SWIPE_DISTANCE_PX) return;
+    if (Math.abs(distanceX) <= Math.abs(distanceY)) return;
+    step(distanceX < 0 ? 1 : -1);
   };
 
   return (
-    <div className="monitor-gallery" ref={rootRef}>
+    <div className="monitor-gallery">
       <div
         className="monitor-gallery__stage"
         data-reveal="rise"
         onPointerCancel={() => {
-          swipeStartX.current = null;
+          swipeStart.current = null;
         }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}

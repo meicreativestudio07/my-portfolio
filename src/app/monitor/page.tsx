@@ -3,9 +3,14 @@ import Image from "next/image";
 
 import { PageReady } from "@/components/layout/page-ready";
 import statementPortrait from "@/features/information/images/statement-portrait.jpg";
-import { getMonitorPhoto } from "@/features/monitor/api/get-monitor-photo";
+import {
+  getMonitorGallery,
+  getMonitorPhoto,
+} from "@/features/monitor/api/get-monitor-photo";
+import { MonitorGallery } from "@/features/monitor/components/monitor-gallery";
 import { getVoices } from "@/features/voice/api/get-voices";
 import { VoiceSection } from "@/features/voice/components/voice-section";
+import { APPLY_CLICK_EVENT, DM_CLICK_EVENT } from "@/lib/analytics";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 // The copy on this page is edited here directly, like the About page.
@@ -42,6 +47,38 @@ const conditions = [
   "アンケート内容を「お客様の声」としてHPに掲載させていただけること",
 ] as const;
 
+// Instagram DM for people who want to ask before applying. ig.me opens a
+// direct message to the account in the Instagram app.
+const MONITOR_DM_URL = "https://ig.me/m/meimei.creativestudio";
+
+// The two ways in: the form to apply, and a DM for anyone not ready to.
+// Shown under the price and again at the end, so nobody has to scroll to the
+// bottom to apply. `position` tells the two places apart in GA4.
+const MonitorActions = ({ position }: Readonly<{ position: string }>) => (
+  <div className="monitor__actions">
+    <a
+      className="monitor__action"
+      data-track={APPLY_CLICK_EVENT}
+      data-track-position={position}
+      href={MONITOR_FORM_URL}
+      rel="noreferrer"
+      target="_blank"
+    >
+      応募フォームを開く
+    </a>
+    <a
+      className="monitor__secondary-action"
+      data-track={DM_CLICK_EVENT}
+      data-track-position={position}
+      href={MONITOR_DM_URL}
+      rel="noreferrer"
+      target="_blank"
+    >
+      まずはInstagramのDMで相談する
+    </a>
+  </div>
+);
+
 export const metadata: Metadata = {
   title,
   description,
@@ -58,10 +95,18 @@ export const metadata: Metadata = {
 };
 
 const MonitorPage = async () => {
-  const [photo, voices] = await Promise.all([
+  // Voices are still few, so Business ones join the Wedding ones here.
+  const [photo, gallery, weddingVoices, businessVoices] = await Promise.all([
     getMonitorPhoto(),
+    getMonitorGallery(),
     getVoices("wedding"),
+    getVoices("business"),
   ]);
+  const voices = [...weddingVoices, ...businessVoices];
+  // The lead photo first, then the example cuts, as thumbnails under it.
+  const galleryPhotos = [...(photo ? [photo] : []), ...gallery].map(
+    ({ image, alt }) => ({ image, alt }),
+  );
 
   return (
     <main className="monitor site-shell">
@@ -72,21 +117,15 @@ const MonitorPage = async () => {
           {title}
         </h1>
         <p className="monitor__kicker" data-reveal="text">
-          前撮りモニター 毎月3組限定
+          前撮りモニター 毎月3組限定・
+          <span className="monitor__kicker-price">35,000円（税込）</span>
         </p>
       </div>
 
       <div className="monitor__body">
-        {photo ? (
+        {galleryPhotos.length > 0 ? (
           <div className="monitor__media">
-            <Image
-              className="monitor__image"
-              data-reveal="rise"
-              src={photo.image}
-              alt={photo.alt}
-              priority
-              sizes="(min-width: 48rem) 40vw, 100vw"
-            />
+            <MonitorGallery photos={galleryPhotos} />
           </div>
         ) : null}
 
@@ -121,6 +160,7 @@ const MonitorPage = async () => {
               {"ひとりで撮影から編集まで行うため、"}
               {"余分な費用をかけずにお届けしています。"}
             </p>
+            <MonitorActions position="top" />
           </section>
 
           <section
@@ -137,11 +177,16 @@ const MonitorPage = async () => {
                 </div>
               ))}
             </dl>
-            <ul className="monitor__notes">
-              {planNotes.map((note) => (
-                <li key={note}>{note}</li>
-              ))}
-            </ul>
+            {/* Folded so the costs read as details, not as the last thing
+                before applying; the summary names what is inside. */}
+            <details className="monitor__details">
+              <summary>注意事項（出張費・撮影日・雨天時など）</summary>
+              <ul className="monitor__notes">
+                {planNotes.map((note) => (
+                  <li key={note}>{note}</li>
+                ))}
+              </ul>
+            </details>
           </section>
 
           <section
@@ -157,13 +202,6 @@ const MonitorPage = async () => {
             </ul>
           </section>
 
-          <VoiceSection
-            voices={voices}
-            id="monitor-voice"
-            title="お客様の声"
-            variant="inline"
-          />
-
           <section
             className="monitor__section"
             aria-labelledby="monitor-apply"
@@ -171,14 +209,7 @@ const MonitorPage = async () => {
           >
             <h2 id="monitor-apply">応募方法</h2>
             <p>下の応募フォームからお申し込みください。</p>
-            <a
-              className="monitor__action"
-              href={MONITOR_FORM_URL}
-              rel="noreferrer"
-              target="_blank"
-            >
-              応募フォームを開く
-            </a>
+            <MonitorActions position="bottom" />
           </section>
 
           <section
@@ -203,6 +234,15 @@ const MonitorPage = async () => {
               </p>
             </div>
           </section>
+
+          {/* Last and in smaller type, so the voices never read as part of
+              the plan details above. */}
+          <VoiceSection
+            voices={voices}
+            id="monitor-voice"
+            title="お客様の声"
+            variant="inline"
+          />
         </div>
       </div>
     </main>

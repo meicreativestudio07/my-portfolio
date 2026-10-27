@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import type { CSSProperties, ReactNode } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import {
   type SiteNavigateOptions,
@@ -39,6 +40,7 @@ type TransitionPhase = "idle" | "exiting" | "waiting" | "entering";
 // detail route deliberately stays out of this list; the commission detail
 // routes keep the header so index and detail read as one continuous page.
 // /monitor belongs to the wedding service, so it highlights Wedding.
+// /privacy keeps the header but matches no navigation item.
 // Portfolio is temporarily unpublished, so "/portfolio" is deliberately not
 // mapped here — see the comment in app/portfolio/page.tsx to restore it.
 const headerPageFor = (path: string) =>
@@ -46,13 +48,15 @@ const headerPageFor = (path: string) =>
     ? "About"
     : path === "/contact"
       ? "Contact"
-      : path === "/business" || path.startsWith("/business/")
-        ? "Business"
-        : path === "/wedding" ||
-            path.startsWith("/wedding/") ||
-            path === "/monitor"
-          ? "Wedding"
-          : null;
+      : path === "/privacy"
+        ? "Privacy"
+        : path === "/business" || path.startsWith("/business/")
+          ? "Business"
+          : path === "/wedding" ||
+              path.startsWith("/wedding/") ||
+              path === "/monitor"
+            ? "Wedding"
+            : null;
 
 export const SiteFrame = ({ children }: SiteFrameProps) => {
   const pathname = usePathname();
@@ -189,7 +193,15 @@ export const SiteFrame = ({ children }: SiteFrameProps) => {
 
   // Keystatic の Admin ルートはサイトの演出(PageReady 待ちの opacity 0 や
   // 共通ヘッダー)の対象外。素通しにしないと画面が表示されない。
-  if (pathname === "/" || pathname.startsWith("/keystatic")) return children;
+  if (pathname.startsWith("/keystatic")) return children;
+  // The intro route manages its own entrance, so it gets only the footer.
+  if (pathname === "/")
+    return (
+      <>
+        {children}
+        <SiteFooter />
+      </>
+    );
 
   const isPageReady = readyPath === pathname;
   const isHeaderReady =
@@ -247,6 +259,7 @@ export const SiteFrame = ({ children }: SiteFrameProps) => {
         onAnimationComplete={handleAnimationComplete}
       >
         {children}
+        <SiteFooter />
       </motion.div>
 
       <motion.div

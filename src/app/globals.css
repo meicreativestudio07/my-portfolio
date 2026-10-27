@@ -152,6 +152,15 @@
   --layout-home-media-position: 50% 62%;
   /* Monitor page: the photographer's small portrait beside "撮影するのはわたしです". */
   --layout-monitor-portrait-width: 7rem;
+  /* Monitor gallery thumbnails: small enough that several fit on a phone
+     row, tall enough (3:4) to stay well above the touch target. */
+  --layout-monitor-thumb-width: 4.5rem;
+  /* Thumbnails not on show recede, so the one in the large frame reads as
+     selected without a border or badge. */
+  --opacity-monitor-thumb-rest: 0.45;
+  /* Customer voices on /monitor open as this many lines before
+     "続きを読む", enough to show each one's tone without the full length. */
+  --voice-excerpt-lines: 3;
   --icon-size-small: 1rem;
   --icon-size-menu: 1.125rem;
   --icon-size-navigation: 0.5rem;
@@ -1709,16 +1718,13 @@ html[data-detail-transition="true"] .site-header-frame {
   letter-spacing: var(--letter-spacing-information);
 }
 
-.monitor__media {
-  margin-bottom: var(--space-8);
+/* The price wraps as one piece, never between 円 and （税込）. */
+.monitor__kicker-price {
+  white-space: nowrap;
 }
 
-.monitor__image {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: var(--layout-card-media-ratio);
-  object-fit: cover;
+.monitor__media {
+  margin-bottom: var(--space-8);
 }
 
 .monitor__copy {
@@ -1805,17 +1811,58 @@ html[data-detail-transition="true"] .site-header-frame {
   content: "※ ";
 }
 
+.monitor__details summary {
+  display: flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-social);
+  list-style: none;
+  cursor: pointer;
+  transition: color var(--motion-duration-fast) linear;
+}
+
+.monitor__details summary::-webkit-details-marker {
+  display: none;
+}
+
+.monitor__details summary::before {
+  content: "＋";
+  margin-right: var(--space-2);
+}
+
+.monitor__details[open] summary::before {
+  content: "−";
+}
+
 .monitor__list li::before {
   content: "・";
 }
 
-/* The one way to apply, so it reads a step larger with room around it. */
+/* The form link, with the quieter DM link under it. */
+.monitor__actions {
+  display: grid;
+  justify-items: start;
+  row-gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.monitor__secondary-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+/* The way to apply, so it reads a step larger with room around it. */
 .monitor__action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: var(--layout-touch-target);
-  margin-top: var(--space-6);
   padding: var(--space-4) var(--space-7);
   border: 1px solid var(--color-text);
   font-size: var(--font-size-information-name);
@@ -1850,6 +1897,11 @@ html[data-detail-transition="true"] .site-header-frame {
     border-color: var(--color-text-muted);
     color: var(--color-text-muted);
   }
+
+  .monitor__details summary:hover,
+  .monitor__secondary-action:hover {
+    color: var(--color-text);
+  }
 }
 
 @media (min-width: 48rem) {
@@ -1881,11 +1933,173 @@ html[data-detail-transition="true"] .site-header-frame {
   }
 }
 
+/* Monitor gallery -------------------------------------------------------
+   The lead photo with the example cuts as thumbnails under it. The large
+   frame cross-fades to whichever thumbnail is hovered, focused or tapped,
+   and when swiped sideways; only opacity moves. The thumbnails scroll sideways and follow the photo. */
+
+/* Vertical page scrolling passes through; sideways swipes turn the photo. */
+.monitor-gallery__stage {
+  position: relative;
+  aspect-ratio: var(--layout-card-media-ratio);
+  overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.monitor-gallery__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.monitor-gallery__image[data-active="true"] {
+  opacity: 1;
+}
+
+/* Positioned, so each thumbnail's offsetLeft is measured along the row. */
+.monitor-gallery__thumbs {
+  position: relative;
+  display: flex;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+}
+
+.monitor-gallery__thumbs li {
+  flex: none;
+}
+
+.monitor-gallery__thumb {
+  display: block;
+  width: var(--layout-monitor-thumb-width);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  opacity: var(--opacity-monitor-thumb-rest);
+}
+
+.monitor-gallery__thumb[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.monitor-gallery__thumb-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--layout-card-media-ratio);
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .monitor-gallery__image {
+    transition: opacity var(--motion-duration-slow) var(--motion-ease-crossfade);
+  }
+
+  .monitor-gallery__thumb {
+    transition: opacity var(--motion-duration-fast) linear;
+  }
+}
+
+/* Privacy ----------------------------------------------------------------
+   The privacy notice, set in the monitor page's quiet type: small muted
+   headings over body copy, in one readable column. */
+
+.privacy {
+  padding: var(--space-8) var(--layout-gutter-mobile)
+    var(--layout-gallery-bottom-mobile);
+}
+
+.privacy__title {
+  margin: 0 0 var(--space-7);
+  font-size: var(--font-size-title);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-title);
+}
+
+.privacy__copy {
+  display: grid;
+  row-gap: var(--space-8);
+  max-width: var(--layout-information-copy-measure);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  word-break: auto-phrase;
+}
+
+.privacy__copy h2 {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-information-heading);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-caption);
+  letter-spacing: var(--letter-spacing-information-heading);
+}
+
+.privacy__copy p {
+  margin: 0 0 var(--space-4);
+}
+
+.privacy__copy a {
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+
+.privacy__signature {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 48rem) {
+  .privacy {
+    padding: var(--layout-gallery-top-desktop) var(--layout-gutter-desktop)
+      var(--layout-gallery-bottom-desktop);
+  }
+
+  .privacy__title {
+    margin-bottom: var(--space-10);
+  }
+}
+
+/* Footer -----------------------------------------------------------------
+   One muted link closing every page; it never competes with the work. */
+
+.site-footer {
+  padding: 0 var(--layout-gutter-mobile) var(--space-6);
+}
+
+.site-footer__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-work-index);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__link:hover {
+    color: var(--color-text);
+  }
+}
+
+@media (min-width: 48rem) {
+  .site-footer {
+    padding-inline: var(--layout-gutter-desktop);
+  }
+}
+
 /* Voice ----------------------------------------------------------------
    Customer voices (features/voice), set quietly like quotations: the words
    at body size, who/where/when beneath in muted type. No marks,
-   rules or boxes. "page" closes the Wedding index; "inline" sits among the
-   /monitor details and takes their small muted heading. */
+   rules or boxes. "page" closes the Wedding index; "inline" closes /monitor
+   after the photographer, in a step smaller type than the plan details so
+   the two never blur together, under their small muted heading. */
 
 .voice__list {
   display: grid;
@@ -1933,7 +2147,64 @@ html[data-detail-transition="true"] .site-header-frame {
 }
 
 .voice--inline {
-  margin-bottom: var(--space-8);
+  margin-top: var(--space-10);
+}
+
+.voice--inline .voice__list {
+  row-gap: var(--space-7);
+}
+
+.voice--inline .voice__quote {
+  font-size: var(--font-size-social);
+}
+
+.voice--inline .voice__meta {
+  font-size: var(--font-size-work-index);
+}
+
+.voice__summary {
+  display: grid;
+  justify-items: start;
+  list-style: none;
+  cursor: pointer;
+}
+
+.voice__summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The same words as the quote, run together and clipped with an ellipsis. */
+.voice__excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--font-size-social);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  word-break: auto-phrase;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--voice-excerpt-lines);
+  line-clamp: var(--voice-excerpt-lines);
+}
+
+.voice__more {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-social);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+.voice__fold[open] .voice__summary {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .voice__summary:hover .voice__more {
+    color: var(--color-text);
+  }
 }
 
 @media (min-width: 48rem) {

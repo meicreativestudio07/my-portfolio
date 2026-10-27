@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
+import { TrackClicks } from "@/components/analytics/track-clicks";
 import { SiteFrame } from "@/components/layout/site-frame";
 import {
   REVEAL_BOOT_SCRIPT,
@@ -79,10 +81,12 @@ const RootLayout = ({ children }: RootLayoutProps) => (
         // biome-ignore lint/security/noDangerouslySetInnerHtml: static boot script, no user input
         dangerouslySetInnerHTML={{ __html: REVEAL_BOOT_SCRIPT }}
       />
+      <GoogleAnalytics />
     </head>
     <body>
       <SiteFrame>{children}</SiteFrame>
       <ScrollReveal />
+      <TrackClicks />
     </body>
   </html>
 );

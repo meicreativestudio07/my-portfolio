@@ -152,6 +152,12 @@
   --layout-home-media-position: 50% 62%;
   /* Monitor page: the photographer's small portrait beside "撮影するのはわたしです". */
   --layout-monitor-portrait-width: 7rem;
+  /* Monitor gallery thumbnails: small enough that several fit on a phone
+     row, tall enough (3:4) to stay well above the touch target. */
+  --layout-monitor-thumb-width: 4.5rem;
+  /* Thumbnails not on show recede, so the one in the large frame reads as
+     selected without a border or badge. */
+  --opacity-monitor-thumb-rest: 0.45;
   --icon-size-small: 1rem;
   --icon-size-menu: 1.125rem;
   --icon-size-navigation: 0.5rem;
@@ -1718,14 +1724,6 @@ html[data-detail-transition="true"] .site-header-frame {
   margin-bottom: var(--space-8);
 }
 
-.monitor__image {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: var(--layout-card-media-ratio);
-  object-fit: cover;
-}
-
 .monitor__copy {
   max-width: var(--layout-information-copy-measure);
   font-size: var(--font-size-body);
@@ -1777,24 +1775,6 @@ html[data-detail-transition="true"] .site-header-frame {
 
 .monitor__price-offer small {
   font-size: var(--font-size-body);
-}
-
-/* Example cuts: two across on phones, three beside the copy on desktop. */
-.monitor__gallery {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.monitor__gallery-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: var(--layout-card-media-ratio);
-  object-fit: cover;
 }
 
 /* Labels size to the longest one so every value lines up in one column. */
@@ -1948,9 +1928,91 @@ html[data-detail-transition="true"] .site-header-frame {
   .monitor__copy {
     grid-column: 6 / span 5;
   }
+}
 
-  .monitor__gallery {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+/* Monitor gallery -------------------------------------------------------
+   The lead photo with the example cuts as thumbnails under it. The large
+   frame cross-fades to whichever thumbnail is hovered, focused or tapped;
+   only opacity moves. On phones the thumbnails scroll sideways. */
+
+.monitor-gallery__stage {
+  position: relative;
+  aspect-ratio: var(--layout-card-media-ratio);
+  overflow: hidden;
+}
+
+.monitor-gallery__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+}
+
+.monitor-gallery__image[data-active="true"] {
+  opacity: 1;
+}
+
+.monitor-gallery__thumbs {
+  display: flex;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  overflow-x: auto;
+  list-style: none;
+  scroll-snap-type: x proximity;
+}
+
+.monitor-gallery__thumbs li {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.monitor-gallery__thumb {
+  display: block;
+  width: var(--layout-monitor-thumb-width);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  opacity: var(--opacity-monitor-thumb-rest);
+}
+
+.monitor-gallery__thumb[aria-pressed="true"] {
+  opacity: 1;
+}
+
+.monitor-gallery__thumb-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--layout-card-media-ratio);
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .monitor-gallery__image {
+    transition: opacity var(--motion-duration-slow) var(--motion-ease-crossfade);
+  }
+
+  .monitor-gallery__thumb {
+    transition: opacity var(--motion-duration-fast) linear;
+  }
+}
+
+/* Desktop: one row under the photo, the thumbnails sharing its width
+   however many there are. */
+@media (min-width: 48rem) {
+  .monitor-gallery__thumbs {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    overflow-x: visible;
+  }
+
+  .monitor-gallery__thumb {
+    width: 100%;
   }
 }
 

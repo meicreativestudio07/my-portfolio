@@ -7,6 +7,7 @@ import {
   getMonitorGallery,
   getMonitorPhoto,
 } from "@/features/monitor/api/get-monitor-photo";
+import { MonitorGallery } from "@/features/monitor/components/monitor-gallery";
 import { getVoices } from "@/features/voice/api/get-voices";
 import { VoiceSection } from "@/features/voice/components/voice-section";
 import { APPLY_CLICK_EVENT, DM_CLICK_EVENT } from "@/lib/analytics";
@@ -102,6 +103,10 @@ const MonitorPage = async () => {
     getVoices("business"),
   ]);
   const voices = [...weddingVoices, ...businessVoices];
+  // The lead photo first, then the example cuts, as thumbnails under it.
+  const galleryPhotos = [...(photo ? [photo] : []), ...gallery].map(
+    ({ image, alt }) => ({ image, alt }),
+  );
 
   return (
     <main className="monitor site-shell">
@@ -118,16 +123,9 @@ const MonitorPage = async () => {
       </div>
 
       <div className="monitor__body">
-        {photo ? (
+        {galleryPhotos.length > 0 ? (
           <div className="monitor__media">
-            <Image
-              className="monitor__image"
-              data-reveal="rise"
-              src={photo.image}
-              alt={photo.alt}
-              priority
-              sizes="(min-width: 48rem) 40vw, 100vw"
-            />
+            <MonitorGallery photos={galleryPhotos} />
           </div>
         ) : null}
 
@@ -164,30 +162,6 @@ const MonitorPage = async () => {
             </p>
             <MonitorActions position="top" />
           </section>
-
-          {gallery.length > 0 ? (
-            <section
-              className="monitor__section"
-              aria-labelledby="monitor-gallery"
-            >
-              <h2 id="monitor-gallery" data-reveal="text">
-                撮影例
-              </h2>
-              <ul className="monitor__gallery">
-                {gallery.map((cut) => (
-                  <li key={cut.image.src}>
-                    <Image
-                      className="monitor__gallery-image"
-                      data-reveal="rise"
-                      src={cut.image}
-                      alt={cut.alt}
-                      sizes="(min-width: 48rem) 15vw, 50vw"
-                    />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
 
           <section
             className="monitor__section"

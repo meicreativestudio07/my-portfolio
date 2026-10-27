@@ -4,3 +4,4 @@ export const GA_MEASUREMENT_ID = "G-MSGKL52YZ1";
 
 // 数えるクリックの名前。GA4 の「イベント」にこの名前で出る。
 export const APPLY_CLICK_EVENT = "apply_click";
+export const DM_CLICK_EVENT = "dm_click";

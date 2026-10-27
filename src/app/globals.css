@@ -1838,13 +1838,30 @@ html[data-detail-transition="true"] .site-header-frame {
   content: "・";
 }
 
-/* The one way to apply, so it reads a step larger with room around it. */
+/* The form link, with the quieter DM link under it. */
+.monitor__actions {
+  display: grid;
+  justify-items: start;
+  row-gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.monitor__secondary-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+/* The way to apply, so it reads a step larger with room around it. */
 .monitor__action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: var(--layout-touch-target);
-  margin-top: var(--space-6);
   padding: var(--space-4) var(--space-7);
   border: 1px solid var(--color-text);
   font-size: var(--font-size-information-name);
@@ -1880,7 +1897,8 @@ html[data-detail-transition="true"] .site-header-frame {
     color: var(--color-text-muted);
   }
 
-  .monitor__details summary:hover {
+  .monitor__details summary:hover,
+  .monitor__secondary-action:hover {
     color: var(--color-text);
   }
 }

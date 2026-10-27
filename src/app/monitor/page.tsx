@@ -6,7 +6,7 @@ import statementPortrait from "@/features/information/images/statement-portrait.
 import { getMonitorPhoto } from "@/features/monitor/api/get-monitor-photo";
 import { getVoices } from "@/features/voice/api/get-voices";
 import { VoiceSection } from "@/features/voice/components/voice-section";
-import { APPLY_CLICK_EVENT } from "@/lib/analytics";
+import { APPLY_CLICK_EVENT, DM_CLICK_EVENT } from "@/lib/analytics";
 import { DEFAULT_SITE_TITLE } from "@/lib/site-metadata";
 
 // The copy on this page is edited here directly, like the About page.
@@ -43,19 +43,36 @@ const conditions = [
   "アンケート内容を「お客様の声」としてHPに掲載させていただけること",
 ] as const;
 
-// The form link appears under the price and again at the end, so nobody has
-// to scroll to the bottom to apply. `position` tells the two apart in GA4.
-const MonitorApplyLink = ({ position }: Readonly<{ position: string }>) => (
-  <a
-    className="monitor__action"
-    data-track={APPLY_CLICK_EVENT}
-    data-track-position={position}
-    href={MONITOR_FORM_URL}
-    rel="noreferrer"
-    target="_blank"
-  >
-    応募フォームを開く
-  </a>
+// Instagram DM for people who want to ask before applying. ig.me opens a
+// direct message to the account in the Instagram app.
+const MONITOR_DM_URL = "https://ig.me/m/meimei.creativestudio";
+
+// The two ways in: the form to apply, and a DM for anyone not ready to.
+// Shown under the price and again at the end, so nobody has to scroll to the
+// bottom to apply. `position` tells the two places apart in GA4.
+const MonitorActions = ({ position }: Readonly<{ position: string }>) => (
+  <div className="monitor__actions">
+    <a
+      className="monitor__action"
+      data-track={APPLY_CLICK_EVENT}
+      data-track-position={position}
+      href={MONITOR_FORM_URL}
+      rel="noreferrer"
+      target="_blank"
+    >
+      応募フォームを開く
+    </a>
+    <a
+      className="monitor__secondary-action"
+      data-track={DM_CLICK_EVENT}
+      data-track-position={position}
+      href={MONITOR_DM_URL}
+      rel="noreferrer"
+      target="_blank"
+    >
+      まずはInstagramのDMで相談する
+    </a>
+  </div>
 );
 
 export const metadata: Metadata = {
@@ -138,7 +155,7 @@ const MonitorPage = async () => {
               {"ひとりで撮影から編集まで行うため、"}
               {"余分な費用をかけずにお届けしています。"}
             </p>
-            <MonitorApplyLink position="top" />
+            <MonitorActions position="top" />
           </section>
 
           <section
@@ -194,7 +211,7 @@ const MonitorPage = async () => {
           >
             <h2 id="monitor-apply">応募方法</h2>
             <p>下の応募フォームからお申し込みください。</p>
-            <MonitorApplyLink position="bottom" />
+            <MonitorActions position="bottom" />
           </section>
 
           <section

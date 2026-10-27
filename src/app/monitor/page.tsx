@@ -94,11 +94,14 @@ export const metadata: Metadata = {
 };
 
 const MonitorPage = async () => {
-  const [photo, gallery, voices] = await Promise.all([
+  // Voices are still few, so Business ones join the Wedding ones here.
+  const [photo, gallery, weddingVoices, businessVoices] = await Promise.all([
     getMonitorPhoto(),
     getMonitorGallery(),
     getVoices("wedding"),
+    getVoices("business"),
   ]);
+  const voices = [...weddingVoices, ...businessVoices];
 
   return (
     <main className="monitor site-shell">

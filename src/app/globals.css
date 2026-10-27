@@ -1937,7 +1937,7 @@ html[data-detail-transition="true"] .site-header-frame {
    The lead photo with the example cuts as thumbnails under it. The large
    frame cross-fades to whichever thumbnail is hovered, focused or tapped,
    when swiped sideways, and on desktop as the details beside it scroll by;
-   only opacity moves. On phones the thumbnails scroll sideways. */
+   only opacity moves. The thumbnails scroll sideways and follow the photo. */
 
 /* Vertical page scrolling passes through; sideways swipes turn the photo. */
 .monitor-gallery__stage {
@@ -1961,19 +1961,19 @@ html[data-detail-transition="true"] .site-header-frame {
   opacity: 1;
 }
 
+/* Positioned, so each thumbnail's offsetLeft is measured along the row. */
 .monitor-gallery__thumbs {
+  position: relative;
   display: flex;
   gap: var(--space-2);
   margin: var(--space-2) 0 0;
   padding: 0;
   overflow-x: auto;
   list-style: none;
-  scroll-snap-type: x proximity;
 }
 
 .monitor-gallery__thumbs li {
   flex: none;
-  scroll-snap-align: start;
 }
 
 .monitor-gallery__thumb {
@@ -2005,21 +2005,6 @@ html[data-detail-transition="true"] .site-header-frame {
 
   .monitor-gallery__thumb {
     transition: opacity var(--motion-duration-fast) linear;
-  }
-}
-
-/* Desktop: one row under the photo, the thumbnails sharing its width
-   however many there are. */
-@media (min-width: 48rem) {
-  .monitor-gallery__thumbs {
-    display: grid;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column;
-    overflow-x: visible;
-  }
-
-  .monitor-gallery__thumb {
-    width: 100%;
   }
 }
 

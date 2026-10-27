@@ -22,6 +22,11 @@ const MONITOR_GALLERY = [
   { work: "dusk-waterside-pre-wedding", cut: 2 },
   { work: "green-garden-pre-wedding", cut: 3 },
   { work: "blue-sky-trees-pre-wedding", cut: 3 },
+  { work: "white-sand-beach-pre-wedding", cut: 2 },
+  { work: "green-garden-pre-wedding", cut: 1 },
+  { work: "blue-sky-trees-pre-wedding", cut: 1 },
+  { work: "dusk-waterside-pre-wedding", cut: 1 },
+  { work: "dusk-waterside-pre-wedding", cut: 3 },
 ] as const;
 
 /**

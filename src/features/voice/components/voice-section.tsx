@@ -5,7 +5,7 @@ type VoiceSectionProps = Readonly<{
   /** Heading id, unique on the page. */
   id: string;
   title: string;
-  /** "page" heads a page section (Wedding); "inline" sits among the /monitor details. */
+  /** "page" heads a page section (Wedding); "inline" closes /monitor in smaller type. */
   variant: "page" | "inline";
 }>;
 

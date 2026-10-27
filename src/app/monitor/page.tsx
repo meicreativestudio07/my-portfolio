@@ -228,13 +228,6 @@ const MonitorPage = async () => {
             </ul>
           </section>
 
-          <VoiceSection
-            voices={voices}
-            id="monitor-voice"
-            title="お客様の声"
-            variant="inline"
-          />
-
           <section
             className="monitor__section"
             aria-labelledby="monitor-apply"
@@ -267,6 +260,15 @@ const MonitorPage = async () => {
               </p>
             </div>
           </section>
+
+          {/* Last and in smaller type, so the voices never read as part of
+              the plan details above. */}
+          <VoiceSection
+            voices={voices}
+            id="monitor-voice"
+            title="お客様の声"
+            variant="inline"
+          />
         </div>
       </div>
     </main>

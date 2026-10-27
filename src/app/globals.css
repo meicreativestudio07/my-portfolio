@@ -158,6 +158,9 @@
   /* Thumbnails not on show recede, so the one in the large frame reads as
      selected without a border or badge. */
   --opacity-monitor-thumb-rest: 0.45;
+  /* Customer voices on /monitor open as this many lines before
+     "続きを読む", enough to show each one's tone without the full length. */
+  --voice-excerpt-lines: 3;
   --icon-size-small: 1rem;
   --icon-size-menu: 1.125rem;
   --icon-size-navigation: 0.5rem;
@@ -2169,6 +2172,51 @@ html[data-detail-transition="true"] .site-header-frame {
 
 .voice--inline .voice__meta {
   font-size: var(--font-size-work-index);
+}
+
+.voice__summary {
+  display: grid;
+  justify-items: start;
+  list-style: none;
+  cursor: pointer;
+}
+
+.voice__summary::-webkit-details-marker {
+  display: none;
+}
+
+/* The same words as the quote, run together and clipped with an ellipsis. */
+.voice__excerpt {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: var(--font-size-social);
+  line-height: var(--line-height-information);
+  letter-spacing: var(--letter-spacing-information);
+  word-break: auto-phrase;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--voice-excerpt-lines);
+  line-clamp: var(--voice-excerpt-lines);
+}
+
+.voice__more {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--layout-touch-target);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-social);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  transition: color var(--motion-duration-fast) linear;
+}
+
+.voice__fold[open] .voice__summary {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .voice__summary:hover .voice__more {
+    color: var(--color-text);
+  }
 }
 
 @media (min-width: 48rem) {

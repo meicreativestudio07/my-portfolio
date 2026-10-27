@@ -5,7 +5,7 @@ type VoiceSectionProps = Readonly<{
   /** Heading id, unique on the page. */
   id: string;
   title: string;
-  /** "page" heads a page section (Wedding); "inline" closes /monitor in smaller type. */
+  /** "page" heads a page section (Wedding); "inline" closes /monitor in smaller type, folded to a few lines. */
   variant: "page" | "inline";
 }>;
 
@@ -31,9 +31,26 @@ export const VoiceSection = ({
         {voices.map((voice) => (
           <li className="voice__item" key={voice.slug} data-reveal="text">
             <figure className="voice__figure">
-              <blockquote className="voice__quote">
-                <p>{voice.comment}</p>
-              </blockquote>
+              {variant === "inline" ? (
+                // On /monitor each voice opens as a few lines; the full words
+                // follow on "続きを読む". The excerpt is the same text clipped
+                // by CSS, hidden from screen readers to avoid reading it twice.
+                <details className="voice__fold">
+                  <summary className="voice__summary">
+                    <span className="voice__excerpt" aria-hidden="true">
+                      {voice.comment}
+                    </span>
+                    <span className="voice__more">続きを読む</span>
+                  </summary>
+                  <blockquote className="voice__quote">
+                    <p>{voice.comment}</p>
+                  </blockquote>
+                </details>
+              ) : (
+                <blockquote className="voice__quote">
+                  <p>{voice.comment}</p>
+                </blockquote>
+              )}
               <figcaption className="voice__meta">{voice.name}</figcaption>
             </figure>
           </li>

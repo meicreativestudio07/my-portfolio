@@ -1935,13 +1935,17 @@ html[data-detail-transition="true"] .site-header-frame {
 
 /* Monitor gallery -------------------------------------------------------
    The lead photo with the example cuts as thumbnails under it. The large
-   frame cross-fades to whichever thumbnail is hovered, focused or tapped;
+   frame cross-fades to whichever thumbnail is hovered, focused or tapped,
+   when swiped sideways, and on desktop as the details beside it scroll by;
    only opacity moves. On phones the thumbnails scroll sideways. */
 
+/* Vertical page scrolling passes through; sideways swipes turn the photo. */
 .monitor-gallery__stage {
   position: relative;
   aspect-ratio: var(--layout-card-media-ratio);
   overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .monitor-gallery__image {
